@@ -1,0 +1,7 @@
+package org.eclipse.viatra.cep.mqtt.midl.queries
+
+import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
+
+pattern machines(machine: Machine) {
+	Machine(machine);
+}

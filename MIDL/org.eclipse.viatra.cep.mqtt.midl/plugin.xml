@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><?eclipse version="3.0"?><plugin>
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package class="org.eclipse.viatra.cep.mqtt.midl.mIDL.MIDLPackage" genModel="model/generated/MIDL.genmodel" uri="http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"/>
+  </extension>
+  <extension id="org.eclipse.viatra.cep.mqtt.midl.queries.Patterns" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:org.eclipse.viatra.cep.mqtt.midl.queries.Patterns" id="org.eclipse.viatra.cep.mqtt.midl.queries.Patterns"/>
+  </extension>
+</plugin>

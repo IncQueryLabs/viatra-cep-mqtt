@@ -1,0 +1,62 @@
+grammar org.eclipse.viatra.cep.mqtt.midl.MIDL with org.eclipse.xtext.common.Terminals
+
+generate mIDL "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
+
+Machine:
+	(
+		mqttSetup = MqttSetup
+		(messages += Message)*
+		(sensors += Sensor)*
+	)
+;
+
+MqttSetup:
+	"mqttSetup" "{"
+		"brokerUrl" brokerUrl = STRING
+	"}" 
+;
+
+Message:
+	"message" "{"
+		"name" name = ID
+		(
+			(dataParameters += DataParameter) |
+			(messageParameters += MessageParameter)
+		)*
+		("qos" qos = INT)?
+	"}"
+;
+
+terminal FLOAT:
+	INT "." INT "f"
+;
+
+terminal BOOLEAN:
+	"true" | "false"
+;
+
+DataParameter:
+	{IntParameter} "parameter" type = "int" name = ID ("=" value = INT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
+	{FloatParameter} "parameter" type = "float" name = ID ("=" value = FLOAT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
+	{StringParameter} "parameter" type = "string" name = ID ("=" value = STRING)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
+	{BooleanParameter} "parameter" type = "boolean" name = ID ("=" value = BOOLEAN)? ("(" criteria += Criterion (criteria += Criterion)* ")")?
+;
+
+Criterion:
+	{IntCriterion} prefix = ("min" | "max" | "eq" | "neq") value = INT |
+	{FloatCriterion} prefix = ("min" | "max" | "eq" | "neq") value = FLOAT |
+	{StringCriterion} prefix = ("eq" | "neq") value = STRING |
+	{BooleanCriterion} prefix = ("eq" | "neq") value = BOOLEAN
+;
+
+MessageParameter:
+	"parameter" message = [Message]
+;
+
+Sensor:
+	"sensor" "{"
+		"name" name = ID
+		"messages" messages += [Message]
+		("," messages += [Message])*
+	"}"
+;

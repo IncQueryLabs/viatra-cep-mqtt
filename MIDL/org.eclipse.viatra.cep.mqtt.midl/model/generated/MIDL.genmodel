@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.viatra.cep.mqtt.midl/src-gen" editDirectory="/org.eclipse.viatra.cep.mqtt.midl.edit/src"
+    editorDirectory="/org.eclipse.viatra.cep.mqtt.midl.editor/src" modelPluginID="org.eclipse.viatra.cep.mqtt.midl"
+    forceOverwrite="true" modelName="MIDL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="org.eclipse.viatra.cep.mqtt.midl.edit"
+    editorPluginID="org.eclipse.viatra.cep.mqtt.midl.editor" runtimeVersion="2.11">
+  <genPackages prefix="MIDL" basePackage="org.eclipse.viatra.cep.mqtt.midl" disposableProviderFactory="true"
+      fileExtensions="midl" ecorePackage="MIDL.ecore#/">
+    <genClasses ecoreClass="MIDL.ecore#//Machine">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Machine/mqttSetup"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Machine/messages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Machine/sensors"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//MqttSetup">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//MqttSetup/brokerUrl"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//Message">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Message/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Message/dataParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Message/messageParameters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Message/qos"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//DataParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//DataParameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//DataParameter/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//DataParameter/criteria"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//Criterion">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Criterion/prefix"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//MessageParameter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//MessageParameter/message"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//Sensor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Sensor/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//Sensor/messages"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//IntParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//IntParameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//FloatParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//FloatParameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//StringParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//StringParameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//BooleanParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//BooleanParameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//IntCriterion">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//IntCriterion/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//FloatCriterion">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//FloatCriterion/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//StringCriterion">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//StringCriterion/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//BooleanCriterion">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//BooleanCriterion/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
