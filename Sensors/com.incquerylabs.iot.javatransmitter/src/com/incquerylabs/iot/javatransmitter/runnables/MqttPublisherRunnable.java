@@ -22,6 +22,7 @@ public class MqttPublisherRunnable implements Runnable {
     @Override
 	public void run() {
         try {
+        	System.out.println("Start sending messages...");
         	while(isRunning) {
         		String rawData = queue.take();
         		publisher.publish(parameters.topic, rawData);
