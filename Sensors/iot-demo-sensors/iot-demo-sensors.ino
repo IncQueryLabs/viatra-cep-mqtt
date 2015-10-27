@@ -23,9 +23,6 @@ void setup() {
 
   // set up serial port
   Serial.begin(9600);
-  Serial.print("Button checker with ");
-  Serial.print(NUMBUTTONS, DEC);
-  Serial.println(" buttons");
   // pin13 LED
   pinMode(13, OUTPUT);
 
