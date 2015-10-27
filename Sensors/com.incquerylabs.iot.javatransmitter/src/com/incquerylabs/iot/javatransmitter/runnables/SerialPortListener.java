@@ -32,6 +32,7 @@ public class SerialPortListener implements SerialPortEventListener {
 	private static final int DATA_RATE = 9600;
 	
 	private BlockingQueue<String> queue;
+	private boolean firstMessage = true;
 
 	private static final Logger log4jLogger = Logger.getLogger(SerialPortListener.class);
 	private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
@@ -100,9 +101,14 @@ public class SerialPortListener implements SerialPortEventListener {
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
-				String inputLine = input.readLine();
-				LOGGER.infoWithoutPrint("Read from serial: "+inputLine);
-				queue.put(inputLine);
+				if(firstMessage){
+					// Skip first message because it can be partial
+					firstMessage = false;
+				}else{
+					String inputLine = input.readLine();
+					LOGGER.infoWithoutPrint("Read from serial: "+inputLine);
+					queue.put(inputLine);
+				}
 			} catch (Exception e) {
 				serialPort.removeEventListener();
 			}
