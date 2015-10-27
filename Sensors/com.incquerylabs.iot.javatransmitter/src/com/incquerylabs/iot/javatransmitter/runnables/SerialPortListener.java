@@ -106,7 +106,7 @@ public class SerialPortListener implements SerialPortEventListener {
 					firstMessage = false;
 				}else{
 					String inputLine = input.readLine();
-					LOGGER.infoWithoutPrint("Read from serial: "+inputLine);
+					LOGGER.debug("Read from serial: "+inputLine);
 					queue.put(inputLine);
 				}
 			} catch (Exception e) {

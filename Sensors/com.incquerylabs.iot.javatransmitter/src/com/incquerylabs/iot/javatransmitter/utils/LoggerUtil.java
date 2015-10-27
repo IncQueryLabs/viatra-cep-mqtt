@@ -20,13 +20,13 @@ public class LoggerUtil {
 		logger.error(msg, t);
 	}
 	
-	public void infoWithoutPrint(String msg){
-		logger.info(msg);
-	}
-	
 	public void info(String msg){
 		System.out.println(msg);
 		logger.info(msg);
+	}
+
+	public void debug(String msg) {
+		logger.debug(msg);
 	}
 	
 }
