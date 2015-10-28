@@ -13,5 +13,6 @@ public class InputParameters {
 	public String broker = "tcp://"+MQTT_HOST+":" + MQTT_PORT;
 	public String topic = MQTT_TOPIC;
 	public String sensorID = MQTT_SENSOR_ID;
+	public boolean emaulteSerial = false;
 	
 }

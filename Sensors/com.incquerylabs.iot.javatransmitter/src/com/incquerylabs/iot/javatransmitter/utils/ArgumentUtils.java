@@ -10,8 +10,10 @@ public class ArgumentUtils {
 		System.out.println("   Broker: " + parsedArgs.broker);
 		System.out.println("   Topic: " + parsedArgs.topic);
 		System.out.println("   SensorID: " + parsedArgs.sensorID);
+		System.out.println("   Emulate Serial: " + parsedArgs.emaulteSerial);
 	}
 
+	// TODO
 	public static boolean validateParsedArgs(InputParameters parsedArgs) {
 		boolean portDefined = parsedArgs.port != null && parsedArgs.port != "";
 		if(parsedArgs.help || portDefined){
@@ -72,6 +74,10 @@ public class ArgumentUtils {
 				case "-h":
 				case "-help":
 					inputParameters.help = true;
+					nextIsValue = false;
+					break;
+				case "-es":
+					inputParameters.emaulteSerial = true;
 					nextIsValue = false;
 					break;
 				default:
