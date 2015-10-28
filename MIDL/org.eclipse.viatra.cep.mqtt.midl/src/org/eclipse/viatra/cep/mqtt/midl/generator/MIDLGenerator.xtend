@@ -3,6 +3,7 @@
  */
 package org.eclipse.viatra.cep.mqtt.midl.generator
 
+import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.emf.EMFScope
@@ -22,7 +23,7 @@ class MIDLGenerator implements IGenerator {
 		val engine = IncQueryEngine.on(new EMFScope(resourceSet))
 		
 		val codeGeneration = new CodeGeneration
-		codeGeneration.initialize(engine, "C:\\Users\\selmecziz\\work\\eclipses\\Teqbox\\ws")
+		codeGeneration.initialize(engine, ResourcesPlugin.getWorkspace().root.location.toOSString)
 		codeGeneration.fire
 		codeGeneration.dispose
 	}
