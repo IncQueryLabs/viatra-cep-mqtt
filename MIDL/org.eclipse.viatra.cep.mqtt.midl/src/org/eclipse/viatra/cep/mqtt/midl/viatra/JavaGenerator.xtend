@@ -70,7 +70,7 @@ class JavaGenerator {
 
 	public def generateGeneralPublisher(String path) {
 		val rootFolder = FileUtils.createFolder(path)
-		val projectFolder = FileUtils.createFolder(new File(rootFolder, "hu.bme.thesis.generated.java").absolutePath)
+		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.java").absolutePath)
 		val srcFolder = FileUtils.createFolder(new File(projectFolder, "src").absolutePath)
 		val subscriberFile = FileUtils.createFile(srcFolder, "Publisher.java")
 		val writer = new FileWriter(subscriberFile)
