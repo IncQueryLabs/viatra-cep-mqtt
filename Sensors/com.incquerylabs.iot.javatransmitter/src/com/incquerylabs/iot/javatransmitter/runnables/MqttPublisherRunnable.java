@@ -2,8 +2,11 @@ package com.incquerylabs.iot.javatransmitter.runnables;
 
 import java.util.concurrent.BlockingQueue;
 
+import org.apache.log4j.Logger;
+
 import com.incquerylabs.iot.javatransmitter.data.InputParameters;
 import com.incquerylabs.iot.javatransmitter.mqtt.Publisher;
+import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
 
 public class MqttPublisherRunnable implements Runnable {
 
@@ -12,6 +15,9 @@ public class MqttPublisherRunnable implements Runnable {
 	private final Publisher publisher;
 	private InputParameters parameters;
 
+	private static final Logger log4jLogger = Logger.getLogger(MqttPublisherRunnable.class);
+	private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
+	
     public MqttPublisherRunnable(BlockingQueue<String> queue, InputParameters parameters) {
         this.queue = queue;
 		this.parameters = parameters;
@@ -28,7 +34,7 @@ public class MqttPublisherRunnable implements Runnable {
         		publisher.publish(parameters.topic, rawData);
         	}
         } catch (InterruptedException e) {
-            e.printStackTrace();
+        	LOGGER.error("Interrupted", e);
         }
     }
     
