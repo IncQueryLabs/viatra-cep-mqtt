@@ -1,0 +1,47 @@
+package com.incquerylabs.iot.demo.cep.vepl
+
+import-queries com.incquerylabs.iot.demo.cep.eiq.*
+
+queryEvent btn1Btn_msgValueEqEvent() as
+	btn1Btn_msgValueEqPattern(_) found
+
+rule btn1Btn_msgValueEqRule on btn1Btn_msgValueEqEvent {
+	println("Btn1 btn_msg value eq rule activated!")
+}
+
+queryEvent btn2Btn_msgValueEqEvent() as
+	btn2Btn_msgValueEqPattern(_) found
+
+rule btn2Btn_msgValueEqRule on btn2Btn_msgValueEqEvent {
+	println("Btn2 btn_msg value eq rule activated!")
+}
+
+queryEvent btn3Btn_msgValueEqEvent() as
+	btn3Btn_msgValueEqPattern(_) found
+
+rule btn3Btn_msgValueEqRule on btn3Btn_msgValueEqEvent {
+	println("Btn3 btn_msg value eq rule activated!")
+}
+
+queryEvent pot1Pot_msgValueMinEvent() as
+	pot1Pot_msgValueMinPattern(_) found
+
+rule pot1Pot_msgValueMinRule on pot1Pot_msgValueMinEvent {
+	println("Pot1 pot_msg value min rule activated!")
+}
+
+queryEvent pot1Pot_msgValueMaxEvent() as
+	pot1Pot_msgValueMaxPattern(_) found
+
+rule pot1Pot_msgValueMaxRule on pot1Pot_msgValueMaxEvent {
+	println("Pot1 pot_msg value max rule activated!")
+}
+
+complexEvent ALL_BTN() {
+	as (btn1Btn_msgValueEqEvent -> btn2Btn_msgValueEqEvent -> btn3Btn_msgValueEqEvent)[10000]
+}
+
+rule ALL_BTN_RULE on ALL_BTN {
+	println("BTN1->BTN2->BTN3 in 10 sec")
+	com.incquerylabs.iot.demo.cep.CEPApplication.publisher.publish("dashboard/cep", "{\"ALL_RULE_BTN\" : 1}".bytes, 0)
+}

@@ -1,0 +1,45 @@
+package com.incquerylabs.iot.demo.cep.eiq
+
+import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
+
+pattern btn1Btn_msgValueEqPattern(sensor: Sensor) {
+	Sensor.name(sensor, sensorname);
+	check(sensorname == "btn1");
+	Sensor.messages(sensor, message);
+	Message.dataParameters(message, parameter);
+	IntParameter.value(parameter, value);
+	check(value == 1);
+}
+
+pattern btn2Btn_msgValueEqPattern(sensor: Sensor) {
+	Sensor.name(sensor, sensorname);
+	check(sensorname == "btn2");
+	Sensor.messages.dataParameters(sensor, parameter);
+	IntParameter.value(parameter, value);
+	check(value == 1);
+}
+
+pattern btn3Btn_msgValueEqPattern(sensor: Sensor) {
+	Sensor.name(sensor, sensorname);
+	check(sensorname == "btn3");
+	Sensor.messages.dataParameters(sensor, parameter);
+	IntParameter.value(parameter, value);
+	check(value == 1);
+}
+
+pattern pot1Pot_msgValueMinPattern(sensor: Sensor) {
+	Sensor.name(sensor, sensorname);
+	check(sensorname == "pot1");
+	Sensor.messages.dataParameters(sensor, parameter);
+	IntParameter.value(parameter, value);
+	check(value < 0);
+}
+
+pattern pot1Pot_msgValueMaxPattern(sensor: Sensor) {
+	Sensor.name(sensor, sensorname);
+	check(sensorname == "pot1");
+	Sensor.messages.dataParameters(sensor, parameter);
+	IntParameter.value(parameter, value);
+	check(value > 100);
+}
+
