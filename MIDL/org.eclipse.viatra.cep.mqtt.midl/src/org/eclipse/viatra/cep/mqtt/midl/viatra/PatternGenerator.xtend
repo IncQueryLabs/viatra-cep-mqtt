@@ -23,7 +23,7 @@ class PatternGenerator {
 	private def generatePatterns(File cepTopPackage, EList<Sensor> sensors) {
 		val eiqPackage = FileUtils.createFolder(new File(cepTopPackage, "eiq"))
 		val patternsFile = new File(eiqPackage, "Patterns.eiq")
-		val writer = new FileWriter(patternsFile, true)
+		val writer = new FileWriter(patternsFile)
 		val fileContent = '''
 			package org.eclipse.viatra.cep.mqtt.cep.eiq
 			
@@ -120,7 +120,7 @@ class PatternGenerator {
 	private def generateRules(File cepTopPackage, EList<Sensor> sensors) {
 		val veplPackage = FileUtils.createFolder(new File(cepTopPackage, "vepl"))
 		val patternsFile = new File(veplPackage, "Events.vepl")
-		val writer = new FileWriter(patternsFile, true)
+		val writer = new FileWriter(patternsFile)
 		val fileContent = '''
 			package org.eclipse.viatra.cep.mqtt.cep.vepl.firstLevel
 			

@@ -19,9 +19,119 @@ class CommonsGenerator {
 	}
 
 	public def generateCommonsProject() {
+		// Generate project files
+		generateBuildPropertiesFile
+		generateClasspathFile
+		generateManifestFile
+		generateProjectFile
+		generateSettingsFile
+		// Generate codes
 		generateLoggerUtil
 		generateGeneralPublisher
 		generateGeneralSubscriber
+	}
+	
+	private def generateClasspathFile() {
+		val classpathFile = FileUtils.createFile(commonsProjectFolder, ".classpath")
+		val writer = new FileWriter(classpathFile)
+		val fileContent = '''
+			<?xml version="1.0" encoding="UTF-8"?>
+			<classpath>
+				<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+				<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+				<classpathentry kind="src" path="src"/>
+				<classpathentry kind="output" path="bin"/>
+			</classpath>
+		'''
+		writer.write(fileContent)
+		writer.close
+	}
+	
+	private def generateProjectFile() {
+		val projectFile = FileUtils.createFile(commonsProjectFolder, ".project")
+		val writer = new FileWriter(projectFile)
+		val fileContent = '''
+			<?xml version="1.0" encoding="UTF-8"?>
+			<projectDescription>
+				<name>org.eclipse.viatra.cep.mqtt.commons</name>
+				<comment></comment>
+				<projects>
+				</projects>
+				<buildSpec>
+					<buildCommand>
+						<name>org.eclipse.jdt.core.javabuilder</name>
+						<arguments>
+						</arguments>
+					</buildCommand>
+					<buildCommand>
+						<name>org.eclipse.pde.ManifestBuilder</name>
+						<arguments>
+						</arguments>
+					</buildCommand>
+					<buildCommand>
+						<name>org.eclipse.pde.SchemaBuilder</name>
+						<arguments>
+						</arguments>
+					</buildCommand>
+				</buildSpec>
+				<natures>
+					<nature>org.eclipse.pde.PluginNature</nature>
+					<nature>org.eclipse.jdt.core.javanature</nature>
+				</natures>
+			</projectDescription>
+		'''
+		writer.write(fileContent)
+		writer.close
+	}
+	
+	private def generateBuildPropertiesFile() {
+		val buildPropertiesFile = FileUtils.createFile(commonsProjectFolder, "build.properties")
+		val writer = new FileWriter(buildPropertiesFile)
+		val fileContent = '''
+			source.. = src/
+			output.. = bin/
+			bin.includes = META-INF/,\
+			               .
+		'''
+		writer.write(fileContent)
+		writer.close
+	}
+	
+	private def generateManifestFile() {
+		val metainfFolder = FileUtils.createFolder(new File(commonsProjectFolder, "META-INF"))
+		val manifestFile = FileUtils.createFile(metainfFolder, "MANIFEST.MF")
+		val writer = new FileWriter(manifestFile)
+		val fileContent = '''
+			Manifest-Version: 1.0
+			Bundle-ManifestVersion: 2
+			Bundle-Name: Commons
+			Bundle-SymbolicName: org.eclipse.viatra.cep.mqtt.commons
+			Bundle-Version: 1.0.0.qualifier
+			Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+			Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+			 org.eclipse.paho.client.mqttv3;bundle-version="1.0.2"
+			Export-Package: org.eclipse.viatra.cep.mqtt.commons.mqtt,
+			 org.eclipse.viatra.cep.mqtt.commons.utils
+		'''
+		writer.write(fileContent)
+		writer.close
+	}
+	
+	private def generateSettingsFile() {
+		val settingsFolder = FileUtils.createFolder(new File(commonsProjectFolder, ".settings"))
+		val prefsFile = FileUtils.createFile(settingsFolder, "org.eclipse.jdt.core.prefs")
+		val writer = new FileWriter(prefsFile)
+		val fileContent = '''
+			eclipse.preferences.version=1
+			org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
+			org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8
+			org.eclipse.jdt.core.compiler.compliance=1.8
+			org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
+			org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
+			org.eclipse.jdt.core.compiler.source=1.8
+		'''
+		writer.write(fileContent)
+		writer.close
 	}
 
 	private def generateLoggerUtil() {
