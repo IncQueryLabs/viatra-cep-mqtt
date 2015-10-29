@@ -1,13 +1,13 @@
 #define DEBOUNCE 10  // button debouncer, how many ms to debounce, 5+ ms is usually plenty
 
 // here is where we define the buttons that we'll use. button "1" is the first, button "6" is the 6th, etc
-byte buttons[] = {3, 5}; // 12
-String buttonNames[] = {"pb1", "pb2"};
+byte buttons[] = {3, 4, 5}; // 12
+String buttonNames[] = {"pb1", "pb2", "pb3"};
 
 // This handy macro lets us determine how big the array up above is, by checking the size
 #define NUMBUTTONS sizeof(buttons)
 
-byte potmeters[] = {14}; // A0-14, A5-19 6
+byte potmeters[] = {18}; // A0-14, A5-19 6
 
 String potmeterNames[] = {"pot1"};
 // This handy macro lets us determine how big the array up above is, by checking the size
@@ -63,7 +63,7 @@ void check_switches()
 }
 
 String getSensorValueJSON(int value){
-  return String("{\"value\" : " + String(value, DEC) + "}");
+  return String("[\"messageName\" : {\"value\" : " + String(value, DEC) + "}]");
 }
 
 void reportButtons(){
