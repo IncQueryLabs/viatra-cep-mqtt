@@ -28,35 +28,35 @@ class RuleProvider {
 		this.engine = engine
 		this.statements = statements
 		this.rootPath = rootPath
-		javaGenerator = new JavaGenerator
+		javaGenerator = new JavaGenerator(rootPath)
 		cGenerator = new CGenerator
-		patternGenerator = new PatternGenerator
+		patternGenerator = new PatternGenerator(rootPath)
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
 		}
 		if (generateJava) {
-			javaGenerator.generateGeneralSubscriber(rootPath)
-			javaGenerator.generateGeneralPublisher(rootPath)
-			javaGenerator.generateGeneralCallback(rootPath)
+			javaGenerator.generateGeneralJavaFiles
 		}
 		if (generateCep) {
-			patternGenerator.generateDefaultEiqFile(rootPath)
-			patternGenerator.generateDefaultVeplFile(rootPath)
+			patternGenerator.generateDeafultFiles
 		}
 	}
 
 	@Accessors(PUBLIC_GETTER)
 	val modelRule = createRule.precondition(machines).action [ match |
+		if (generateJava) {
+			javaGenerator.generateCallback(match.machine.sensors)
+		}
 		for (sensor : match.machine.sensors) {
 			if (generateC) {
 				cGenerator.generateCFiles(match.machine.mqttSetup, sensor, rootPath)
 			}
 			if (generateJava) {
-				javaGenerator.generateJavaFiles(match.machine.mqttSetup, sensor, rootPath)
+				javaGenerator.generateNonGeneralJavaFiles(match.machine.mqttSetup, sensor, rootPath)
 			}
 			if (generateCep) {
-				patternGenerator.generatePatterns(sensor, rootPath)
+				patternGenerator.generatePatterns(sensor)
 			}
 		}
 	].build

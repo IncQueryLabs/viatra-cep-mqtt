@@ -29,8 +29,8 @@ Message:
 	"}"
 ;
 
-terminal FLOAT returns ecore::EFloat:
-	INT "." INT "f"
+terminal DOUBLE returns ecore::EDouble:
+	INT "." INT
 ;
 
 terminal BOOLEAN returns ecore::EBoolean:
@@ -39,14 +39,14 @@ terminal BOOLEAN returns ecore::EBoolean:
 
 DataParameter:
 	{IntParameter} "parameter" type = "int" name = ID ("=" value = INT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
-	{FloatParameter} "parameter" type = "float" name = ID ("=" value = FLOAT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
+	{DoubleParameter} "parameter" type = "double" name = ID ("=" value = DOUBLE)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
 	{StringParameter} "parameter" type = "string" name = ID ("=" value = STRING)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
 	{BooleanParameter} "parameter" type = "boolean" name = ID ("=" value = BOOLEAN)? ("(" criteria += Criterion (criteria += Criterion)* ")")?
 ;
 
 Criterion:
 	{IntCriterion} prefix = ("min" | "max" | "eq" | "neq") value = INT |
-	{FloatCriterion} prefix = ("min" | "max" | "eq" | "neq") value = FLOAT |
+	{DoubleCriterion} prefix = ("min" | "max" | "eq" | "neq") value = DOUBLE |
 	{StringCriterion} prefix = ("eq" | "neq") value = STRING |
 	{BooleanCriterion} prefix = ("eq" | "neq") value = BOOLEAN
 ;

@@ -39,8 +39,8 @@
     <genClasses ecoreClass="MIDL.ecore#//IntParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//IntParameter/value"/>
     </genClasses>
-    <genClasses ecoreClass="MIDL.ecore#//FloatParameter">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//FloatParameter/value"/>
+    <genClasses ecoreClass="MIDL.ecore#//DoubleParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//DoubleParameter/value"/>
     </genClasses>
     <genClasses ecoreClass="MIDL.ecore#//StringParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//StringParameter/value"/>
@@ -51,8 +51,8 @@
     <genClasses ecoreClass="MIDL.ecore#//IntCriterion">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//IntCriterion/value"/>
     </genClasses>
-    <genClasses ecoreClass="MIDL.ecore#//FloatCriterion">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//FloatCriterion/value"/>
+    <genClasses ecoreClass="MIDL.ecore#//DoubleCriterion">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//DoubleCriterion/value"/>
     </genClasses>
     <genClasses ecoreClass="MIDL.ecore#//StringCriterion">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//StringCriterion/value"/>
