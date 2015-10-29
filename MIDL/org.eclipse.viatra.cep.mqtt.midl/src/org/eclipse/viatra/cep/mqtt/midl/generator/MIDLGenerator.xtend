@@ -8,18 +8,25 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.emf.EMFScope
 import org.eclipse.viatra.cep.mqtt.midl.viatra.CodeGeneration
-import org.eclipse.xtext.generator.IFileSystemAccess
-import org.eclipse.xtext.generator.IGenerator
+import org.eclipse.xtext.generator.IGenerator2
+import org.eclipse.xtext.generator.IFileSystemAccess2
+import org.eclipse.xtext.generator.IGeneratorContext
 
 /**
  * Generates code from your model files on save.
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
-class MIDLGenerator implements IGenerator {
+class MIDLGenerator implements IGenerator2 {
 
-	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-		val resourceSet = resource.resourceSet
+	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+	}
+	
+	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+	}
+	
+	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		val resourceSet = input.resourceSet
 		val engine = IncQueryEngine.on(new EMFScope(resourceSet))
 		
 		val codeGeneration = new CodeGeneration

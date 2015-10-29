@@ -152,7 +152,7 @@
 			</visibleWhen>
 		</command>  
 		</menuContribution>
-		!-- copy qualified name -->
+		<!-- copy qualified name -->
 		<menuContribution locationURI="popup:#TextEditorContext?after=copy">
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName" 
 				style="push" tooltip="Copy Qualified Name">
@@ -204,23 +204,20 @@
 			</activeWhen>
 		</handler>
 	</extension>
-	
 	<!-- adding resource factories -->
-	
-	<extension
-		point="org.eclipse.emf.ecore.extension_parser">
-		<parser
-			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-			type="midl">
-		</parser>
-	</extension>
-	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
-	    <resourceServiceProvider
-	        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
-	        uriExtension="midl">
-	    </resourceServiceProvider>
-	</extension>
-	
+		<extension
+			point="org.eclipse.emf.ecore.extension_parser">
+			<parser
+				class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+				type="midl">
+			</parser>
+		</extension>
+		<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+		    <resourceServiceProvider
+		        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+		        uriExtension="midl">
+		    </resourceServiceProvider>
+		</extension>
 	<!-- marker definitions for org.eclipse.viatra.cep.mqtt.midl.MIDL -->
 	<extension
 			id="midl.check.fast"
@@ -246,8 +243,7 @@
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
 			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
-			fileExtensions="midl">
-		</participant>
+			fileExtensions="midl"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
@@ -292,7 +288,6 @@
 			</activeWhen>
 		</handler>
 	</extension>
-	
 	<!-- Quick Outline -->
 	<extension
 		point="org.eclipse.ui.handlers">
@@ -326,7 +321,6 @@
 			</command>
 		</menuContribution>
 	</extension>
-	
 	<!-- quickfix marker resolution generator for org.eclipse.viatra.cep.mqtt.midl.MIDL -->
 	<extension
 	        point="org.eclipse.ui.ide.markerResolution">
@@ -355,7 +349,6 @@
 	        </attribute>
 	    </markerResolutionGenerator>
 	</extension>
-	
 	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler 
@@ -369,52 +362,49 @@
 		</handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
-	     <menuContribution
-	        locationURI="popup:#TextEditorContext?after=group.edit">
-	     <command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
-	           style="push">
-	        <visibleWhen checkEnabled="false">
-	           <reference
-	                 definitionId="org.eclipse.viatra.cep.mqtt.midl.MIDL.Editor.opened">
-	           </reference>
-	        </visibleWhen>
-	     </command>
-	  </menuContribution>
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.edit">
+			<command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+				style="push">
+				<visibleWhen checkEnabled="false">
+					<reference
+						definitionId="org.eclipse.viatra.cep.mqtt.midl.MIDL.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
-	    <page
-	        category="org.eclipse.viatra.cep.mqtt.midl.MIDL"
-	        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
-	        id="org.eclipse.viatra.cep.mqtt.midl.MIDL.refactoring"
-	        name="Refactoring">
-	        <keywordReference id="org.eclipse.viatra.cep.mqtt.midl.ui.keyword_MIDL"/>
-	    </page>
+		<page
+			category="org.eclipse.viatra.cep.mqtt.midl.MIDL"
+			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="org.eclipse.viatra.cep.mqtt.midl.MIDL.refactoring"
+			name="Refactoring">
+			<keywordReference id="org.eclipse.viatra.cep.mqtt.midl.ui.keyword_MIDL"/>
+		</page>
 	</extension>
-	
 	<extension point="org.eclipse.compare.contentViewers">
-	<viewer id="org.eclipse.viatra.cep.mqtt.midl.MIDL.compare.contentViewers"
-	        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-	        extensions="midl">
-	</viewer>
+		<viewer id="org.eclipse.viatra.cep.mqtt.midl.MIDL.compare.contentViewers"
+			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="midl">
+		</viewer>
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
-	<viewer id="org.eclipse.viatra.cep.mqtt.midl.MIDL.compare.contentMergeViewers"
-	        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-	        extensions="midl" label="MIDL Compare">
-	 </viewer>
+		<viewer id="org.eclipse.viatra.cep.mqtt.midl.MIDL.compare.contentMergeViewers"
+			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="midl" label="MIDL Compare">
+		</viewer>
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
-	<provider id="org.eclipse.viatra.cep.mqtt.midl.MIDL.editors.documentProviders"
-	        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
-	        extensions="midl">
-	</provider>
+		<provider id="org.eclipse.viatra.cep.mqtt.midl.MIDL.editors.documentProviders"
+			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+			extensions="midl">
+		</provider>
 	</extension>
 	<extension point="org.eclipse.team.core.fileTypes">
-	
-	<fileTypes
-	        extension="midl"
-	        type="text">
-	</fileTypes>
-	
+		<fileTypes
+			extension="midl"
+			type="text">
+		</fileTypes>
 	</extension>
 </plugin>

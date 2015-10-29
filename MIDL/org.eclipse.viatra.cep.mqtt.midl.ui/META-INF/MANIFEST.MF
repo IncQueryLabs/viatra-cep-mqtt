@@ -17,10 +17,13 @@ Require-Bundle: org.eclipse.viatra.cep.mqtt.midl,
  org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.common.types.ui,
- org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib;resolution:=optional,
  org.eclipse.xtext.ui.shared
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.viatra.cep.mqtt.midl.ui.contentassist,
- org.eclipse.viatra.cep.mqtt.midl.ui.quickfix
+ org.eclipse.viatra.cep.mqtt.midl.ui.quickfix,
+ org.eclipse.viatra.cep.mqtt.midl.ide.contentassist.antlr,
+ org.eclipse.viatra.cep.mqtt.midl.ui.internal,
+ org.eclipse.viatra.cep.mqtt.midl.ide.contentassist.antlr.internal
 Import-Package: org.apache.log4j
 Bundle-Activator: org.eclipse.viatra.cep.mqtt.midl.ui.internal.MIDLActivator
