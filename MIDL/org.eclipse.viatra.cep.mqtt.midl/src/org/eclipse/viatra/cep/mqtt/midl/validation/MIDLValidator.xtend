@@ -5,7 +5,7 @@ package org.eclipse.viatra.cep.mqtt.midl.validation
 
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DataParameter
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.FloatCriterion
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.MIDLPackage
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringCriterion
@@ -20,16 +20,16 @@ import org.eclipse.xtext.validation.Check
 class MIDLValidator extends AbstractMIDLValidator {
 
 	@Check
-	def checkParameterCriteriaType(DataParameter dataParameter) {
-		for (criterion : dataParameter.criteria) {
-			if (dataParameter.type == "int" && !(criterion instanceof IntCriterion)) {
-				error("The criteria type must be int type", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
-			} else if(dataParameter.type == "float" && !(criterion instanceof FloatCriterion)) {
-				error("The criteria type must be float type", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
-			} else if(dataParameter.type == "string" && !(criterion instanceof StringCriterion)) {
-				error("The criteria type must be string type", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
-			} else if(dataParameter.type == "boolean" && !(criterion instanceof BooleanCriterion)) {
-				error("The criteria type must be boolean type", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
+	def checkParameterCriteriaType(DataParameter parameter) {
+		for (criterion : parameter.criteria) {
+			if (parameter.type == "int" && !(criterion instanceof IntCriterion)) {
+				error("The criteria type must be int", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
+			} else if(parameter.type == "double" && !(criterion instanceof DoubleCriterion)) {
+				error("The criteria type must be double", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
+			} else if(parameter.type == "string" && !(criterion instanceof StringCriterion)) {
+				error("The criteria type must be string", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
+			} else if(parameter.type == "boolean" && !(criterion instanceof BooleanCriterion)) {
+				error("The criteria type must be boolean", MIDLPackage.Literals.DATA_PARAMETER__CRITERIA, "invalidCriteria")
 			}
 		}
 	}

@@ -7,7 +7,7 @@ import com.google.inject.Inject
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanParameter
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Criterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DataParameter
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.FloatParameter
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleParameter
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntParameter
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Machine
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Message
@@ -50,9 +50,9 @@ class MIDLFormatter extends AbstractFormatter2 {
 		}
 	}
 
-	def dispatch void format(FloatParameter floatParameter, extension IFormattableDocument document) {
+	def dispatch void format(DoubleParameter doubleParameter, extension IFormattableDocument document) {
 		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
-		for (Criterion criteria : floatParameter.getCriteria()) {
+		for (Criterion criteria : doubleParameter.getCriteria()) {
 			format(criteria, document);
 		}
 	}

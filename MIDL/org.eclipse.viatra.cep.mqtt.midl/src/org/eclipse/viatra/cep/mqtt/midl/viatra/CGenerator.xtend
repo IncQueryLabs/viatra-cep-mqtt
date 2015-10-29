@@ -10,9 +10,9 @@ import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
 class CGenerator {
 
 	public def generateCFiles(MqttSetup setup, Sensor sensor, String path) {
-		val rootFolder = FileUtils.createFolder(path)
-		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.c").absolutePath)
-		val srcFolder = FileUtils.createFolder(new File(projectFolder, "src").absolutePath)
+		val rootFolder = FileUtils.createFolder(new File(path))
+		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.c"))
+		val srcFolder = FileUtils.createFolder(new File(projectFolder, "src"))
 		createMessagesHeader(sensor, srcFolder)
 		createPublisherHeaders(sensor, srcFolder)
 		createPublisherSources(setup, sensor, srcFolder)
@@ -22,8 +22,8 @@ class CGenerator {
 	}
 
 	public def generateCProjectFile(String path) {
-		val rootFolder = FileUtils.createFolder(path)
-		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.c").absolutePath)
+		val rootFolder = FileUtils.createFolder(new File(path))
+		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.c"))
 		val cprojectFile = FileUtils.createFile(projectFolder, ".cproject")
 		val writer = new FileWriter(cprojectFile)
 		val fileContent = '''
@@ -34,8 +34,8 @@ class CGenerator {
 	}
 
 	public def generateProjectFile(String path) {
-		val rootFolder = FileUtils.createFolder(path)
-		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.c").absolutePath)
+		val rootFolder = FileUtils.createFolder(new File(path))
+		val projectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.generated.c"))
 		val projectFile = FileUtils.createFile(projectFolder, ".project")
 		val writer = new FileWriter(projectFile)
 		val fileContent = '''
