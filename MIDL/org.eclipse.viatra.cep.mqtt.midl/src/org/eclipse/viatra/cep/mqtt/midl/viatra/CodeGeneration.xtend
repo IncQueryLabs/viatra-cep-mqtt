@@ -5,6 +5,7 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.viatra.emf.runtime.rules.batch.BatchTransformationStatements
 import org.eclipse.viatra.emf.runtime.transformation.batch.BatchTransformation
 import org.eclipse.viatra.cep.mqtt.midl.queries.Patterns
+import org.eclipse.emf.common.util.URI
 
 class CodeGeneration {
 	
@@ -16,7 +17,7 @@ class CodeGeneration {
 	IncQueryEngine engine
 	RuleProvider ruleProvider
 	
-	def initialize(IncQueryEngine engine, String rootPath) {
+	def initialize(IncQueryEngine engine, String rootPath, URI uri) {
 		if (!initialized) {
 			this.engine = engine
 			
@@ -25,7 +26,7 @@ class CodeGeneration {
 			
 			transform = BatchTransformation.forEngine(engine)
 			statements = new BatchTransformationStatements(transform)
-			ruleProvider = new RuleProvider(engine, statements, rootPath)
+			ruleProvider = new RuleProvider(engine, statements, rootPath, uri)
 			ruleProvider.addRules(transform)
 			
 			initialized = true

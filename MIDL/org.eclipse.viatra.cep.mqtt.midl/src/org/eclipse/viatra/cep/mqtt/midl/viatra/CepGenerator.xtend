@@ -6,6 +6,8 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
+import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.emf.common.util.URI
 
 class CepGenerator {
 	
@@ -13,12 +15,14 @@ class CepGenerator {
 	File cepProjectFolder
 	File cepSrcFolder
 	File cepTopPackage
+	URI uri
 	
-	new(String rootPath) {
+	new(String rootPath, URI uri) {
 		rootFolder = FileUtils.createFolder(new File(rootPath))
 		cepProjectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.cep"))
 		cepSrcFolder = FileUtils.createFolder(new File(cepProjectFolder, "src"))
 		cepTopPackage = FileUtils.createPackage(cepSrcFolder, "org.eclipse.viatra.cep.mqtt.cep")
+		this.uri = uri
 	}
 	
 	public def generateCepProject(EList<Sensor> sensors, MqttSetup setup){
@@ -77,7 +81,7 @@ class CepGenerator {
 					new StandaloneSetup().setPlatformUri("../");
 					Injector injector = new MIDLStandaloneSetup().createInjectorAndDoEMFRegistration();
 					resourceSet = injector.getInstance(XtextResourceSet.class);
-					resource = resourceSet.getResource(URI.createURI("platform:/resource/sample/src/sample.midl"), true);
+					resource = resourceSet.getResource(URI.createURI("«uri.toString»"), true);
 			
 					callback = new Callback(resource);
 					subscriber = new Subscriber("«setup.brokerUrl»", "CEP_SUBSCRIBER");

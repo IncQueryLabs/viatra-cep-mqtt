@@ -7,6 +7,7 @@ import org.eclipse.viatra.emf.runtime.rules.batch.BatchTransformationRuleFactory
 import org.eclipse.viatra.emf.runtime.rules.batch.BatchTransformationStatements
 import org.eclipse.viatra.emf.runtime.transformation.batch.BatchTransformation
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.emf.common.util.URI
 
 class RuleProvider {
 
@@ -22,12 +23,12 @@ class RuleProvider {
 
 	boolean generateC = false
 
-	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath) {
+	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath, URI uri) {
 		this.engine = engine
 		this.statements = statements
 		this.rootPath = rootPath
 		commonsGenerator = new CommonsGenerator(rootPath)
-		cepGenerator = new CepGenerator(rootPath)
+		cepGenerator = new CepGenerator(rootPath, uri)
 		cGenerator = new CGenerator
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
