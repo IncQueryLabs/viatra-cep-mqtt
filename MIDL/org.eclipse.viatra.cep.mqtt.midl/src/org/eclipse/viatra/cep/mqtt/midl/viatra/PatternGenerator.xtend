@@ -69,12 +69,12 @@ class PatternGenerator {
 		«FOR parameter : message.dataParameters»
 			«FOR criterion : parameter.criteria»
 				«IF (criterion.prefix == "min" || criterion.prefix == "max")»
-					«generateLessThanPattern(sensorName, message.name, parameter, criterion)»
-					«generateGreaterThanPattern(sensorName, message.name, parameter, criterion)»
-					«generateEqualsPattern(sensorName, message.name, parameter, criterion)»
+					«generateLessThanPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateGreaterThanPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateEqualsPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
 				«ELSEIF (criterion.prefix == "eq" || criterion.prefix == "neq")»				
-					«generateEqualsPattern(sensorName, message.name, parameter, criterion)»
-					«generateNotEqualsPattern(sensorName, message.name, parameter, criterion)»
+					«generateEqualsPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateNotEqualsPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
 				«ENDIF»
 			«ENDFOR»
 		«ENDFOR»
@@ -86,7 +86,7 @@ class PatternGenerator {
 	private def generateLessThanPattern(String sensorName, String messageName, DataParameter parameter,
 		Criterion criterion) '''
 		
-		pattern «sensorName»«messageName.toFirstUpper»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
+		pattern «sensorName»«messageName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.messages.dataParameters(sensor, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value < «getCriterionValue(criterion)»);
@@ -96,7 +96,7 @@ class PatternGenerator {
 	private def generateGreaterThanPattern(String sensorName, String messageName, DataParameter parameter,
 		Criterion criterion) '''
 		
-		pattern «sensorName»«messageName.toFirstUpper»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
+		pattern «sensorName»«messageName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.messages.dataParameters(sensor, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value > «getCriterionValue(criterion)»);
@@ -106,7 +106,7 @@ class PatternGenerator {
 	private def generateEqualsPattern(String sensorName, String messageName, DataParameter parameter,
 		Criterion criterion) '''
 		
-		pattern «sensorName»«messageName.toFirstUpper»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
+		pattern «sensorName»«messageName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.messages.dataParameters(sensor, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value == «getCriterionValue(criterion)»);
@@ -116,7 +116,7 @@ class PatternGenerator {
 	private def generateNotEqualsPattern(String sensorName, String messageName, DataParameter parameter,
 		Criterion criterion) '''
 		
-		pattern «sensorName»«messageName.toFirstUpper»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
+		pattern «sensorName»«messageName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.messages.dataParameters(sensor, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value != «getCriterionValue(criterion)»);
@@ -151,12 +151,12 @@ class PatternGenerator {
 		«FOR parameter : message.dataParameters»
 			«FOR criterion : parameter.criteria»
 				«IF (criterion.prefix == "min" || criterion.prefix == "max")»
-					«generateLessThanEventAndRule(sensorName, message.name, parameter, criterion)»
-					«generateGreaterThanEventAndRule(sensorName, message.name, parameter, criterion)»
-					«generateEqualsEventAndRule(sensorName, message.name, parameter, criterion)»
+					«generateLessThanEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateGreaterThanEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateEqualsEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
 				«ELSEIF (criterion.prefix == "eq" || criterion.prefix == "neq")»				
-					«generateEqualsEventAndRule(sensorName, message.name, parameter, criterion)»
-					«generateNotEqualsEventAndRule(sensorName, message.name, parameter, criterion)»
+					«generateEqualsEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateNotEqualsEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
 				«ENDIF»
 			«ENDFOR»
 		«ENDFOR»
