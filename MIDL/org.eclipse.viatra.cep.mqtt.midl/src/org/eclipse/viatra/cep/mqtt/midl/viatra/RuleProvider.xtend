@@ -16,47 +16,32 @@ class RuleProvider {
 
 	IncQueryEngine engine
 	String rootPath
-	JavaGenerator javaGenerator
+	CommonsGenerator commonsGenerator
+	CepGenerator cepGenerator
 	CGenerator cGenerator
-	PatternGenerator patternGenerator
 
 	boolean generateC = false
-	boolean generateJava = true
-	boolean generateCep = true
 
 	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath) {
 		this.engine = engine
 		this.statements = statements
 		this.rootPath = rootPath
-		javaGenerator = new JavaGenerator(rootPath)
+		commonsGenerator = new CommonsGenerator(rootPath)
+		cepGenerator = new CepGenerator(rootPath)
 		cGenerator = new CGenerator
-		patternGenerator = new PatternGenerator(rootPath)
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
 		}
-		if (generateJava) {
-			javaGenerator.generateGeneralJavaFiles
-		}
-		if (generateCep) {
-			patternGenerator.generateDeafultFiles
-		}
+		commonsGenerator.generateCommonsProject
 	}
 
 	@Accessors(PUBLIC_GETTER)
 	val modelRule = createRule.precondition(machines).action [ match |
-		if (generateJava) {
-			javaGenerator.generateCallback(match.machine.sensors)
-		}
+		cepGenerator.generateCepProject(match.machine.sensors, match.machine.mqttSetup)
 		for (sensor : match.machine.sensors) {
 			if (generateC) {
 				cGenerator.generateCFiles(match.machine.mqttSetup, sensor, rootPath)
-			}
-			if (generateJava) {
-				javaGenerator.generateNonGeneralJavaFiles(match.machine.mqttSetup, sensor, rootPath)
-			}
-			if (generateCep) {
-				patternGenerator.generatePatterns(sensor)
 			}
 		}
 	].build
