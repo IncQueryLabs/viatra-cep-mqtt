@@ -96,6 +96,8 @@ public class CEPApplication implements MqttCallback {
 		resource.getContents().add(btn_msg2);
 		resource.getContents().add(btn_msg3);
 		resource.getContents().add(pot_msg1);
+
+		mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
 		
 		subscriber = new Subscriber("tcp://127.0.0.1:1883", "IOT_CEP_DEMO_APP");
 		subscriber.setCallback(this);
@@ -104,7 +106,7 @@ public class CEPApplication implements MqttCallback {
 		
 		publisher = new Publisher("tcp://127.0.0.1:1883", "IOT_CEP_DEMO_");
 		publisher.connect();
-		mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
+
 		
 		running = true;
 	}

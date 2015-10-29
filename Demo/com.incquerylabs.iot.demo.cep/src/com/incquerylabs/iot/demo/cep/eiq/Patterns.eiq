@@ -12,11 +12,9 @@ pattern btn1Btn_msgValueEqPattern(sensor: Sensor) {
 }
 
 pattern btn2Btn_msgValueEqPattern(sensor: Sensor) {
-	Sensor.name(sensor, sensorname);
-	check(sensorname == "btn2");
+	Sensor.name(sensor, "btn2");
 	Sensor.messages.dataParameters(sensor, parameter);
-	IntParameter.value(parameter, value);
-	check(value == 1);
+	IntParameter.value(parameter, 1);
 }
 
 pattern btn3Btn_msgValueEqPattern(sensor: Sensor) {
