@@ -1,5 +1,5 @@
 #!/bin/bash
 
 
-java -Djava.library.path=. -jar javatransmitter.jar -port=/dev/ttyUSB0
+sudo java -Djava.library.path=. -jar javatransmitter.jar -port /dev/ttyUSB0
 
