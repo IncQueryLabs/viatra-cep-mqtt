@@ -1,0 +1,47 @@
+{
+	"version": 1,
+	"allow_edit": true,
+	"plugins": [],
+	"panes": [
+		{
+			"width": 1,
+			"row": {
+				"3": 1
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"title": "Button 1",
+						"value": "datasources[\"Demo Broker\"][\"msg\"][\"ALL_RULE_BTN\"]",
+						"on_text": "1",
+						"off_text": "0"
+					}
+				}
+			]
+		}
+	],
+	"datasources": [
+		{
+			"name": "Demo Broker",
+			"type": "paho_mqtt",
+			"settings": {
+				"server": "127.0.0.1",
+				"port": 9001,
+				"path": "/ws",
+				"use_ssl": false,
+				"client_id": "cep_dashboard",
+				"username": "",
+				"password": "",
+				"topic": "dashboard/cep",
+				"json_data": true,
+				"name": "Demo Broker"
+			}
+		}
+	],
+	"columns": 3
+}

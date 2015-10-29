@@ -1,0 +1,47 @@
+{
+	"version": 1,
+	"allow_edit": true,
+	"plugins": [],
+	"panes": [
+		{
+			"width": 1,
+			"row": {
+				"3": 1
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 10,
+			"widgets": [
+				{
+					"type": "sparkline",
+					"settings": {
+						"value": [
+							"datasources[\"TeqBox Dashboard Broker\"][\"msg\"][\"x\"]"
+						],
+						"include_legend": false
+					}
+				}
+			]
+		}
+	],
+	"datasources": [
+		{
+			"name": "TeqBox Dashboard Broker",
+			"type": "paho_mqtt",
+			"settings": {
+				"server": "127.0.0.1",
+				"port": 9001,
+				"path": "/ws",
+				"use_ssl": false,
+				"client_id": "teqbox_dashboard",
+				"username": "",
+				"password": "",
+				"topic": "freeboard/data",
+				"json_data": true,
+				"name": "TeqBox Dashboard Broker"
+			}
+		}
+	],
+	"columns": 3
+}
