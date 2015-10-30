@@ -17,7 +17,7 @@ class JavaGenerator {
 	}
 
 	public def generatePublisher(EList<Sensor> sensors) {
-		val publisherFile = FileUtils.createFile(publisherFolder, "Publish.java")
+		val publisherFile = FileUtils.createFile(publisherFolder, "MqttPublisherRunnable.java")
 		val writer = new FileWriter(publisherFile)
 		val fileContent = '''
 			package com.incquerylabs.iot.javatransmitter.runnables;
@@ -26,6 +26,9 @@ class JavaGenerator {
 			
 			import org.apache.log4j.Logger;
 			
+			import com.eclipsesource.json.JsonArray;
+			import com.eclipsesource.json.JsonObject;
+			import com.eclipsesource.json.JsonValue;
 			import com.incquerylabs.iot.javatransmitter.data.InputParameters;
 			import com.incquerylabs.iot.javatransmitter.mqtt.Publisher;
 			import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
@@ -51,43 +54,45 @@ class JavaGenerator {
 				public void run() {
 					try {
 					   	System.out.println("Start sending messages...");
-					   	 	     	while(isRunning) {
-					   	 	     		String rawData = queue.take();
-					   	 	     		JsonObject object = JsonObject.readFrom(rawData);
-								for (String sensorName : object.names()) {
-									JsonObject sensor = object.get(sensorName).asObject();
-									for (String messageName : sensor.names()) {
-										JsonObject message = sensor.get(messageName).asObject();
-										for (String parameterName : message.names()) {
-										«FOR sensor : sensors»
+				   	   	while(isRunning) {
+					   	   	String rawData = queue.take();
+					   	   	JsonObject sensors = JsonObject.readFrom(rawData);
+							for (String sensorName : sensors.names()) {
+								JsonArray messageList = sensors.get(sensorName).asArray();
+								for (JsonValue messageObject : messageList.values()) {
+									for (String messageName : messageObject.asObject().names()) {
+										JsonObject parameterObject = messageObject.asObject().get(messageName).asObject();
+										for (String parameterName : parameterObject.names()) {
+											«FOR sensor : sensors»
 											if (sensorName.equals("«sensor.name»")) {
-											«FOR message:sensor.messages»
-												«FOR parameter:message.dataParameters»
-													«parameter.type» value = message.get(parameterName).as«parameter.type.toFirstUpper»();
-													JsonObject param = new JsonObject().add("«parameter.name»", value);
-													JsonObject msg = new JsonObject().add("«message.name»", param);
-													publisher.publish("«sensor.name»", rawData);
+												«FOR message : sensor.messages»
+													«FOR parameter : message.dataParameters»
+														«IF parameter.type.equals("string")»
+														String value = parameterObject.get(parameterName).asString();
+														«ELSE»
+														«parameter.type» value = parameterObject.get(parameterName).as«parameter.type.toFirstUpper»();
+														«ENDIF»
+														JsonObject param = new JsonObject().add("«parameter.name»", value);
+														JsonObject msg = new JsonObject().add("«message.name»", param);
+														publisher.publish("«sensor.name»", msg.toString());
+													«ENDFOR»
 												«ENDFOR»
-											«ENDFOR»
 											}
-										«ENDFOR»
+											«ENDFOR»
 										}
 									}
 								}
-								  	     	}
-								   } catch (InterruptedException e) {
-								   		LOGGER.error("Interrupted", e);
-								   }
-				   }
-				   
-				   public synchronized void finish(){
-				   		isRunning = false;
-				   }
-				   
-				   public formatJsonString(String rawData) {
-				   		
-				   }
-				   
+							}
+						}
+					} catch (InterruptedException e) {
+				   		LOGGER.error("Interrupted", e);
+					}
+				}
+				
+				public synchronized void finish(){
+					isRunning = false;
+				}
+
 			}
 		'''
 		writer.write(fileContent)
