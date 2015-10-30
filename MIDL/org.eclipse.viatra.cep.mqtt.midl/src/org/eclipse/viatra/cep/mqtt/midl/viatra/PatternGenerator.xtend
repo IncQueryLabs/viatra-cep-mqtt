@@ -61,9 +61,9 @@ class PatternGenerator {
 		Criterion criterion) '''
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
-			Sensor.name(sensor, name);
-			check(name == "«sensorName»");
-			Sensor.messages.dataParameters(sensor, parameter);
+			Sensor.name(sensor, "«sensorName»");
+			Sensor.messages(sensor, message);
+			Message.dataParameters(message, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value < «getCriterionValue(criterion)»);
 		}
@@ -73,9 +73,9 @@ class PatternGenerator {
 		Criterion criterion) '''
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
-			Sensor.name(sensor, name);
-			check(name == "«sensorName»");
-			Sensor.messages.dataParameters(sensor, parameter);
+			Sensor.name(sensor, "«sensorName»");
+			Sensor.messages(sensor, message);
+			Message.dataParameters(message, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value > «getCriterionValue(criterion)»);
 		}
@@ -85,9 +85,9 @@ class PatternGenerator {
 		Criterion criterion) '''
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
-			Sensor.name(sensor, name);
-			check(name == "«sensorName»");
-			Sensor.messages.dataParameters(sensor, parameter);
+			Sensor.name(sensor, "«sensorName»");
+			Sensor.messages(sensor, message);
+			Message.dataParameters(message, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value == «getCriterionValue(criterion)»);
 		}
@@ -97,9 +97,9 @@ class PatternGenerator {
 		Criterion criterion) '''
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
-			Sensor.name(sensor, name);
-			check(name == "«sensorName»");
-			Sensor.messages.dataParameters(sensor, parameter);
+			Sensor.name(sensor, "«sensorName»");
+			Sensor.messages(sensor, message);
+			Message.dataParameters(message, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value != «getCriterionValue(criterion)»);
 		}
