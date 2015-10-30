@@ -2,6 +2,7 @@ package org.eclipse.viatra.cep.mqtt.midl.viatra
 
 import java.io.File
 import java.io.FileWriter
+import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
@@ -14,14 +15,14 @@ class CepGenerator {
 	File cepProjectFolder
 	File cepSrcFolder
 	File cepTopPackage
-	URI uri
+	String modelPath;
 	
 	new(String rootPath, URI uri) {
 		rootFolder = FileUtils.createFolder(new File(rootPath))
 		cepProjectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.cep"))
 		cepSrcFolder = FileUtils.createFolder(new File(cepProjectFolder, "src"))
 		cepTopPackage = FileUtils.createPackage(cepSrcFolder, "org.eclipse.viatra.cep.mqtt.cep")
-		this.uri = uri
+		this.modelPath =  ResourcesPlugin.getWorkspace().getRoot().location.toOSString + uri.toPlatformString(true);
 	}
 	
 	public def generateCepProject(EList<Sensor> sensors, MqttSetup setup){
@@ -272,7 +273,7 @@ class CepGenerator {
 					new StandaloneSetup().setPlatformUri("../");
 					Injector injector = new MIDLStandaloneSetup().createInjectorAndDoEMFRegistration();
 					resourceSet = injector.getInstance(XtextResourceSet.class);
-					resource = resourceSet.getResource(URI.createURI("«uri.toString»"), true);
+					resource = resourceSet.getResource(URI.createURI("file:«modelPath»"), true);
 					mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
 					
 					callback = new Callback(resource);
