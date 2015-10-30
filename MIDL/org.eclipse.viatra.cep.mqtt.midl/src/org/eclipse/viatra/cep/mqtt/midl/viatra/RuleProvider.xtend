@@ -7,6 +7,7 @@ import org.eclipse.viatra.emf.runtime.rules.batch.BatchTransformationRuleFactory
 import org.eclipse.viatra.emf.runtime.rules.batch.BatchTransformationStatements
 import org.eclipse.viatra.emf.runtime.transformation.batch.BatchTransformation
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.emf.common.util.URI
 
 class RuleProvider {
 
@@ -16,47 +17,35 @@ class RuleProvider {
 
 	IncQueryEngine engine
 	String rootPath
-	JavaGenerator javaGenerator
+	CommonsGenerator commonsGenerator
+	CepGenerator cepGenerator
 	CGenerator cGenerator
-	PatternGenerator patternGenerator
+	JavaGenerator javaGenerator
 
 	boolean generateC = false
-	boolean generateJava = true
-	boolean generateCep = true
 
-	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath) {
+	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath, URI uri) {
 		this.engine = engine
 		this.statements = statements
 		this.rootPath = rootPath
-		javaGenerator = new JavaGenerator(rootPath)
+		commonsGenerator = new CommonsGenerator(rootPath)
+		cepGenerator = new CepGenerator(rootPath, uri)
 		cGenerator = new CGenerator
-		patternGenerator = new PatternGenerator(rootPath)
+		javaGenerator = new JavaGenerator(rootPath)
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
 		}
-		if (generateJava) {
-			javaGenerator.generateGeneralJavaFiles
-		}
-		if (generateCep) {
-			patternGenerator.generateDeafultFiles
-		}
+		commonsGenerator.generateCommonsProject
 	}
 
 	@Accessors(PUBLIC_GETTER)
 	val modelRule = createRule.precondition(machines).action [ match |
-		if (generateJava) {
-			javaGenerator.generateCallback(match.machine.sensors)
-		}
+		cepGenerator.generateCepProject(match.machine.sensors, match.machine.mqttSetup)
+		javaGenerator.generatePublisher(match.machine.sensors)
 		for (sensor : match.machine.sensors) {
 			if (generateC) {
 				cGenerator.generateCFiles(match.machine.mqttSetup, sensor, rootPath)
-			}
-			if (generateJava) {
-				javaGenerator.generateNonGeneralJavaFiles(match.machine.mqttSetup, sensor, rootPath)
-			}
-			if (generateCep) {
-				patternGenerator.generatePatterns(sensor)
 			}
 		}
 	].build

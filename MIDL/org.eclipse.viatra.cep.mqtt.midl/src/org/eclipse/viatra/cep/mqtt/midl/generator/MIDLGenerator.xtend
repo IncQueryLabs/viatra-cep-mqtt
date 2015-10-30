@@ -28,9 +28,8 @@ class MIDLGenerator implements IGenerator2 {
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val resourceSet = input.resourceSet
 		val engine = IncQueryEngine.on(new EMFScope(resourceSet))
-		
 		val codeGeneration = new CodeGeneration
-		codeGeneration.initialize(engine, ResourcesPlugin.getWorkspace().root.location.toOSString)
+		codeGeneration.initialize(engine, ResourcesPlugin.getWorkspace().root.location.toOSString, input.URI)
 		codeGeneration.fire
 		codeGeneration.dispose
 	}
