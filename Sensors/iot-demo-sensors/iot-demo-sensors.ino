@@ -63,7 +63,7 @@ void check_switches()
 }
 
 String getSensorValueJSON(int value){
-  return String("[\"messageName\" : {\"value\" : " + String(value, DEC) + "}]");
+  return String("[{\"messageName\" : {\"value\" : " + String(value, DEC) + "}}]");
 }
 
 void reportButtons(){
