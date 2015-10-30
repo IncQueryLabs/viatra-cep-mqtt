@@ -39,10 +39,7 @@ Note: after [Xtext 2.9.0](https://projects.eclipse.org/projects/modeling.tmf.xte
 
 ## Trying the demo
 
-TODO
-
-### Helpful utilities
-
+* freeboard main, point your browser at localhost:8080
 * runEmulator.sh
  * possible inputs 
 * runWithDefaultParameters.sh
