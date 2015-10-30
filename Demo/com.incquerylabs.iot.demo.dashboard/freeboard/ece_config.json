@@ -14,12 +14,9 @@
 			"col_width": 10,
 			"widgets": [
 				{
-					"type": "sparkline",
+					"type": "vertical_timeline_plugin",
 					"settings": {
-						"value": [
-							"datasources[\"TeqBox Dashboard Broker\"][\"msg\"][\"x\"]"
-						],
-						"include_legend": false
+						"event_message": "datasources[\"EVENT DATASOURCE\"][\"msg\"][\"CEP_EVENT_MESSAGE\"]"
 					}
 				}
 			]
@@ -27,19 +24,18 @@
 	],
 	"datasources": [
 		{
-			"name": "TeqBox Dashboard Broker",
+			"name": "EVENT DATASOURCE",
 			"type": "paho_mqtt",
 			"settings": {
 				"server": "127.0.0.1",
 				"port": 9001,
 				"path": "/ws",
 				"use_ssl": false,
-				"client_id": "teqbox_dashboard",
+				"client_id": "cep_dashboard",
 				"username": "",
 				"password": "",
-				"topic": "freeboard/data",
-				"json_data": true,
-				"name": "TeqBox Dashboard Broker"
+				"topic": "dashboard/cep",
+				"json_data": true
 			}
 		}
 	],

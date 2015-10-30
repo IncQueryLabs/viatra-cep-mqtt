@@ -107,7 +107,6 @@
 		function onMessageArrived(message) {
 			data.topic = message.destinationName;
 			if (currentSettings.json_data) {
-				console.log(message.payloadString)
 				data.msg = JSON.parse(message.payloadString);
 			} else {
 				data.msg = message.payloadString;
