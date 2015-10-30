@@ -161,7 +161,7 @@ class PatternGenerator {
 			«sensorName»«messageName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Pattern(_) found
 		
 		rule «sensorName»«messageName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Rule on «sensorName»«messageName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Event {
-			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» rule activated!")
+			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» less than rule activated!")
 		}
 	'''
 
@@ -172,7 +172,8 @@ class PatternGenerator {
 			«sensorName»«messageName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Pattern(_) found
 		
 		rule «sensorName»«messageName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Rule on «sensorName»«messageName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Event {
-			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» rule activated!")
+			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» greater than rule activated!")
+
 		}
 	'''
 
@@ -183,7 +184,7 @@ class PatternGenerator {
 			«sensorName»«messageName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Pattern(_) found
 		
 		rule «sensorName»«messageName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Rule on «sensorName»«messageName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Event {
-			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» rule activated!")
+			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» equal rule activated!")
 		}
 	'''
 
@@ -194,7 +195,7 @@ class PatternGenerator {
 			«sensorName»«messageName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Pattern(_) found
 		
 		rule «sensorName»«messageName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Rule on «sensorName»«messageName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Event {
-			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» rule activated!")
+			println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» not equal rule activated!")
 		}
 	'''
 
