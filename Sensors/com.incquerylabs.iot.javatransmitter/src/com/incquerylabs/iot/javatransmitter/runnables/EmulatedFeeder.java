@@ -4,6 +4,7 @@ import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
 
+import com.incquerylabs.iot.javatransmitter.data.SensorValues;
 import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
 
 public class EmulatedFeeder implements Runnable {
@@ -24,7 +25,8 @@ public class EmulatedFeeder implements Runnable {
 	public void run() {
         try {
         	System.out.println("Start sending messages...");
-        	String lastMsg = "{\"pb1\" : {\"value\" : 0}, \"pb2\" : {\"value\" : 0}, \"pb3\" : {\"value\" : 0}, \"pot1\" : {\"value\" : 0}}";
+        	SensorValues defaultValues = new SensorValues();
+        	String lastMsg = defaultValues.createJSONString();
         	while(isRunning) {
         		// Get last message
         		String inputMsg = inputQueue.poll();

@@ -26,9 +26,7 @@ class JavaGenerator {
 			
 			import org.apache.log4j.Logger;
 			
-			import com.eclipsesource.json.JsonArray;
 			import com.eclipsesource.json.JsonObject;
-			import com.eclipsesource.json.JsonValue;
 			import com.incquerylabs.iot.javatransmitter.data.InputParameters;
 			import com.incquerylabs.iot.javatransmitter.mqtt.Publisher;
 			import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
@@ -57,31 +55,46 @@ class JavaGenerator {
 				   	   	while(isRunning) {
 					   	   	String rawData = queue.take();
 					   	   	JsonObject sensors = JsonObject.readFrom(rawData);
-							for (String sensorName : sensors.names()) {
-								JsonArray messageList = sensors.get(sensorName).asArray();
-								for (JsonValue messageObject : messageList.values()) {
-									for (String messageName : messageObject.asObject().names()) {
-										JsonObject parameterObject = messageObject.asObject().get(messageName).asObject();
-										for (String parameterName : parameterObject.names()) {
-											«FOR sensor : sensors»
-											if (sensorName.equals("«sensor.name»")) {
-												«FOR message : sensor.messages»
-													«FOR parameter : message.dataParameters»
-														«IF parameter.type.equals("string")»
-														String value = parameterObject.get(parameterName).asString();
-														«ELSE»
-														«parameter.type» value = parameterObject.get(parameterName).as«parameter.type.toFirstUpper»();
-														«ENDIF»
-														JsonObject param = new JsonObject().add("«parameter.name»", value);
-														JsonObject msg = new JsonObject().add("«message.name»", param);
-														publisher.publish("«sensor.name»", msg.toString());
-													«ENDFOR»
-												«ENDFOR»
-											}
-											«ENDFOR»
+					   	   	for (String sensorName : sensors.names()) {
+							«FOR sensor:sensors»
+								«FOR message:sensor.messages»
+									«FOR parameter:message.dataParameters»
+										«IF sensors.indexOf(sensor) == 0»
+										if (sensorName.equals("pb1")) {
+											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
+											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
+											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject().add("«message.name»", param);
+											publisher.publish("«sensor.name»", msg.toString());
 										}
-									}
-								}
+										«ELSEIF sensors.indexOf(sensor) == 1»
+										if (sensorName.equals("pb2")) {
+											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
+											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
+											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject().add("«message.name»", param);
+											publisher.publish("«sensor.name»", msg.toString());
+										}
+										«ELSEIF sensors.indexOf(sensor) == 2»
+										if (sensorName.equals("pb3")) {
+											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
+											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
+											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject().add("«message.name»", param);
+											publisher.publish("«sensor.name»", msg.toString());
+										}
+										«ELSEIF sensors.indexOf(sensor) == 3»
+										if (sensorName.equals("pot1")) {
+											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
+											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
+											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject().add("«message.name»", param);
+											publisher.publish("«sensor.name»", msg.toString());
+										}
+										«ENDIF»
+									«ENDFOR»
+								«ENDFOR»
+							«ENDFOR»
 							}
 						}
 					} catch (InterruptedException e) {
