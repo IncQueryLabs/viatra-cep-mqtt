@@ -112,7 +112,7 @@ class CommonsGenerator {
 			Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
 			 org.eclipse.paho.client.mqttv3;bundle-version="1.0.2"
 			Export-Package: org.eclipse.viatra.cep.mqtt.commons.mqtt,
-			 org.eclipse.viatra.cep.mqtt.commons.utils,
+			 org.eclipse.viatra.cep.mqtt.commons.utils
 			 
 		'''
 		writer.write(fileContent)
