@@ -273,20 +273,21 @@ class CepGenerator {
 					Injector injector = new MIDLStandaloneSetup().createInjectorAndDoEMFRegistration();
 					resourceSet = injector.getInstance(XtextResourceSet.class);
 					resource = resourceSet.getResource(URI.createURI("«uri.toString»"), true);
-			
+					mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
+					
 					callback = new Callback(resource);
 					subscriber = new Subscriber("«setup.brokerUrl»", "CEP_SUBSCRIBER");
 					subscriber.setCallback(callback);
-					subscriber.connect();
-					«FOR sensor:sensors»
-					subscriber.subscribe("«sensor.name»");
-					«ENDFOR»
+
 			
 					running = true;
 				}
 			
 				public void run() {
-					mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
+					subscriber.connect();
+					«FOR sensor:sensors»
+					subscriber.subscribe("«sensor.name»");
+					«ENDFOR»
 					while (running) {
 			
 					}
@@ -316,6 +317,8 @@ class CepGenerator {
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanParameter;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.DataParameter;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleParameter;
+			import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntParameter;
+			import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Machine;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Message;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor;
@@ -333,9 +336,9 @@ class CepGenerator {
 				«FOR sensor : sensors»
 					Sensor «sensor.name»;
 					«FOR message:sensor.messages»
-						Message «message.name»;
+						Message «sensor.name»_«message.name»;
 						«FOR parameter:message.dataParameters»
-							«parameter.type.toFirstUpper»Parameter «parameter.name»;
+							«parameter.type.toFirstUpper»Parameter «sensor.name»_«message.name»_«parameter.name»;
 						«ENDFOR»
 					«ENDFOR»
 				«ENDFOR»
@@ -363,7 +366,7 @@ class CepGenerator {
 						if (topic.equals("«sensor.name»")) {
 							«FOR message:sensor.messages»
 								«FOR parameter:message.dataParameters»
-									«parameter.name».setValue(sensor.get("«message.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
+									«sensor.name»_«message.name»_«parameter.name».setValue(sensor.get("«message.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
 								«ENDFOR»
 							«ENDFOR»
 						}
@@ -381,11 +384,11 @@ class CepGenerator {
 								for (Message message : sensor.getMessages()) {
 									«FOR message:sensor.messages»
 										if (message.getName().equals("«message.name»")) {
-											«message.name» = message;
+											«sensor.name»_«message.name» = message;
 											for (DataParameter parameter : message.getDataParameters()) {
 												«FOR parameter:message.dataParameters»
 													if (parameter.getName().equals("«parameter.name»")) {
-														«parameter.name» = («parameter.type.toFirstUpper»Parameter) parameter;
+														«sensor.name»_«message.name»_«parameter.name» = («parameter.type.toFirstUpper»Parameter) parameter;
 													}
 												«ENDFOR»
 											}
