@@ -29,6 +29,7 @@ class CommonsGenerator {
 		generateLoggerUtil
 		generateGeneralPublisher
 		generateGeneralSubscriber
+		
 	}
 	
 	private def generateClasspathFile() {
@@ -111,7 +112,8 @@ class CommonsGenerator {
 			Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
 			 org.eclipse.paho.client.mqttv3;bundle-version="1.0.2"
 			Export-Package: org.eclipse.viatra.cep.mqtt.commons.mqtt,
-			 org.eclipse.viatra.cep.mqtt.commons.utils
+			 org.eclipse.viatra.cep.mqtt.commons.utils,
+			 
 		'''
 		writer.write(fileContent)
 		writer.close
@@ -298,25 +300,40 @@ class CommonsGenerator {
 					}
 				}
 			
-					public void publish(String topic, String payload) {
-					  	try {
-						publish(topic, payload.getBytes("UTF-8"));
+				public void publish(String topic, String payload, int qos) {
+					try {
+						publish(topic, payload.getBytes("UTF-8"), qos);
 					} catch (UnsupportedEncodingException e) {
 						LOGGER.error("Could not encode message. [" + payload + "]", e);
 					}
-					  }
-			
-				public void publish(String topic, byte[] payload) {
+				}
+				
+				public void publish(String topic, String payload) {
+					this.publish(topic, payload);
+				}
+				
+				public void publish(String topic, byte[] payload, int qos) {
 					MqttMessage message = new MqttMessage(payload);
-					      message.setQos(0);
-					      message.setRetained(false);
+					message.setQos(qos);
+					message.setRetained(false);
 					try {
 						client.publish(topic, message);
 					} catch (MqttException e) {
 						LOGGER.error("Could not publish MQTT message.", e);
 					}
 				}
-			
+				
+				public void publish(String topic, byte[] payload) {
+					this.publish(topic, payload, 0);
+				}
+
+				public boolean isConnected() {
+					if(client != null)
+						return client.isConnected();
+					else
+						return false;
+				}
+				
 				public void disconnect() {
 					try {
 						client.disconnect();
