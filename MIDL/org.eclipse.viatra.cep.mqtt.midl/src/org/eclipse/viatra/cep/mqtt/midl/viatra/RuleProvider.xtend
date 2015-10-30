@@ -20,6 +20,7 @@ class RuleProvider {
 	CommonsGenerator commonsGenerator
 	CepGenerator cepGenerator
 	CGenerator cGenerator
+	JavaGenerator javaGenerator
 
 	boolean generateC = false
 
@@ -30,6 +31,7 @@ class RuleProvider {
 		commonsGenerator = new CommonsGenerator(rootPath)
 		cepGenerator = new CepGenerator(rootPath, uri)
 		cGenerator = new CGenerator
+		javaGenerator = new JavaGenerator(rootPath)
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
@@ -40,6 +42,7 @@ class RuleProvider {
 	@Accessors(PUBLIC_GETTER)
 	val modelRule = createRule.precondition(machines).action [ match |
 		cepGenerator.generateCepProject(match.machine.sensors, match.machine.mqttSetup)
+		javaGenerator.generatePublisher(match.machine.sensors)
 		for (sensor : match.machine.sensors) {
 			if (generateC) {
 				cGenerator.generateCFiles(match.machine.mqttSetup, sensor, rootPath)

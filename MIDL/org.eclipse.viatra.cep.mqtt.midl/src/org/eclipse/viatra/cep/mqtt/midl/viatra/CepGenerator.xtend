@@ -36,6 +36,7 @@ class CepGenerator {
 		generatePdeSettingFile
 		generatePluginXmlFile
 		generateProjectFile
+		generateTestApplication
 	}
 	
 	private def generateClasspathFile() {
@@ -160,7 +161,8 @@ class CepGenerator {
 			 org.eclipse.viatra.cep.mqtt.commons;bundle-version="1.0.0",
 			 org.eclipse.viatra.cep.mqtt.midl;bundle-version="1.0.0",
 			 org.eclipse.xtext;bundle-version="2.9.0",
-			 org.eclipse.paho.client.mqttv3;bundle-version="1.0.2"
+			 org.eclipse.paho.client.mqttv3;bundle-version="1.0.2",
+			 org.junit;bundle-version="4.12.0"
 			Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 			Import-Package: org.apache.log4j
 		'''
@@ -193,6 +195,29 @@ class CepGenerator {
 			eclipse.preferences.version=1
 			pluginProject.equinox=false
 			resolve.requirebundle=false
+		'''
+		writer.write(fileContent)
+		writer.close
+	}
+	
+	private def generateTestApplication() {
+		val testPackage = FileUtils.createFolder(new File(cepTopPackage, "test"))
+		val testApplicationFile = FileUtils.createFile(testPackage, "TestApplication.java")
+		val writer = new FileWriter(testApplicationFile)
+		val fileContent = '''
+			package org.eclipse.viatra.cep.mqtt.cep.test;
+			
+			import org.eclipse.viatra.cep.mqtt.cep.CepApplication;
+			import org.junit.Test;
+			
+			public class TestApplication {
+			
+				@Test
+				public void test() {
+					new CepApplication().run();
+				}
+				
+			}
 		'''
 		writer.write(fileContent)
 		writer.close
