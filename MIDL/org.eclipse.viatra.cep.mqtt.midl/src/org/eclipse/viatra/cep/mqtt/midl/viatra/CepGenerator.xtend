@@ -22,7 +22,7 @@ class CepGenerator {
 		cepProjectFolder = FileUtils.createFolder(new File(rootFolder, "org.eclipse.viatra.cep.mqtt.cep"))
 		cepSrcFolder = FileUtils.createFolder(new File(cepProjectFolder, "src"))
 		cepTopPackage = FileUtils.createPackage(cepSrcFolder, "org.eclipse.viatra.cep.mqtt.cep")
-		this.modelPath =  ResourcesPlugin.getWorkspace().getRoot().location.toOSString + uri.toPlatformString(true);
+		this.modelPath =  ResourcesPlugin.getWorkspace().getRoot().location.toOSString.replace("\\", "/") + uri.toPlatformString(true);
 	}
 	
 	public def generateCepProject(EList<Sensor> sensors, MqttSetup setup){
