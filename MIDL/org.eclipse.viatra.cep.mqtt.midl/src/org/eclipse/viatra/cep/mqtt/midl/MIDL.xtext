@@ -39,7 +39,7 @@ Session:
 
 Message:
 	"message" "{"
-		"timestamp" timestamp = TIMESTAMP
+		"timestamp" timestamp = LONG
 		"sensor" sensor=[Sensor]
 		"payload" payload=[Payload]
 	"}"
@@ -53,7 +53,7 @@ terminal BOOLEAN returns ecore::EBoolean:
 	"true" | "false"
 ;
 
-TIMESTAMP returns ecore::EDate: STRING;
+LONG returns ecore::ELong: INT+;
 
 DataParameter:
 	{IntParameter} "parameter" type = "int" name = ID ("=" value = INT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
