@@ -38,28 +38,28 @@ public class MqttPublisherRunnable implements Runnable {
 						JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 						JsonObject jsonValue = jsonMessage.get("messageName").asObject();
 						JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-						JsonObject msg = new JsonObject().add("btn1_msg", param);
+						JsonObject msg = new JsonObject().add("btn1_last", param);
 						publisher.publish("btn1", msg.toString());
 					}
 					if (sensorName.equals("pb2")) {
 						JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 						JsonObject jsonValue = jsonMessage.get("messageName").asObject();
 						JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-						JsonObject msg = new JsonObject().add("btn2_msg", param);
+						JsonObject msg = new JsonObject().add("btn2_last", param);
 						publisher.publish("btn2", msg.toString());
 					}
 					if (sensorName.equals("pb3")) {
 						JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 						JsonObject jsonValue = jsonMessage.get("messageName").asObject();
 						JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-						JsonObject msg = new JsonObject().add("btn3_msg", param);
+						JsonObject msg = new JsonObject().add("btn3_last", param);
 						publisher.publish("btn3", msg.toString());
 					}
 					if (sensorName.equals("pot1")) {
 						JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 						JsonObject jsonValue = jsonMessage.get("messageName").asObject();
 						JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-						JsonObject msg = new JsonObject().add("pot_msg", param);
+						JsonObject msg = new JsonObject().add("pot_last", param);
 						publisher.publish("pot", msg.toString());
 					}
 				}
