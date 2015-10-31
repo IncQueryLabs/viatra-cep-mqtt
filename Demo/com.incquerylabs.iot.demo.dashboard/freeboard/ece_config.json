@@ -11,12 +11,58 @@
 			"col": {
 				"3": 1
 			},
-			"col_width": 10,
+			"col_width": 2,
 			"widgets": [
 				{
 					"type": "vertical_timeline_plugin",
 					"settings": {
 						"event_message": "datasources[\"EVENT DATASOURCE\"][\"msg\"][\"CEP_EVENT_MESSAGE\"]"
+					}
+				}
+			]
+		},
+		{
+			"width": 1,
+			"row": {
+				"3": 1,
+				"4": 1
+			},
+			"col": {
+				"3": 3,
+				"4": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "gauge",
+					"settings": {
+						"title": "Potmeter",
+						"min_value": 0,
+						"max_value": "1023"
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"title": "Button 1",
+						"on_text": "1",
+						"off_text": "0"
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"title": "Button 2",
+						"on_text": "1",
+						"off_text": "0"
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"title": "Button 3",
+						"on_text": "1",
+						"off_text": "0"
 					}
 				}
 			]
