@@ -102,8 +102,12 @@
 		function onConnectionLost(responseObject) {
 			if (responseObject.errorCode !== 0)
 				console.log("onConnectionLost:"+responseObject.errorMessage);
+			client.connect({onSuccess:onConnect,
+				userName: currentSettings.username,
+				password: currentSettings.password,
+				useSSL: currentSettings.use_ssl});
 		};
-
+		
 		function onMessageArrived(message) {
 			data.topic = message.destinationName;
 			if (currentSettings.json_data) {
@@ -140,15 +144,25 @@
 			}
 			client = {};
 		}
+		
+		function generate_id()
+		{
+		    var text = "";
+		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+		    for( var i=0; i < 10; i++ )
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		    return text;
+		}
+		
 		var client = new Paho.MQTT.Client(currentSettings.server,
 										currentSettings.port,
 										currentSettings.path,
-										currentSettings.client_id);
+										currentSettings.client_id + generate_id());
 		client.onConnectionLost = onConnectionLost;
 		client.onMessageArrived = onMessageArrived;
 		client.connect({onSuccess:onConnect, 
-						
 						userName: currentSettings.username,
 						password: currentSettings.password,
 						useSSL: currentSettings.use_ssl});

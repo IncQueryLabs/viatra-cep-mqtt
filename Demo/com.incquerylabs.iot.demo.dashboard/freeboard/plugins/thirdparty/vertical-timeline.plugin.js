@@ -85,7 +85,7 @@
 			 	[
 					{	time: newValue["timestamp"],
 						css: 'success',
-						content: newValue["event_id"]
+						content: newValue["event_msg"]
 					}
 			 	]
 			    );
