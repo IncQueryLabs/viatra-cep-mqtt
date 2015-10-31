@@ -2,8 +2,8 @@ package org.eclipse.viatra.cep.mqtt.midl.viatra
 
 import java.io.File
 import java.io.FileWriter
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.Message
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
 
@@ -76,10 +76,8 @@ class CGenerator {
 		val fileContent = '''
 			#ifndef «sensor.name.toUpperCase»MESSAGES_H_
 			#define «sensor.name.toUpperCase»MESSAGES_H_
-			«FOR message : sensor.messages»
-				
-				«createMessageStruct(message)»
-			«ENDFOR»
+
+			«createMessageStruct(sensor.lastReceivedPayload)»
 			
 			#endif /* «sensor.name.toUpperCase»MESSAGES_H_ */
 		'''
@@ -87,11 +85,11 @@ class CGenerator {
 		writer.close
 	}
 
-	private def createMessageStruct(Message message) '''
-		«FOR parameter : message.messageParameters»
-			«createMessageStruct(parameter.message)»
-			
-		«ENDFOR»
+	private def createMessageStruct(Payload message) '''
+«««		«FOR parameter : message.messageParameters»			// XXX: messageParameter?
+«««			«createMessageStruct(parameter.message)»
+«««			
+«««		«ENDFOR»
 		typedef struct {
 			«FOR parameter : message.dataParameters»
 				«IF parameter.type == "boolean"»
@@ -102,11 +100,11 @@ class CGenerator {
 					«parameter.type» «parameter.name»;
 				«ENDIF»
 			«ENDFOR»
-			«FOR parameter : message.messageParameters»
-				«parameter.message.name.toFirstUpper» «parameter.message.name»;
-			«ENDFOR»
+«««			«FOR parameter : message.messageParameters»		// XXX: messageParameter?
+«««				«parameter.message.name.toFirstUpper» «parameter.message.name»;
+«««			«ENDFOR»
 		} «message.name.toFirstUpper»;
-	'''
+//	'''
 
 	private def createSubscriberHeaders(Sensor sensor, File srcFolder) {
 		val subscriberFile = FileUtils.createFile(srcFolder, sensor.name.toFirstUpper + "Subscriber.h")
@@ -125,7 +123,7 @@ class CGenerator {
 			void «sensor.name»SubscriberConnect(MQTTClient client, int cleansession);
 			void «sensor.name»SubscriberSubscribe(MQTTClient client, int qos);
 			void «sensor.name»SubscriberUnsubscribe(MQTTClient client);
-			void «sensor.name»SubscriberDisconnect(MQTTClient client);
+			void «sensor.name»SubscriberDisnamennect(MQTTClient client);
 			void «sensor.name»SubscriberDestroy(MQTTClient client);
 			void «sensor.name»ConnLost(void *context, char *cause);
 			void «sensor.name»Delivered(void *context, MQTTClient_deliveryToken dt);
@@ -213,9 +211,9 @@ class CGenerator {
 			
 			MQTTClient «sensor.name»PublisherInit();
 			void «sensor.name»PublisherConnect(MQTTClient client, int cleansession);
-			«FOR message : sensor.messages»
-				void «sensor.name»PublisherPublish«message.name.toFirstUpper»(MQTTClient client, «message.name.toFirstUpper» «message.name», int qos);
-			«ENDFOR»
+
+			void «sensor.name»PublisherPublish«sensor.lastReceivedPayload.name.toFirstUpper»(MQTTClient client, «sensor.lastReceivedPayload.name.toFirstUpper» «sensor.lastReceivedPayload.name», int qos);
+
 			void «sensor.name»PublisherDisconnect(MQTTClient client);
 			void «sensor.name»PublisherDestroy(MQTTClient client);
 			
@@ -246,15 +244,14 @@ class CGenerator {
 				conn_opts.cleansession = cleansession;
 				MQTTClient_connect(client, &conn_opts);
 			}
-			«FOR message : sensor.messages»
 				
-				void «sensor.name»PublisherPublish«message.name.toFirstUpper»(MQTTClient client, «message.name.toFirstUpper» «message.name», int qos) {
+				void «sensor.name»PublisherPublish«sensor.lastReceivedPayload.name.toFirstUpper»(MQTTClient client, «sensor.lastReceivedPayload.name.toFirstUpper» «sensor.lastReceivedPayload.name», int qos) {
 					MQTTClient_deliveryToken token;
 					MQTTClient_message message = MQTTClient_message_initializer;
 					
 					char payload[100] = "{";
 					
-					«createJsonStringFromDataParameters(message)»
+					«createJsonStringFromDataParameters(sensor.lastReceivedPayload)»
 					
 					strcat(payload, "}");
 					
@@ -265,7 +262,6 @@ class CGenerator {
 					MQTTClient_publishMessage(client, "«sensor.name»", &message, &token);
 					MQTTClient_waitForCompletion(client, token, 10000L);
 				}
-			«ENDFOR»
 			
 			void «sensor.name»PublisherDisconnect(MQTTClient client) {
 				MQTTClient_disconnect(client, 1000L);
@@ -279,7 +275,7 @@ class CGenerator {
 		writer.close
 	}
 
-	private def createJsonStringFromDataParameters(Message message) '''
+	private def createJsonStringFromDataParameters(Payload message) '''
 		«FOR parameter : message.dataParameters»
 			char «parameter.name»[«parameter.name.length»];
 			«IF (parameter.type == "int" || parameter.type == "boolean")»
@@ -295,19 +291,19 @@ class CGenerator {
 				strcat(payload, ",");
 			«ENDIF»
 		«ENDFOR»
-		«IF (!message.messageParameters.empty && !message.dataParameters.empty)»
-			strcat(payload, ",");
-		«ENDIF»
-		«FOR parameter : message.messageParameters»
-			
-			«parameter.message.name.toFirstUpper» «parameter.message.name» = «message.name».«parameter.message.name»;
-			strcat(payload, "\"«parameter.message.name»\":{");
-			«createJsonStringFromDataParameters(parameter.message)»
-			strcat(payload, "}");
-			«IF parameter != message.messageParameters.last»
-				strcat(payload, ",");
-			«ENDIF»
-		«ENDFOR»
+«««		«IF (!message.messageParameters.empty && !message.dataParameters.empty)» // XXX: messageParameter?
+«««			strcat(payload, ",");
+«««		«ENDIF»
+«««		«FOR parameter : message.messageParameters»
+«««			
+«««			«parameter.message.name.toFirstUpper» «parameter.message.name» = «message.name».«parameter.message.name»;
+«««			strcat(payload, "\"«parameter.message.name»\":{");
+«««			«createJsonStringFromDataParameters(parameter.message)»
+«««			strcat(payload, "}");
+«««			«IF parameter != message.messageParameters.last»
+«««				strcat(payload, ",");
+«««			«ENDIF»
+«««		«ENDFOR»
 	'''
 
 	private def createMain(Sensor sensor, File srcFolder) {
@@ -328,12 +324,11 @@ class CGenerator {
 			
 				publisherClient = «sensor.name»PublisherInit();
 				«sensor.name»PublisherConnect(publisherClient, 1);
-				«FOR message : sensor.messages»
 				
-				«createMessageObjects(message)»
+				«createMessageObjects(sensor.lastReceivedPayload)»
 				
-				«sensor.name»PublisherPublish«message.name.toFirstUpper»(publisherClient, «message.name», «message.qos»);
-				«ENDFOR»
+				«sensor.name»PublisherPublish«sensor.lastReceivedPayload.name.toFirstUpper»(publisherClient, «sensor.lastReceivedPayload.name», «sensor.qos»);
+
 				
 				«sensor.name»PublisherDisconnect(publisherClient);
 				«sensor.name»PublisherDestroy(publisherClient);
@@ -349,11 +344,11 @@ class CGenerator {
 		writer.close
 	}
 
-	private def createMessageObjects(Message message) '''
-		«FOR parameter : message.messageParameters»
-			«createMessageObjects(parameter.message)»
-			
-		«ENDFOR»
+	private def createMessageObjects(Payload message) '''
+«««		«FOR parameter : message.messageParameters»			// XXX: messageParameter?
+«««			«createMessageObjects(parameter.message)»
+«««			
+«««		«ENDFOR»
 		«message.name.toFirstUpper» «message.name»;
 		«FOR parameter : message.dataParameters»
 			«IF parameter.type == "int"»
@@ -366,9 +361,9 @@ class CGenerator {
 				«message.name».«parameter.name» = "Hello World!";
 			«ENDIF»
 		«ENDFOR»
-		«FOR parameter : message.messageParameters»
-			«message.name».«parameter.message.name» = «parameter.message.name»;
-		«ENDFOR»
+«««		«FOR parameter : message.messageParameters»			// XXX: messageParameter?
+«««			«message.name».«parameter.message.name» = «parameter.message.name»;
+«««		«ENDFOR»
 	'''
 
 }

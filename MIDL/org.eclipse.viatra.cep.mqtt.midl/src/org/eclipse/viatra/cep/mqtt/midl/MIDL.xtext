@@ -4,11 +4,11 @@ generate mIDL "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-Machine:
+IoTSystem:
 	(
-		mqttSetup = MqttSetup
-		(messages += Message)*
-		(sensors += Sensor)*
+		(MqttSetup
+		(payloads += Payload)+
+		(sensors += Sensor)+) | Session
 	)
 ;
 
@@ -18,14 +18,30 @@ MqttSetup:
 	"}" 
 ;
 
+Sensor:
+	"sensor" name = ID "{"
+		"qos" qos = INT
+		"lastReceivedPayload" lastReceivedPayload=[Payload]
+	"}"
+;
+
+Payload:
+	"payload" name = ID "{"
+		(dataParameters += DataParameter)+
+	"}"
+;
+
+Session:
+	"session" name = ID "{"
+		(messages += Message)*
+	"}"
+;
+
 Message:
 	"message" "{"
-		"name" name = ID
-		(
-			(dataParameters += DataParameter) |
-			(messageParameters += MessageParameter)
-		)*
-		("qos" qos = INT)?
+		"timestamp" timestamp = TIMESTAMP
+		"sensor" sensor=[Sensor]
+		"payload" payload=[Payload]
 	"}"
 ;
 
@@ -36,6 +52,8 @@ terminal DOUBLE returns ecore::EDouble:
 terminal BOOLEAN returns ecore::EBoolean:
 	"true" | "false"
 ;
+
+TIMESTAMP returns ecore::EDate: STRING;
 
 DataParameter:
 	{IntParameter} "parameter" type = "int" name = ID ("=" value = INT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
@@ -49,16 +67,4 @@ Criterion:
 	{DoubleCriterion} prefix = ("min" | "max" | "eq" | "neq") value = DOUBLE |
 	{StringCriterion} prefix = ("eq" | "neq") value = STRING |
 	{BooleanCriterion} prefix = ("eq" | "neq") value = BOOLEAN
-;
-
-MessageParameter:
-	"parameter" message = [Message]
-;
-
-Sensor:
-	"sensor" "{"
-		"name" name = ID
-		"messages" messages += [Message]
-		("," messages += [Message])*
-	"}"
 ;

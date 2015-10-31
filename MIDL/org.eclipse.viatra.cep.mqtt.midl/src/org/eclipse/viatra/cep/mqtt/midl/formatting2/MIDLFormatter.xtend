@@ -9,9 +9,8 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.Criterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DataParameter
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleParameter
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntParameter
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.Machine
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.Message
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.MessageParameter
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter
 import org.eclipse.viatra.cep.mqtt.midl.services.MIDLGrammarAccess
@@ -22,25 +21,25 @@ class MIDLFormatter extends AbstractFormatter2 {
 	
 	@Inject extension MIDLGrammarAccess
 
-	def dispatch void format(Machine machine, extension IFormattableDocument document) {
+	def dispatch void format(MqttSetup mqttSetup, extension IFormattableDocument document) {
 		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
-		format(machine.getMqttSetup(), document);
-		for (Message messages : machine.getMessages()) {
+		format(mqttSetup, document);
+		for (Payload messages : mqttSetup.payloads) {
 			format(messages, document);
 		}
-		for (Sensor sensors : machine.getSensors()) {
+		for (Sensor sensors : mqttSetup.getSensors()) {
 			format(sensors, document);
 		}
 	}
 
-	def dispatch void format(Message message, extension IFormattableDocument document) {
+	def dispatch void format(Payload message, extension IFormattableDocument document) {
 		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
 		for (DataParameter dataParameters : message.getDataParameters()) {
 			format(dataParameters, document);
 		}
-		for (MessageParameter messageParameters : message.getMessageParameters()) {
-			format(messageParameters, document);
-		}
+//		for (MessageParameter messageParameters : message.getMessageParameters()) {
+//			format(messageParameters, document);
+//		}
 	}
 
 	def dispatch void format(IntParameter intParameter, extension IFormattableDocument document) {

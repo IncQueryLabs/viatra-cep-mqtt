@@ -5,11 +5,13 @@ package org.eclipse.viatra.cep.mqtt.midl.generator
 
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.incquery.runtime.api.IncQueryEngine
 import org.eclipse.incquery.runtime.emf.EMFScope
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.MIDLFactory
 import org.eclipse.viatra.cep.mqtt.midl.viatra.CodeGeneration
-import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IFileSystemAccess2
+import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
 
 /**
@@ -21,17 +23,19 @@ class MIDLGenerator implements IGenerator2 {
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 	}
-	
+
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 	}
-	
+
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		val resourceSet = input.resourceSet
-		val engine = IncQueryEngine.on(new EMFScope(resourceSet))
-		val codeGeneration = new CodeGeneration
-		codeGeneration.initialize(engine, ResourcesPlugin.getWorkspace().root.location.toOSString, input.URI)
-		codeGeneration.fire
-		codeGeneration.dispose
+		if (EcoreUtil.getObjectsByType(input.contents, MIDLFactory.eINSTANCE.createMqttSetup.eClass).size > 0) {
+			val resourceSet = input.resourceSet
+			val engine = IncQueryEngine.on(new EMFScope(resourceSet))
+			val codeGeneration = new CodeGeneration
+			codeGeneration.initialize(engine, ResourcesPlugin.getWorkspace().root.location.toOSString, input.URI)
+			codeGeneration.fire
+			codeGeneration.dispose
+		}
 	}
 
 }

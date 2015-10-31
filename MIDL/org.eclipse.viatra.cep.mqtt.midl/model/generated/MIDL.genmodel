@@ -5,19 +5,29 @@
     complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.11">
   <genPackages prefix="MIDL" basePackage="org.eclipse.viatra.cep.mqtt.midl" disposableProviderFactory="true"
       fileExtensions="midl" ecorePackage="MIDL.ecore#/">
-    <genClasses ecoreClass="MIDL.ecore#//Machine">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Machine/mqttSetup"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Machine/messages"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Machine/sensors"/>
-    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//IoTSystem"/>
     <genClasses ecoreClass="MIDL.ecore#//MqttSetup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//MqttSetup/payloads"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//MqttSetup/sensors"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//MqttSetup/brokerUrl"/>
     </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//Sensor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Sensor/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Sensor/qos"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//Sensor/lastReceivedPayload"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//Payload">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Payload/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Payload/dataParameters"/>
+    </genClasses>
+    <genClasses ecoreClass="MIDL.ecore#//Session">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Session/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Session/messages"/>
+    </genClasses>
     <genClasses ecoreClass="MIDL.ecore#//Message">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Message/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Message/dataParameters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIDL.ecore#//Message/messageParameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Message/qos"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Message/timestamp"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//Message/sensor"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//Message/payload"/>
     </genClasses>
     <genClasses ecoreClass="MIDL.ecore#//DataParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//DataParameter/type"/>
@@ -26,13 +36,6 @@
     </genClasses>
     <genClasses ecoreClass="MIDL.ecore#//Criterion">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Criterion/prefix"/>
-    </genClasses>
-    <genClasses ecoreClass="MIDL.ecore#//MessageParameter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//MessageParameter/message"/>
-    </genClasses>
-    <genClasses ecoreClass="MIDL.ecore#//Sensor">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//Sensor/name"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIDL.ecore#//Sensor/messages"/>
     </genClasses>
     <genClasses ecoreClass="MIDL.ecore#//IntParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIDL.ecore#//IntParameter/value"/>

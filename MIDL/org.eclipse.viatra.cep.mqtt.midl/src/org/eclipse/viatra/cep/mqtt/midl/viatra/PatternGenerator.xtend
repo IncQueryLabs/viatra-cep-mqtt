@@ -8,7 +8,7 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.Criterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DataParameter
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntCriterion
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.Message
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringCriterion
 import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
@@ -30,31 +30,29 @@ class PatternGenerator {
 			import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
 			
 			«FOR sensor : sensors»
-				«FOR message : sensor.messages»
-					«generateMessagePatterns(sensor.name, message)»
-				«ENDFOR»
+				«generatePayloadPatterns(sensor.name, sensor.lastReceivedPayload)»
 			«ENDFOR»
 		'''
 		writer.write(fileContent)
 		writer.close
 	}
 
-	private def generateMessagePatterns(String sensorName, Message message) '''
-		«FOR parameter : message.dataParameters»
+	private def generatePayloadPatterns(String sensorName, Payload payload) '''
+		«FOR parameter : payload.dataParameters»
 			«FOR criterion : parameter.criteria»
 				«IF (criterion.prefix == "min" || criterion.prefix == "max")»
-					«generateLessThanPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
-					«generateGreaterThanPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
-					«generateEqualsPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateLessThanPattern(sensorName, payload.name.toFirstUpper, parameter, criterion)»
+					«generateGreaterThanPattern(sensorName, payload.name.toFirstUpper, parameter, criterion)»
+					«generateEqualsPattern(sensorName, payload.name.toFirstUpper, parameter, criterion)»
 				«ELSEIF (criterion.prefix == "eq" || criterion.prefix == "neq")»				
-					«generateEqualsPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
-					«generateNotEqualsPattern(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateEqualsPattern(sensorName, payload.name.toFirstUpper, parameter, criterion)»
+					«generateNotEqualsPattern(sensorName, payload.name.toFirstUpper, parameter, criterion)»
 				«ENDIF»
 			«ENDFOR»
 		«ENDFOR»
-		«FOR parameter : message.messageParameters»
-			«generateMessagePatterns(sensorName, parameter.message)»
-		«ENDFOR»
+«««		«FOR parameter : message.messageParameters»					// XXX: messageParameter?
+«««			«generateMessagePatterns(sensorName, parameter.message)»
+«««		«ENDFOR»
 	'''
 
 	private def generateLessThanPattern(String sensorName, String messageName, DataParameter parameter,
@@ -62,8 +60,8 @@ class PatternGenerator {
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.name(sensor, "«sensorName»");
-			Sensor.messages(sensor, message);
-			Message.dataParameters(message, parameter);
+			Sensor.lastReceivedPayload(sensor, payload);
+			Payload.dataParameters(payload, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value < «getCriterionValue(criterion)»);
 		}
@@ -74,8 +72,8 @@ class PatternGenerator {
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.name(sensor, "«sensorName»");
-			Sensor.messages(sensor, message);
-			Message.dataParameters(message, parameter);
+			Sensor.lastReceivedPayload(sensor, payload);
+			Payload.dataParameters(payload, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value > «getCriterionValue(criterion)»);
 		}
@@ -86,8 +84,8 @@ class PatternGenerator {
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.name(sensor, "«sensorName»");
-			Sensor.messages(sensor, message);
-			Message.dataParameters(message, parameter);
+			Sensor.lastReceivedPayload(sensor, payload);
+			Payload.dataParameters(payload, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value == «getCriterionValue(criterion)»);
 		}
@@ -98,8 +96,8 @@ class PatternGenerator {
 		
 		pattern «sensorName.toFirstLower»«messageName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Pattern(sensor: Sensor) {
 			Sensor.name(sensor, "«sensorName»");
-			Sensor.messages(sensor, message);
-			Message.dataParameters(message, parameter);
+			Sensor.lastReceivedPayload(sensor, payload);
+			Payload.dataParameters(payload, parameter);
 			«parameter.type.toFirstUpper»Parameter.value(parameter, value);
 			check(value != «getCriterionValue(criterion)»);
 		}
@@ -127,31 +125,29 @@ class PatternGenerator {
 			import-queries org.eclipse.viatra.cep.mqtt.cep.eiq.*
 			
 			«FOR sensor : sensors»
-				«FOR message : sensor.messages»
-					«generateMessageRules(sensor.name.toFirstLower, message)»
-				«ENDFOR»
+				«generatePayloadRules(sensor.name.toFirstLower, sensor.lastReceivedPayload)»
 			«ENDFOR»
 		'''
 		writer.write(fileContent)
 		writer.close
 	}
 
-	private def generateMessageRules(String sensorName, Message message) '''
-		«FOR parameter : message.dataParameters»
+	private def generatePayloadRules(String sensorName, Payload payload) '''
+		«FOR parameter : payload.dataParameters»
 			«FOR criterion : parameter.criteria»
 				«IF (criterion.prefix == "min" || criterion.prefix == "max")»
-					«generateLessThanEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
-					«generateGreaterThanEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
-					«generateEqualsEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateLessThanEventAndRule(sensorName, payload.name.toFirstUpper, parameter, criterion)»
+					«generateGreaterThanEventAndRule(sensorName, payload.name.toFirstUpper, parameter, criterion)»
+					«generateEqualsEventAndRule(sensorName, payload.name.toFirstUpper, parameter, criterion)»
 				«ELSEIF (criterion.prefix == "eq" || criterion.prefix == "neq")»				
-					«generateEqualsEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
-					«generateNotEqualsEventAndRule(sensorName, message.name.toFirstUpper, parameter, criterion)»
+					«generateEqualsEventAndRule(sensorName, payload.name.toFirstUpper, parameter, criterion)»
+					«generateNotEqualsEventAndRule(sensorName, payload.name.toFirstUpper, parameter, criterion)»
 				«ENDIF»
 			«ENDFOR»
 		«ENDFOR»
-		«FOR parameter : message.messageParameters»
-			«generateMessageRules(sensorName, parameter.message)»
-		«ENDFOR»
+«««		«FOR parameter : message.messageParameters»					// XXX: messageParameter?
+«««			«generateMessageRules(sensorName, parameter.message)»
+«««		«ENDFOR»
 	'''
 
 	private def generateLessThanEventAndRule(String sensorName, String messageName, DataParameter parameter,

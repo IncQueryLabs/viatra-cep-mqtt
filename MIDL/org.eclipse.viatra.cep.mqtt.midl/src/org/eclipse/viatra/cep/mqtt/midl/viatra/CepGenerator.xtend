@@ -311,6 +311,7 @@ class CepGenerator {
 			
 			import org.apache.log4j.Logger;
 			import org.eclipse.emf.ecore.resource.Resource;
+			import org.eclipse.emf.ecore.util.EcoreUtil;
 			import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 			import org.eclipse.paho.client.mqttv3.MqttCallback;
 			import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -320,9 +321,10 @@ class CepGenerator {
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleParameter;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntParameter;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter;
-			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Machine;
-			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Message;
+			import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup;
+			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload;
 			import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor;
+			import org.eclipse.viatra.cep.mqtt.midl.mIDL.MIDLFactory;
 			
 			import com.eclipsesource.json.JsonObject;
 			
@@ -333,14 +335,11 @@ class CepGenerator {
 			
 				Resource resource;
 				
-				Machine machine;
 				«FOR sensor : sensors»
 					Sensor «sensor.name»;
-					«FOR message:sensor.messages»
-						Message «sensor.name»_«message.name»;
-						«FOR parameter:message.dataParameters»
-							«parameter.type.toFirstUpper»Parameter «sensor.name»_«message.name»_«parameter.name»;
-						«ENDFOR»
+					Payload «sensor.name»_«sensor.lastReceivedPayload.name»;
+					«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+						«parameter.type.toFirstUpper»Parameter «sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name»;
 					«ENDFOR»
 				«ENDFOR»
 			
@@ -365,43 +364,31 @@ class CepGenerator {
 					JsonObject sensor = JsonObject.readFrom(msg);
 					«FOR sensor : sensors»
 						if (topic.equals("«sensor.name»")) {
-							«FOR message:sensor.messages»
-								«FOR parameter:message.dataParameters»
-									«sensor.name»_«message.name»_«parameter.name».setValue(sensor.get("«message.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
-								«ENDFOR»
-							«ENDFOR»
+						«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+							«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name».setValue(sensor.get("«sensor.lastReceivedPayload.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
+						«ENDFOR»
 						}
-						
 					«ENDFOR»
 				}
-			
+
 				private void getDataFromModel() {
-					machine = (Machine) resource.getContents().get(0);
+					MqttSetup setup = (MqttSetup) EcoreUtil.getObjectByType(resource.getContents(), MIDLFactory.eINSTANCE.createMqttSetup().eClass());
 					
-					for (Sensor sensor : machine.getSensors()) {
+					for (Sensor sensor : setup.getSensors()) {
 						«FOR sensor : sensors»
-							if (sensor.getName().equals("«sensor.name»")) {
-								«sensor.name» = sensor;
-								for (Message message : sensor.getMessages()) {
-									«FOR message:sensor.messages»
-										if (message.getName().equals("«message.name»")) {
-											«sensor.name»_«message.name» = message;
-											for (DataParameter parameter : message.getDataParameters()) {
-												«FOR parameter:message.dataParameters»
-													if (parameter.getName().equals("«parameter.name»")) {
-														«sensor.name»_«message.name»_«parameter.name» = («parameter.type.toFirstUpper»Parameter) parameter;
-													}
-												«ENDFOR»
-											}
-										}
-									«ENDFOR»
-								}
+						if (sensor.getName().equals("«sensor.name»")) {
+							«sensor.name» = sensor;
+							for (DataParameter parameter : sensor.getLastReceivedPayload().getDataParameters()) {
+								«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+									if (parameter.getName().equals("«parameter.name»")) {
+										«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name» = («parameter.type.toFirstUpper»Parameter) parameter;
+									}
+								«ENDFOR»
 							}
-							
+						}
 						«ENDFOR»
 					}
 				}
-			
 			}
 		'''
 		writer.write(fileContent)

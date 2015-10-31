@@ -40,12 +40,12 @@ class RuleProvider {
 	}
 
 	@Accessors(PUBLIC_GETTER)
-	val modelRule = createRule.precondition(machines).action [ match |
-		cepGenerator.generateCepProject(match.machine.sensors, match.machine.mqttSetup)
-		javaGenerator.generatePublisher(match.machine.sensors)
-		for (sensor : match.machine.sensors) {
+	val modelRule = createRule.precondition(mqttSetup).action [ match |
+		cepGenerator.generateCepProject(match.mqttSetup.sensors, match.mqttSetup)
+		javaGenerator.generatePublisher(match.mqttSetup.sensors)
+		for (sensor : match.mqttSetup.sensors) {
 			if (generateC) {
-				cGenerator.generateCFiles(match.machine.mqttSetup, sensor, rootPath)
+				cGenerator.generateCFiles(match.mqttSetup, sensor, rootPath)
 			}
 		}
 	].build
