@@ -1,0 +1,39 @@
+mqttSetup {
+	brokerUrl "tcp://127.0.0.1:1883"
+}
+ 
+payload btn1_last { 
+	parameter int value ( eq 1 )
+}
+ 
+payload btn2_last { 
+	parameter int value ( eq 1 )
+}
+
+payload btn3_last {
+	parameter int value ( eq 1 )
+}
+
+payload pot1_last {
+	parameter int value ( min 0 max 1023 )
+}
+
+sensor btn1 {
+	qos 0 
+	lastReceivedPayload btn1_last
+}
+ 
+sensor btn2 {
+	qos 0
+	lastReceivedPayload btn2_last
+}
+ 
+sensor btn3 {
+	qos 0
+	lastReceivedPayload btn3_last
+}
+
+sensor pot1 {
+	qos 0
+	lastReceivedPayload pot1_last
+}

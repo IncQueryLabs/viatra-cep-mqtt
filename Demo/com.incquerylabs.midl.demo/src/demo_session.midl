@@ -1,0 +1,15 @@
+session DemoSession {
+	message {
+		timestamp 1446223758010
+		sensor btn1
+		payload btn1_last
+	} 
+	message {
+		timestamp 1446223818007
+		sensor btn2
+		payload btn2_last
+	}
+	
+	// ...
+} 
+
