@@ -10,7 +10,7 @@ The instructions below were tested on Ubuntu 14.04 LTS.
 Install driver: `sudo apt-get update && sudo apt-get install arduino arduino-core`
 If something doesn't work, sudo copy _librxtxSerial.so_ (from _Sensors/com.incquerylabs.iot.javatransmitter/exported_) to _/usr/lib/_
 
-### Mosquito broker and cliente
+### Mosquito broker and client
 
 1. Install docker: `sudo apt-get -y install docker.io`
 2. Pull and start appropriate mosquitto image `docker run -tip 1883:1883 -p 9001:9001 toke/mosquitto`
@@ -34,7 +34,11 @@ Note: after [Xtext 2.9.0](https://projects.eclipse.org/projects/modeling.tmf.xte
 #### Runtime workspace
 
 1. Clone [Paho Java](http://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.java.git) library and import the _org.eclipse.paho.client.mqttv3_ project to the workspace, ignore the compile error in the _pom.xml_ file
-2. Import the following projects into your workspace from this git repository: _com.eclipsesource.json_, _com.incquerylabs.iot.javatransmitter_, _com.incquerylabs.iot.demo.dashboard_, _com.incquerylabs.iot.demo.cep_)
+2. Import the following projects into your workspace from this git repository: 
+  * _Demo/com.eclipsesource.json_
+  * _Demo/com.incquerylabs.iot.demo.dashboard_
+  * _Demo/com.incquerylabs.midl.demo_ ( copy project into workspace )
+  * _Sensors/com.incquerylabs.iot.javatransmitter_
 3. Make sure everything builds cleanly.
 
 ## Trying the demo
