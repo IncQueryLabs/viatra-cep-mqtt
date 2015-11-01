@@ -37,7 +37,7 @@
 					"type": "gauge",
 					"settings": {
 						"title": "Potentiometer",
-						"value": "datasources[\"Potmeter datasource\"][\"msg\"][\"pot_last\"][\"value\"]",
+						"value": "datasources[\"Potmeter datasource\"][\"msg\"][\"pot1_value\"][\"value\"]",
 						"min_value": 0,
 						"max_value": "1023"
 					}
@@ -46,7 +46,7 @@
 					"type": "indicator",
 					"settings": {
 						"title": "Button 1",
-						"value": "datasources[\"Button 1 datasource\"][\"msg\"][\"btn1_last\"][\"value\"]",
+						"value": "datasources[\"Button 1 datasource\"][\"msg\"][\"btn1_pressed\"][\"value\"]",
 						"color": "red",
 						"on_text": "1",
 						"off_text": "0"
@@ -56,7 +56,7 @@
 					"type": "indicator",
 					"settings": {
 						"title": "Button 2",
-						"value": "datasources[\"Button 2 datasource\"][\"msg\"][\"btn2_last\"][\"value\"]",
+						"value": "datasources[\"Button 2 datasource\"][\"msg\"][\"btn2_pressed\"][\"value\"]",
 						"color": "yellow",
 						"on_text": "1",
 						"off_text": "0"
@@ -66,7 +66,7 @@
 					"type": "indicator",
 					"settings": {
 						"title": "Button 3",
-						"value": "datasources[\"Button 3 datasource\"][\"msg\"][\"btn3_last\"][\"value\"]",
+						"value": "datasources[\"Button 3 datasource\"][\"msg\"][\"btn3_pressed\"][\"value\"]",
 						"color": "green",
 						"on_text": "1",
 						"off_text": "0"
@@ -102,7 +102,7 @@
 				"client_id": "iql_ece_dashboard_pot",
 				"username": "",
 				"password": "",
-				"topic": "pot",
+				"topic": "pot1",
 				"json_data": true
 			}
 		},

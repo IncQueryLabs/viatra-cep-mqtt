@@ -59,7 +59,7 @@ public class MqttPublisherRunnable implements Runnable {
 					JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 					JsonObject jsonValue = jsonMessage.get("messageName").asObject();
 					JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-					JsonObject msg = new JsonObject().add("pot1_pressed", param);
+					JsonObject msg = new JsonObject().add("pot1_value", param);
 					publisher.publish("pot1", msg.toString());
 				}
 				}
