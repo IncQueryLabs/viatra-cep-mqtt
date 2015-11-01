@@ -43,7 +43,17 @@ Note: after [Xtext 2.9.0](https://projects.eclipse.org/projects/modeling.tmf.xte
 
 ## Trying the demo
 
-* freeboard main, point your browser at localhost:8080
-* runEmulator.sh
- * possible inputs 
-* runWithDefaultParameters.sh
+1. Start Mosquitto broker as described above
+2. Open _demo_setup.midl_ file in eclipse and save it
+3. Make sure _org.eclipse.viatra.cep.mqtt.cep_ and _org.eclipse.viatra.cep.mqtt.commons_ projects are generatered and import them into the workspace ( the latter step is temporarily necessary )
+4. Edit generated _vepl_ and _eiq_ files to create customized events.
+5. Call dashboard publisher methods from cep rules to visualize events on dashboard (at least once)
+   * _DashboardUtil.publishSimpleEvent(<message>)_
+   * _DashboardUtil.publishHighlightedEvent(<message>)_
+6. Run _TestApplication_ as Junit plugin test in generated CEP project.  
+7. Start dashboard with running _com.incquerylabs.iot.demo.dashboard.Main_ from eclipse.
+8. Point your browser at localhost:8080
+9. Open a terminal and navigate into _Sensors/com.incquerylabs.iot.javatransmitter/exported/_ directory. Select one of the followings to start sending sensor data:
+   * With device: Run _runWithDefaultParameters.sh_ script.
+   * Without device: Run _runEmulator.sh_ script.
+
