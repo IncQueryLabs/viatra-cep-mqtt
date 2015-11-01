@@ -23,6 +23,7 @@ class RuleProvider {
 	JavaGenerator javaGenerator
 
 	boolean generateC = false
+	boolean generateCommons = false
 
 	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath, URI uri) {
 		this.engine = engine
@@ -36,7 +37,9 @@ class RuleProvider {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
 		}
-		commonsGenerator.generateCommonsProject
+		if (generateCommons) {
+			commonsGenerator.generateCommonsProject
+		}
 	}
 
 	@Accessors(PUBLIC_GETTER)
