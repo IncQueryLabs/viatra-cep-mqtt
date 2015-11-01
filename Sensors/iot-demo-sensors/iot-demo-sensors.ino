@@ -1,21 +1,15 @@
-#define DEBOUNCE 10  // button debouncer, how many ms to debounce, 5+ ms is usually plenty
+#define DEBOUNCE 10  // button debouncer 5+ ms
 
-// here is where we define the buttons that we'll use. button "1" is the first, button "6" is the 6th, etc
-byte buttons[] = {3, 4, 5}; // 12
+byte buttons[] = {3, 4, 5}; // D2-D12
 String buttonNames[] = {"pb1", "pb2", "pb3"};
-
-// This handy macro lets us determine how big the array up above is, by checking the size
 #define NUMBUTTONS sizeof(buttons)
 
 byte potmeters[] = {18}; // A0-14, A5-19 6
 
 String potmeterNames[] = {"pot1"};
-// This handy macro lets us determine how big the array up above is, by checking the size
 #define NUMPOTMETERS sizeof(potmeters)
 
-
-
-// we will track if a button is just pressed, just released, or 'currently pressed'
+// pressed buttons
 byte pressed[NUMBUTTONS];
 
 void setup() {
@@ -26,7 +20,7 @@ void setup() {
   // pin13 LED
   pinMode(13, OUTPUT);
 
-  // Make input & enable pull-up resistors on switch pins
+  // Make input & enable pull-up resistors on button pins
   for (i=0; i< NUMBUTTONS; i++) {
     pinMode(buttons[i], INPUT);
     digitalWrite(buttons[i], HIGH);
@@ -40,25 +34,22 @@ void check_switches()
   static long lasttime;
   byte index;
   if (millis() < lasttime) {
-     lasttime = millis(); // we wrapped around, lets just try again
+     lasttime = millis();
   }
 
+  // Wait DEBOUNCE time
   if ((lasttime + DEBOUNCE) > millis()) {
-    return; // not enough time has passed to debounce
+    return;
   }
-  // ok we have waited DEBOUNCE milliseconds, lets reset the timer
+  // reset the timer
   lasttime = millis();
 
   for (index = 0; index < NUMBUTTONS; index++) {
-    /*justpressed[index] = 0;       // when we start, we clear out the "just" indicators
-    justreleased[index] = 0;*/
-
-    currentstate[index] = digitalRead(buttons[index]);   // read the button
+    currentstate[index] = digitalRead(buttons[index]);
     if (currentstate[index] == previousstate[index]) {
-      pressed[index] = !currentstate[index];  // remember, digital HIGH means NOT pressed
+      pressed[index] = !currentstate[index];
     }
-    //Serial.println(pressed[index], DEC);
-    previousstate[index] = currentstate[index];   // keep a running tally of the buttons
+    previousstate[index] = currentstate[index];
   }
 }
 
@@ -101,7 +92,7 @@ void reportInputStates(){
 }
 
 void loop() {
-  check_switches();      // when we check the switches we'll get the current state
+  check_switches(); // Get current states of the buttons
 
   reportInputStates();
   
