@@ -1,0 +1,70 @@
+import demo_setup.midl; // references to the setup file
+
+session DemoSession for ECE2015Demo { // ECE2015Demo: reference
+	// such snapshots can be created via a utility function
+	snapshot START { // START: arbitrary string
+	    timestamp 1446223758000 // UNIX timestamp
+	    sensor btn1 { // btn1: reference
+		lastReceivedPayload {
+		    p : false;
+		}
+	    }
+	    sensor btn2 {
+		lastReceivedPayload {
+		    p : false;
+		}
+	    }
+	    sensor btn3 {
+		lastReceivedPayload {
+		    p : false;
+		}
+	    }
+	    sensor pot1 {
+		lastReceivedPayload {
+		    v : 0;
+		}
+	    }
+	}
+	frame 1 { // 1: auto-generated message id
+		timestamp 1446223758010 // unix timestamp
+		sensor btn1 { // btn1: reference 
+		    p: true // p: reference
+		}
+		sensor btn2 { // btn2: reference 
+		    p: false // p: reference
+		}
+	} 
+	frame 2 {
+		timestamp 1446223758022
+		sensor pot1 {
+		    v: 255
+		}
+	} 
+	
+	// more frames...
+
+	snapshot END { // END: arbitrary string
+	    timestamp 1446223758300
+	    sensor btn1 { // btn1: reference
+		lastReceivedPayload {
+		    p : false;
+		}
+	    }
+	    sensor btn2 {
+		lastReceivedPayload {
+		    p : true;
+		}
+	    }
+	    sensor btn3 {
+		lastReceivedPayload {
+		    p : false;
+		}
+	    }
+	    sensor pot1 {
+		lastReceivedPayload {
+		    v : 855;
+		}
+	    }
+	}
+} 
+

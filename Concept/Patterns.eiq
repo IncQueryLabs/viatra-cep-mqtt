@@ -1,0 +1,70 @@
+package org.eclipse.viatra.cep.mqtt.cep.eiq
+
+import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
+import "http://www.eclipse.org/emf/2002/Ecore"
+
+private pattern lastSensorPayloadValue(s : Sensor, sName : EString, value : EInt) {
+	Sensor.name(s, sName);
+	Sensor.lastReceivedPayload.dataParameters(s, p);
+	IntParameter.value(p, value);
+}
+
+pattern btn1_pressed(s: Sensor) {
+	find lastSensorPayloadValue(s, "btn1", 1);
+}
+
+pattern btn1_released(s: Sensor) {
+	find lastSensorPayloadValue(s, "btn1", v);
+	check(v != 1);
+}
+
+pattern btn2_pressed(s: Sensor) {
+	find lastSensorPayloadValue(s, "btn2", 1);
+}
+
+pattern btn2_released(s: Sensor) {
+	find lastSensorPayloadValue(s, "btn2", v);
+	check(v != 1);
+}
+
+pattern btn3_pressed(s: Sensor) {
+	find lastSensorPayloadValue(s, "btn3", 1);
+}
+
+pattern btn3_released(s: Sensor) {
+	find lastSensorPayloadValue(s, "btn3", v);
+	check(v != 1);
+}
+
+pattern pot1_valueLessThanMin(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", v);
+	check(v < 0);
+}
+
+pattern pot1_valueMoreThanMin(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", v);
+	check(v > 0);
+}
+
+pattern pot1_valueMin(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", 0);
+}
+
+pattern pot1_valueLessThanMax(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", v);
+	check(v < 1023);
+}
+
+pattern pot1_valueMoreThanMax(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", v);
+	check(v > 1023);
+}
+
+pattern pot1_valueMax(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", 1023);
+}
+
+pattern pot1_aboveMid(s: Sensor) {
+	find lastSensorPayloadValue(s, "pot1", v);
+	check (v > 512);
+}
