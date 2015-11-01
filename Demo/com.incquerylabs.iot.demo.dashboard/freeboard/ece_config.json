@@ -36,7 +36,7 @@
 				{
 					"type": "gauge",
 					"settings": {
-						"title": "Potmeter",
+						"title": "Potentiometer",
 						"value": "datasources[\"Potmeter datasource\"][\"msg\"][\"pot_last\"][\"value\"]",
 						"min_value": 0,
 						"max_value": "1023"
@@ -47,6 +47,7 @@
 					"settings": {
 						"title": "Button 1",
 						"value": "datasources[\"Button 1 datasource\"][\"msg\"][\"btn1_last\"][\"value\"]",
+						"color": "red",
 						"on_text": "1",
 						"off_text": "0"
 					}
@@ -56,6 +57,7 @@
 					"settings": {
 						"title": "Button 2",
 						"value": "datasources[\"Button 2 datasource\"][\"msg\"][\"btn2_last\"][\"value\"]",
+						"color": "yellow",
 						"on_text": "1",
 						"off_text": "0"
 					}
@@ -65,6 +67,7 @@
 					"settings": {
 						"title": "Button 3",
 						"value": "datasources[\"Button 3 datasource\"][\"msg\"][\"btn3_last\"][\"value\"]",
+						"color": "green",
 						"on_text": "1",
 						"off_text": "0"
 					}

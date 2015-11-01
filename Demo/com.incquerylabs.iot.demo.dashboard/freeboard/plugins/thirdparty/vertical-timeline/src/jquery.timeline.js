@@ -21,7 +21,7 @@
 		},
 
 		_tpl_event: ['<li class="tl-item">',
-						'<div class="tl-wrap {{class}}">',
+						'<div class="tl-wrap">',
 							'<span class="tl-date">{{time}}</span>',
 							'<div class="tl-content panel padder b-a">',
 								'<span class="arrow left pull-up"></span>',
@@ -30,7 +30,7 @@
 						'</div>',
 					'</li>'
 				   ].join('\n'),
-
+				   
 		//Setup widget (eg. element creation, apply theming
 		// , bind events etc.)
 		_create: function () {
@@ -76,7 +76,7 @@
 				});
 			} else {
 
-				this.element.find("ul.timeline").append( 
+				this.element.find("ul.timeline").prepend( 
 							this._render_event(event_data) 
 						); 	
 			}
@@ -91,12 +91,26 @@
 
 		_render_event: function(data){
 			
-			var event_html = this._tpl_event.replace('{{time}}', this._format_time(data.time) );	
-			event_html = event_html.replace('{{content}}', data.content);
-			event_html.replace('{{class}}', data.css);
-
-			return event_html;
-
+//			 = this._tpl_event.replace('{{time}}', this._format_time(data.time) );	
+//			event_html = event_html.replace('{{content}}', data.content);
+//			event_html.replace('<div class="tl-content panel padder b-a">', '<div class="' + data.css + ' tl-content panel padder b-a>');
+//			
+			var event_html = ['<li class="tl-item">',
+				'<div class="tl-wrap">',
+					'<span class="tl-date">' + data.time + '</span>',
+					'<div class="' + data.css + ' tl-content panel padder b-a">',
+						'<span class="arrow left pull-up"></span>',
+						'<div>' + data.content + '</div>',
+					'</div>',
+				'</div>',
+			'</li>'
+		   ].join('\n')
+			
+		   console.log(event_html)
+		   
+		   return event_html;
+			
+			
 		},
 
 		_format_time: function(time){

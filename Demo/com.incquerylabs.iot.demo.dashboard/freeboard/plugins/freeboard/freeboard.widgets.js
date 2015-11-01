@@ -743,9 +743,11 @@
         }
     });
 
-	freeboard.addStyle('.indicator-light', "border-radius:50%;width:22px;height:22px;border:2px solid #3d3d3d;margin-top:5px;float:left;background-color:#222;margin-right:10px;");
-	freeboard.addStyle('.indicator-light.on', "background-color:#FFC773;box-shadow: 0px 0px 15px #FF9900;border-color:#FDF1DF;");
-	freeboard.addStyle('.indicator-text', "margin-top:10px;");
+	freeboard.addStyle('.indicator-light', "border-radius:50%;width:50px;height:50px;border:2px solid #3d3d3d;margin-top:5px;margin-left: 40%;margin-bottom: 15px;float:left;background-color:#222;margin-right:10px;");
+	freeboard.addStyle('.indicator-light.onred', "background-color:red;box-shadow: 0px 0px 50px red;border-color:#F77474;");
+	freeboard.addStyle('.indicator-light.onyellow', "background-color:yellow;box-shadow: 0px 0px 50px yellow;border-color:#FDF1DF;");
+	freeboard.addStyle('.indicator-light.ongreen', "background-color:green;box-shadow: 0px 0px 50px green;border-color:lightgreen;");
+	freeboard.addStyle('.indicator-text', "margin-top:10px;display: none;");
     var indicatorWidget = function (settings) {
         var self = this;
         var titleElement = $('<h2 class="section-title"></h2>');
@@ -755,7 +757,17 @@
         var isOn = false;
 
         function updateState() {
-            indicatorElement.toggleClass("on", isOn);
+        	switch (settings.color) {
+        		case "red":
+        			indicatorElement.toggleClass("onred", isOn);
+        			break;
+        		case "yellow":
+        			indicatorElement.toggleClass("onyellow", isOn);
+        			break;
+        		case "green":
+        			indicatorElement.toggleClass("ongreen", isOn);
+        			break;
+        	}
 
             if (isOn) {
                 stateElement.text((_.isUndefined(currentSettings.on_text) ? "" : currentSettings.on_text));
@@ -806,6 +818,12 @@
                 name: "value",
                 display_name: "Value",
                 type: "calculated"
+            },
+            {
+                name: "color",
+                display_name: "Color",
+                type: "text",
+                description: "Light color: red | yellow | green"
             },
             {
                 name: "on_text",

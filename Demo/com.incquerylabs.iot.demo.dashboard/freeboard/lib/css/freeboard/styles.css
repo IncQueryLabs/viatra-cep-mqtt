@@ -907,11 +907,12 @@ header h1 {
 }
 
 .sub-section h2 {
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: normal;
 	padding: 0px;
 	margin: 0px;
 	line-height: normal;
+	color: snow;
 }
 
 .sub-section {

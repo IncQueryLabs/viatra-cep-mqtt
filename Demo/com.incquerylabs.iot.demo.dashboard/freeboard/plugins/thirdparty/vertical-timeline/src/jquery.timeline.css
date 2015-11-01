@@ -74,18 +74,18 @@
   box-shadow: 0 0 0 4px #f0f3f4;
 }
 .tl-wrap:hover:before {
-  background: transparent;
   border-color: #fff;
 }
 .tl-date {
   position: relative;
-  top: 14px;
+  top: 9px;
   float: left;
-  margin-left: -13.5em;
+  margin-left: -8.5em;
   display: block;
   width: 4.5em;
   text-align: right;
-  font-size: large;
+  font-size: x-large;
+  color: whitesmoke;
 }
 .tl-content {
   display: inline-block;
@@ -93,6 +93,9 @@
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: white;
+  font-size: medium;
+  font-weight: 800;
+  color: darkred;
 }
 .tl-content.block {
   display: block;
@@ -101,6 +104,13 @@
 .tl-content.panel {
   margin-bottom: 0;
 }
+
+.highlighted {
+	background: darkred;
+    color: cornsilk;
+    font-size: larger;
+}
+
 .tl-header {
   display: block;
   width: 12em;
