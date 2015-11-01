@@ -17,28 +17,22 @@ class RuleProvider {
 
 	IncQueryEngine engine
 	String rootPath
-	CommonsGenerator commonsGenerator
 	CepGenerator cepGenerator
 	CGenerator cGenerator
 	JavaGenerator javaGenerator
 
 	boolean generateC = false
-	boolean generateCommons = false
 
 	new(IncQueryEngine engine, BatchTransformationStatements statements, String rootPath, URI uri) {
 		this.engine = engine
 		this.statements = statements
 		this.rootPath = rootPath
-		commonsGenerator = new CommonsGenerator(rootPath)
 		cepGenerator = new CepGenerator(rootPath, uri)
 		cGenerator = new CGenerator
 		javaGenerator = new JavaGenerator(rootPath)
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
-		}
-		if (generateCommons) {
-			commonsGenerator.generateCommonsProject
 		}
 	}
 
