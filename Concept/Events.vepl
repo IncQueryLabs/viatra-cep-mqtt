@@ -1,0 +1,69 @@
+package org.eclipse.viatra.cep.mqtt.cep.vepl.firstLevel
+
+import-queries org.eclipse.viatra.cep.mqtt.cep.eiq.*
+
+queryEvent btn1_Pressed() as btn1_pressed(_) found
+queryEvent btn1_Released() as btn1_pressed(_) lost
+
+rule btn1_Pressed_Rule on btn1_Pressed {
+	println("btn1 pressed!")
+}
+
+rule btn1_Released_Rule on btn1_Released {
+	println("btn1 released!")
+	org.eclipse.viatra.cep.mqtt.cep.utils.DashboardUtil.publishSimpleEvent("btn1")
+}
+
+queryEvent btn2_Pressed() as btn2_pressed(_) found
+queryEvent btn2_Released() as btn2_pressed(_) lost
+
+rule btn2_Pressed_Rule on btn2_Pressed {
+	println("btn2 pressed!")
+}
+
+rule btn2_Released_Rule on btn2_Released {
+	println("btn2 released!")
+}
+
+queryEvent btn3_Pressed() as btn3_pressed(_) found
+queryEvent btn3_Released() as btn3_pressed(_) lost
+
+rule btn3_Pressed_Rule on btn3_Pressed {
+	println("btn3 pressed!")
+}
+
+rule btn3_Released_Rule on btn3_Released {
+	println("btn3 released!")
+}
+
+
+queryEvent pot1_aboveMid() as pot1_aboveMid(_) found
+queryEvent pot1_belowMid() as pot1_aboveMid(_) lost
+
+rule pot1_Above_Rule on pot1_aboveMid {
+	println("pot1 is above mid")
+}
+
+rule pot1_Below_Rule on pot1_belowMid {
+	println("pot1 is below mid")
+}
+
+complexEvent btn1_pushed() {
+	as btn1_Pressed->btn1_Released
+}
+
+complexEvent btn2_pushed() {
+	as btn2_Pressed->btn2_Released
+}
+
+complexEvent btn3_pushed() {
+	as btn3_Pressed->btn3_Released
+}
+
+complexEvent myComplexEvent() {
+	as pot1_aboveMid->(btn1_pushed->btn2_pushed->btn3_pushed)[10000]->pot1_belowMid
+}
+rule myComplexRule on myComplexEvent {
+	println("My very complex event has been detected!")
+	org.eclipse.viatra.cep.mqtt.cep.utils.DashboardUtil.publishHighlightedEvent("Woohoo!")
+} 

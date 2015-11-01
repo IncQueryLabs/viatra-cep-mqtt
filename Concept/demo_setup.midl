@@ -1,0 +1,37 @@
+setup ECE2015Demo { // this is the root of the model
+
+    brokerUrl "tcp://127.0.0.1:1883"
+
+    prototype payload buttonPressed {
+	boolean p
+	// more slots can be added freely
+    }
+
+    prototype payload potmeterValue {
+	int v {
+	    // to each slot, "special values" can be added freely
+	    min 0
+	    max 1023
+	    mid 512
+	    level1 768 // level1 is an arbitrary string
+	}
+    } 
+
+    sensor btn1 {
+	qos 0 // this is optional
+	prototypePayload buttonPressed
+    }
+ 
+    sensor btn2 {
+	prototypePayload buttonPressed
+    }
+
+    sensor btn3 {
+	prototypePayload buttonPressed
+    }
+ 
+
+    sensor pot1 {
+	prototypePayload potMeterValue
+    }
+}
