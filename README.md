@@ -10,6 +10,13 @@ The instructions below were tested on Ubuntu 14.04 LTS.
 Install driver: `sudo apt-get update && sudo apt-get install arduino arduino-core`
 If something doesn't work, sudo copy _librxtxSerial.so_ (from _Sensors/com.incquerylabs.iot.javatransmitter/exported_) to _/usr/lib/_
 
+### Arduino circuit
+The demo circuit is built from three push buttons and a 10k Ohm potentiometer.
+<p><img src="https://raw.github.com/IncQueryLabs/viatra-cep-mqtt/master/Sensors/iot-demo-sensors/circuit-diagram.png" width="350"></p>
+
+### Arduino firmware
+Flash the demo sensor firmware (from _Sensors/iot-demo-sensors/iot-demo-sensors.ino_) to Arduino.
+
 ### Mosquito broker and client
 
 1. Install docker: `sudo apt-get -y install docker.io`
