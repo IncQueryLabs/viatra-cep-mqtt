@@ -8,6 +8,7 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanParameter
 
 class CepGenerator {
 	
@@ -366,7 +367,11 @@ class CepGenerator {
 					«FOR sensor : sensors»
 						if (topic.equals("«sensor.name»")) {
 						«FOR parameter:sensor.lastReceivedPayload.dataParameters»
-							«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name».setValue(sensor.get("«sensor.lastReceivedPayload.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
+							«IF(parameter instanceof BooleanParameter)»
+								«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name».setValue(sensor.get("«sensor.lastReceivedPayload.name»").asObject().get("«parameter.name»").asInt() != 0);
+							«ELSE»
+								«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name».setValue(sensor.get("«sensor.lastReceivedPayload.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
+							«ENDIF»
 						«ENDFOR»
 						}
 					«ENDFOR»

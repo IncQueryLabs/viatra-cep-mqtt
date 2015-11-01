@@ -5,6 +5,7 @@ import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
 import java.io.FileWriter
 import org.eclipse.emf.common.util.EList
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanParameter
 
 class JavaGenerator {
 
@@ -62,7 +63,7 @@ class JavaGenerator {
 									if (sensorName.equals("pb1")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
 										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
 										publisher.publish("«sensor.name»", msg.toString());
 									}
@@ -70,7 +71,7 @@ class JavaGenerator {
 									if (sensorName.equals("pb2")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
 										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
 										publisher.publish("«sensor.name»", msg.toString());
 									}
@@ -78,7 +79,7 @@ class JavaGenerator {
 									if (sensorName.equals("pb3")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
 										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
 										publisher.publish("«sensor.name»", msg.toString());
 									}
@@ -86,7 +87,7 @@ class JavaGenerator {
 									if (sensorName.equals("pot1")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
 										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
 										publisher.publish("«sensor.name»", msg.toString());
 									}
