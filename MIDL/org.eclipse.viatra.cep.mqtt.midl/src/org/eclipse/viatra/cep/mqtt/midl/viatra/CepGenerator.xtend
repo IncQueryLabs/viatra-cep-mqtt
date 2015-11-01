@@ -2,12 +2,15 @@ package org.eclipse.viatra.cep.mqtt.midl.viatra
 
 import java.io.File
 import java.io.FileWriter
+import org.eclipse.core.resources.IResource
 import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.core.runtime.Path
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
+import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanParameter
 
 class CepGenerator {
@@ -40,6 +43,16 @@ class CepGenerator {
 		generateProjectFile
 		generateTestApplication
 		generateDashboardUtil(setup)
+		
+		val description = ResourcesPlugin.workspace.loadProjectDescription(
+			new Path(cepProjectFolder.absolutePath + "/.project"))
+		val project = ResourcesPlugin.workspace.root.getProject(description.getName());
+		if (!project.exists) {
+			project.create(description, null);
+			project.open(null);
+		}
+		project.getFolder("src").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
+		project.getFolder("META-INF").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 	}
 	
 	private def generateClasspathFile() {

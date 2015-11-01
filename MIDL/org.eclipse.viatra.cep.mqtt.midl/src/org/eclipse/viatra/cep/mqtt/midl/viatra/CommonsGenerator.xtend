@@ -2,7 +2,11 @@ package org.eclipse.viatra.cep.mqtt.midl.viatra
 
 import java.io.File
 import java.io.FileWriter
+import org.eclipse.core.resources.IResource
+import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.core.runtime.Path
 import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
+import org.eclipse.core.runtime.NullProgressMonitor
 
 class CommonsGenerator {
 
@@ -30,6 +34,15 @@ class CommonsGenerator {
 		generateGeneralPublisher
 		generateGeneralSubscriber
 		
+		val description = ResourcesPlugin.workspace.loadProjectDescription(
+			new Path(commonsProjectFolder.absolutePath + "/.project"))
+		val project = ResourcesPlugin.workspace.root.getProject(description.getName());
+		if (!project.exists) {
+			project.create(description, null);
+			project.open(null);
+		}
+		project.getFolder("src").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
+		project.getFolder("META-INF").refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 	}
 	
 	private def generateClasspathFile() {
