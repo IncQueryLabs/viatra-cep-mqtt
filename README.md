@@ -7,7 +7,7 @@ A demo for EclipseCon Europe 2015, more details at the [ECE website](https://www
 The instructions below were tested on Ubuntu 14.04 LTS.
 
 ### Arduino setup
-Install driver: `sudo apt-get update && sudo apt-get install arduino arduino-core`
+Install driver: `sudo apt-get install arduino arduino-core`
 If something doesn't work, sudo copy _librxtxSerial.so_ (from _Sensors/com.incquerylabs.iot.javatransmitter/exported_) to _/usr/lib/_
 
 ### Arduino circuit
