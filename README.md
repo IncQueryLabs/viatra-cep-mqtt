@@ -22,8 +22,7 @@ Flash the demo sensor firmware (from _Sensors/iot-demo-sensors/iot-demo-sensors.
 1. Install docker: `sudo apt-get -y install docker.io`
 2. Pull and start appropriate mosquitto image `docker run -tip 1883:1883 -p 9001:9001 toke/mosquitto`
 3. Install mosquito client: `sudo apt-get install mosquito-clients`
-4. Start mosquito_sub (in a separate terminal) to see output from demo device: `mosquitto_sub -p 1883 -t "data/LH"`
-
+4. Start mosquito_sub (in a separate terminal) to see output from demo device: `mosquitto_sub -p 1883 -t "{sensor_name}"`
 
 ### Eclipse
 
