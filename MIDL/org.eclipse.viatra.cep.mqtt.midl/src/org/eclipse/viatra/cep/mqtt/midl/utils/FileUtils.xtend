@@ -2,6 +2,7 @@ package org.eclipse.viatra.cep.mqtt.midl.utils
 
 import java.io.File
 import java.util.regex.Pattern
+import org.eclipse.core.resources.IFolder
 
 class FileUtils {
 	
@@ -35,6 +36,18 @@ class FileUtils {
 			actualPackage = file
 		}
 		return actualPackage
+	}
+	
+	public static def createPackage(IFolder folder, String packageName) {
+		val packages = packageName.split(Pattern.quote("."))
+		var actualFolder = folder
+		for (p : packages) {
+			val newFolder = actualFolder.getFolder(p)
+			if (!newFolder.exists)
+				newFolder.create(true, true, null)
+			actualFolder = newFolder
+		}
+		return actualFolder
 	}
 	
 }

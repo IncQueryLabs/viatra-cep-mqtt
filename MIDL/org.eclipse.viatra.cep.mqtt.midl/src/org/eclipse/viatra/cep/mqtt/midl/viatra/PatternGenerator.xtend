@@ -1,7 +1,7 @@
 package org.eclipse.viatra.cep.mqtt.midl.viatra
 
-import java.io.File
-import java.io.FileWriter
+import java.io.ByteArrayInputStream
+import org.eclipse.core.resources.IFolder
 import org.eclipse.emf.common.util.EList
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Criterion
@@ -11,21 +11,25 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringCriterion
-import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
+import org.eclipse.emf.common.util.URI
 
 class PatternGenerator {
+	
+	URI uri
 
-	public  def generatePatternsAndRules(File cepTopPackage, EList<Sensor> sensors) {
-		generatePatterns(cepTopPackage, sensors)
-		generateRules(cepTopPackage, sensors)
+	public  def generatePatternsAndRules(IFolder topPackage, EList<Sensor> sensors, URI uri) {
+		this.uri = uri
+		generatePatterns(topPackage, sensors)
+		generateRules(topPackage, sensors)
 	}
 
-	private def generatePatterns(File cepTopPackage, EList<Sensor> sensors) {
-		val eiqPackage = FileUtils.createFolder(new File(cepTopPackage, "eiq"))
-		val patternsFile = new File(eiqPackage, "Patterns.eiq")
-		val writer = new FileWriter(patternsFile)
+	private def generatePatterns(IFolder topPackage, EList<Sensor> sensors) {
+		val eiqPackage = topPackage.getFolder("eiq")
+		if (!eiqPackage.exists)
+			eiqPackage.create(true, true, null)
+		val patternsFile = eiqPackage.getFile("Patterns.eiq")
 		val fileContent = '''
-			package org.eclipse.viatra.cep.mqtt.cep.eiq
+			package «uri.segments.get(1)».eiq
 			
 			import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
 			
@@ -33,8 +37,10 @@ class PatternGenerator {
 				«generatePayloadPatterns(sensor.name, sensor.lastReceivedPayload)»
 			«ENDFOR»
 		'''
-		writer.write(fileContent)
-		writer.close
+		if (patternsFile.exists)
+			patternsFile.delete(true, null)
+		val source = new ByteArrayInputStream(fileContent.bytes)
+		patternsFile.create(source, true, null)
 	}
 
 	private def generatePayloadPatterns(String sensorName, Payload payload) '''
@@ -50,9 +56,6 @@ class PatternGenerator {
 				«ENDIF»
 			«ENDFOR»
 		«ENDFOR»
-«««		«FOR parameter : message.messageParameters»					// XXX: messageParameter?
-«««			«generateMessagePatterns(sensorName, parameter.message)»
-«««		«ENDFOR»
 	'''
 
 	private def generateLessThanPattern(String sensorName, String messageName, DataParameter parameter,
@@ -115,21 +118,24 @@ class PatternGenerator {
 		}
 	}
 
-	private def generateRules(File cepTopPackage, EList<Sensor> sensors) {
-		val veplPackage = FileUtils.createFolder(new File(cepTopPackage, "vepl"))
-		val patternsFile = new File(veplPackage, "Events.vepl")
-		val writer = new FileWriter(patternsFile)
+	private def generateRules(IFolder cepTopPackage, EList<Sensor> sensors) {
+		val veplPackage = cepTopPackage.getFolder("vepl")
+		if (!veplPackage.exists)
+			veplPackage.create(true, true, null)
+		val veplFile = veplPackage.getFile("Events.vepl")
 		val fileContent = '''
-			package org.eclipse.viatra.cep.mqtt.cep.vepl.firstLevel
+			package «uri.segments.get(1)».vepl.firstLevel
 			
-			import-queries org.eclipse.viatra.cep.mqtt.cep.eiq.*
+			import-queries «uri.segments.get(1)».eiq.*
 			
 			«FOR sensor : sensors»
 				«generatePayloadRules(sensor.name.toFirstLower, sensor.lastReceivedPayload)»
 			«ENDFOR»
 		'''
-		writer.write(fileContent)
-		writer.close
+		if (veplFile.exists)
+			veplFile.delete(true, null)
+		val source = new ByteArrayInputStream(fileContent.bytes)
+		veplFile.create(source, true, null)
 	}
 
 	private def generatePayloadRules(String sensorName, Payload payload) '''
@@ -145,9 +151,6 @@ class PatternGenerator {
 				«ENDIF»
 			«ENDFOR»
 		«ENDFOR»
-«««		«FOR parameter : message.messageParameters»					// XXX: messageParameter?
-«««			«generateMessageRules(sensorName, parameter.message)»
-«««		«ENDFOR»
 	'''
 
 	private def generateLessThanEventAndRule(String sensorName, String messageName, DataParameter parameter,
