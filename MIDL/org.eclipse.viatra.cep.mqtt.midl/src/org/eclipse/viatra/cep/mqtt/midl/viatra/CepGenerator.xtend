@@ -288,11 +288,11 @@ class CepGenerator {
 					new StandaloneSetup().setPlatformUri("../");
 					Injector injector = new MIDLStandaloneSetup().createInjectorAndDoEMFRegistration();
 					resourceSet = injector.getInstance(XtextResourceSet.class);
-					resource = resourceSet.getResource(URI.createURI("file:Â«modelPathÂ»"), true);
+					resource = resourceSet.getResource(URI.createURI("file:«modelPath»"), true);
 					mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
 					
 					callback = new Callback(resource);
-					subscriber = new Subscriber("Â«setup.brokerUrlÂ»", "CEP_SUBSCRIBER");
+					subscriber = new Subscriber("«setup.brokerUrl»", "CEP_SUBSCRIBER");
 					subscriber.setCallback(callback);
 
 			
@@ -301,9 +301,9 @@ class CepGenerator {
 			
 				public void run() {
 					subscriber.connect();
-					Â«FOR sensor:sensorsÂ»
-					subscriber.subscribe("Â«sensor.nameÂ»");
-					Â«ENDFORÂ»
+					«FOR sensor:sensors»
+					subscriber.subscribe("«sensor.name»");
+					«ENDFOR»
 					while (running) {
 			
 					}
@@ -350,13 +350,13 @@ class CepGenerator {
 			
 				Resource resource;
 				
-				Â«FOR sensor : sensorsÂ»
-					Sensor Â«sensor.nameÂ»;
-					Payload Â«sensor.nameÂ»_Â«sensor.lastReceivedPayload.nameÂ»;
-					Â«FOR parameter:sensor.lastReceivedPayload.dataParametersÂ»
-						Â«parameter.type.toFirstUpperÂ»Parameter Â«sensor.nameÂ»_Â«sensor.lastReceivedPayload.nameÂ»_Â«parameter.nameÂ»;
-					Â«ENDFORÂ»
-				Â«ENDFORÂ»
+				«FOR sensor : sensors»
+					Sensor «sensor.name»;
+					Payload «sensor.name»_«sensor.lastReceivedPayload.name»;
+					«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+						«parameter.type.toFirstUpper»Parameter «sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name»;
+					«ENDFOR»
+				«ENDFOR»
 			
 				public Callback(Resource resource) {
 					this.resource = resource;
@@ -377,35 +377,35 @@ class CepGenerator {
 				public void messageArrived(String topic, MqttMessage message) {
 					String msg = new String(message.getPayload());
 					JsonObject sensor = JsonObject.readFrom(msg);
-					Â«FOR sensor : sensorsÂ»
-						if (topic.equals("Â«sensor.nameÂ»")) {
-						Â«FOR parameter:sensor.lastReceivedPayload.dataParametersÂ»
-							Â«IF(parameter instanceof BooleanParameter)Â»
-								Â«sensor.nameÂ»_Â«sensor.lastReceivedPayload.nameÂ»_Â«parameter.nameÂ».setValue(sensor.get("Â«sensor.lastReceivedPayload.nameÂ»").asObject().get("Â«parameter.nameÂ»").asInt() != 0);
-							Â«ELSEÂ»
-								Â«sensor.nameÂ»_Â«sensor.lastReceivedPayload.nameÂ»_Â«parameter.nameÂ».setValue(sensor.get("Â«sensor.lastReceivedPayload.nameÂ»").asObject().get("Â«parameter.nameÂ»").asÂ«parameter.type.toFirstUpperÂ»());
-							Â«ENDIFÂ»
-						Â«ENDFORÂ»
+					«FOR sensor : sensors»
+						if (topic.equals("«sensor.name»")) {
+						«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+							«IF(parameter instanceof BooleanParameter)»
+								«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name».setValue(sensor.get("«sensor.lastReceivedPayload.name»").asObject().get("«parameter.name»").asInt() != 0);
+							«ELSE»
+								«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name».setValue(sensor.get("«sensor.lastReceivedPayload.name»").asObject().get("«parameter.name»").as«parameter.type.toFirstUpper»());
+							«ENDIF»
+						«ENDFOR»
 						}
-					Â«ENDFORÂ»
+					«ENDFOR»
 				}
 
 				private void getDataFromModel() {
 					MqttSetup setup = (MqttSetup) EcoreUtil.getObjectByType(resource.getContents(), MIDLFactory.eINSTANCE.createMqttSetup().eClass());
 					
 					for (Sensor sensor : setup.getSensors()) {
-						Â«FOR sensor : sensorsÂ»
-						if (sensor.getName().equals("Â«sensor.nameÂ»")) {
-							Â«sensor.nameÂ» = sensor;
+						«FOR sensor : sensors»
+						if (sensor.getName().equals("«sensor.name»")) {
+							«sensor.name» = sensor;
 							for (DataParameter parameter : sensor.getLastReceivedPayload().getDataParameters()) {
-								Â«FOR parameter:sensor.lastReceivedPayload.dataParametersÂ»
-									if (parameter.getName().equals("Â«parameter.nameÂ»")) {
-										Â«sensor.nameÂ»_Â«sensor.lastReceivedPayload.nameÂ»_Â«parameter.nameÂ» = (Â«parameter.type.toFirstUpperÂ»Parameter) parameter;
+								«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+									if (parameter.getName().equals("«parameter.name»")) {
+										«sensor.name»_«sensor.lastReceivedPayload.name»_«parameter.name» = («parameter.type.toFirstUpper»Parameter) parameter;
 									}
-								Â«ENDFORÂ»
+								«ENDFOR»
 							}
 						}
-						Â«ENDFORÂ»
+						«ENDFOR»
 					}
 				}
 			}
@@ -438,7 +438,7 @@ class CepGenerator {
 		
 			private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
 		
-			private static Publisher publisher = new Publisher("Â«setup.brokerUrlÂ»", "IOT_CEP_DASHBOARD");;
+			private static Publisher publisher = new Publisher("«setup.brokerUrl»", "IOT_CEP_DASHBOARD");;
 			
 			public static void publishSimpleEvent(String eventMessage) {
 				publish(eventMessage, "SIMPLE");

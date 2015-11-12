@@ -6,24 +6,20 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.eclipse.viatra.cep.mqtt.midl.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.viatra.cep.mqtt.midl,
+ org.eclipse.viatra.cep.mqtt.midl.ide,
  org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.ui.editors;bundle-version="3.5.0",
  org.eclipse.ui.ide;bundle-version="3.5.0",
- org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide,
  org.eclipse.ui,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
- org.eclipse.xtext.ui.codetemplates.ui,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtext.common.types.ui,
  org.eclipse.xtend.lib;resolution:=optional,
- org.eclipse.xtext.ui.shared
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.viatra.cep.mqtt.midl.ui.contentassist,
- org.eclipse.viatra.cep.mqtt.midl.ui.quickfix,
- org.eclipse.viatra.cep.mqtt.midl.ide.contentassist.antlr,
- org.eclipse.viatra.cep.mqtt.midl.ui.internal,
- org.eclipse.viatra.cep.mqtt.midl.ide.contentassist.antlr.internal
+ org.eclipse.xtext.xbase.lib
 Import-Package: org.apache.log4j
-Bundle-Activator: org.eclipse.viatra.cep.mqtt.midl.ui.internal.MIDLActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.viatra.cep.mqtt.midl.ui.internal,
+ org.eclipse.viatra.cep.mqtt.midl.ui.contentassist,
+ org.eclipse.viatra.cep.mqtt.midl.ui.quickfix
+Bundle-Activator: org.eclipse.viatra.cep.mqtt.midl.ui.internal.MidlActivator

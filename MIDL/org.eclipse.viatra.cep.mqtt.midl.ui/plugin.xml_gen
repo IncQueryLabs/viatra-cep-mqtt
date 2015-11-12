@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <?eclipse version="3.0"?>
 <plugin>
 	<extension
@@ -205,19 +205,19 @@
 		</handler>
 	</extension>
 	<!-- adding resource factories -->
-		<extension
-			point="org.eclipse.emf.ecore.extension_parser">
-			<parser
-				class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-				type="midl">
-			</parser>
-		</extension>
-		<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
-		    <resourceServiceProvider
-		        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
-		        uriExtension="midl">
-		    </resourceServiceProvider>
-		</extension>
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="midl">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+	    <resourceServiceProvider
+	        class="org.eclipse.viatra.cep.mqtt.midl.ui.MIDLExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+	        uriExtension="midl">
+	    </resourceServiceProvider>
+	</extension>
 	<!-- marker definitions for org.eclipse.viatra.cep.mqtt.midl.MIDL -->
 	<extension
 			id="midl.check.fast"

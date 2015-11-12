@@ -68,3 +68,4 @@ Criterion:
 	{StringCriterion} prefix = ("eq" | "neq") value = STRING |
 	{BooleanCriterion} prefix = ("eq" | "neq") value = BOOLEAN
 ;
+	

@@ -74,62 +74,62 @@ class CGenerator {
 		val subscriberFile = FileUtils.createFile(srcFolder, sensor.name.toFirstUpper + "Messages.h")
 		val writer = new FileWriter(subscriberFile)
 		val fileContent = '''
-			#ifndef Â«sensor.name.toUpperCaseÂ»MESSAGES_H_
-			#define Â«sensor.name.toUpperCaseÂ»MESSAGES_H_
+			#ifndef «sensor.name.toUpperCase»MESSAGES_H_
+			#define «sensor.name.toUpperCase»MESSAGES_H_
 
-			Â«createMessageStruct(sensor.lastReceivedPayload)Â»
+			«createMessageStruct(sensor.lastReceivedPayload)»
 			
-			#endif /* Â«sensor.name.toUpperCaseÂ»MESSAGES_H_ */
+			#endif /* «sensor.name.toUpperCase»MESSAGES_H_ */
 		'''
 		writer.write(fileContent)
 		writer.close
 	}
 
 	private def createMessageStruct(Payload message) '''
-Â«Â«Â«		Â«FOR parameter : message.messageParametersÂ»			// XXX: messageParameter?
-Â«Â«Â«			Â«createMessageStruct(parameter.message)Â»
-Â«Â«Â«			
-Â«Â«Â«		Â«ENDFORÂ»
+«««		«FOR parameter : message.messageParameters»			// XXX: messageParameter?
+«««			«createMessageStruct(parameter.message)»
+«««			
+«««		«ENDFOR»
 		typedef struct {
-			Â«FOR parameter : message.dataParametersÂ»
-				Â«IF parameter.type == "boolean"Â»
-					int Â«parameter.nameÂ»;
-				Â«ELSEIF parameter.type == "string"Â»
-					char* Â«parameter.nameÂ»;
-				Â«ELSEÂ»
-					Â«parameter.typeÂ» Â«parameter.nameÂ»;
-				Â«ENDIFÂ»
-			Â«ENDFORÂ»
-Â«Â«Â«			Â«FOR parameter : message.messageParametersÂ»		// XXX: messageParameter?
-Â«Â«Â«				Â«parameter.message.name.toFirstUpperÂ» Â«parameter.message.nameÂ»;
-Â«Â«Â«			Â«ENDFORÂ»
-		} Â«message.name.toFirstUpperÂ»;
+			«FOR parameter : message.dataParameters»
+				«IF parameter.type == "boolean"»
+					int «parameter.name»;
+				«ELSEIF parameter.type == "string"»
+					char* «parameter.name»;
+				«ELSE»
+					«parameter.type» «parameter.name»;
+				«ENDIF»
+			«ENDFOR»
+«««			«FOR parameter : message.messageParameters»		// XXX: messageParameter?
+«««				«parameter.message.name.toFirstUpper» «parameter.message.name»;
+«««			«ENDFOR»
+		} «message.name.toFirstUpper»;
 //	'''
 
 	private def createSubscriberHeaders(Sensor sensor, File srcFolder) {
 		val subscriberFile = FileUtils.createFile(srcFolder, sensor.name.toFirstUpper + "Subscriber.h")
 		val writer = new FileWriter(subscriberFile)
 		val fileContent = '''
-			#ifndef Â«sensor.name.toUpperCaseÂ»SUBSCRIBER_H_
-			#define Â«sensor.name.toUpperCaseÂ»SUBSCRIBER_H_
+			#ifndef «sensor.name.toUpperCase»SUBSCRIBER_H_
+			#define «sensor.name.toUpperCase»SUBSCRIBER_H_
 			
 			#include "stdio.h"
 			#include "stdlib.h"
 			#include "string.h"
 			#include "MQTTClient.h"
-			#include "Â«sensor.nameÂ»Messages.h"
+			#include "«sensor.name»Messages.h"
 			
-			MQTTClient Â«sensor.nameÂ»SubscriberInit();
-			void Â«sensor.nameÂ»SubscriberConnect(MQTTClient client, int cleansession);
-			void Â«sensor.nameÂ»SubscriberSubscribe(MQTTClient client, int qos);
-			void Â«sensor.nameÂ»SubscriberUnsubscribe(MQTTClient client);
-			void Â«sensor.nameÂ»SubscriberDisnamennect(MQTTClient client);
-			void Â«sensor.nameÂ»SubscriberDestroy(MQTTClient client);
-			void Â«sensor.nameÂ»ConnLost(void *context, char *cause);
-			void Â«sensor.nameÂ»Delivered(void *context, MQTTClient_deliveryToken dt);
-			int Â«sensor.nameÂ»MessageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message);
+			MQTTClient «sensor.name»SubscriberInit();
+			void «sensor.name»SubscriberConnect(MQTTClient client, int cleansession);
+			void «sensor.name»SubscriberSubscribe(MQTTClient client, int qos);
+			void «sensor.name»SubscriberUnsubscribe(MQTTClient client);
+			void «sensor.name»SubscriberDisnamennect(MQTTClient client);
+			void «sensor.name»SubscriberDestroy(MQTTClient client);
+			void «sensor.name»ConnLost(void *context, char *cause);
+			void «sensor.name»Delivered(void *context, MQTTClient_deliveryToken dt);
+			int «sensor.name»MessageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message);
 			
-			#endif /* Â«sensor.name.toUpperCaseÂ»SUBSCRIBER_H_ */
+			#endif /* «sensor.name.toUpperCase»SUBSCRIBER_H_ */
 		'''
 		writer.write(fileContent)
 		writer.close
@@ -139,50 +139,50 @@ class CGenerator {
 		val publisherFile = FileUtils.createFile(srcFolder, sensor.name.toFirstUpper + "Subscriber.c")
 		val writer = new FileWriter(publisherFile)
 		val fileContent = '''
-			#include "Â«sensor.nameÂ»Subscriber.h"
+			#include "«sensor.name»Subscriber.h"
 			
 			volatile MQTTClient_deliveryToken deliveredtoken;
 			
-			MQTTClient Â«sensor.nameÂ»SubscriberInit() {
+			MQTTClient «sensor.name»SubscriberInit() {
 				MQTTClient client;
-				MQTTClient_create(&client, "Â«setup.brokerUrlÂ»", "Â«sensor.name.toUpperCaseÂ»_SUBSCRIBER", MQTTCLIENT_PERSISTENCE_NONE, NULL);
+				MQTTClient_create(&client, "«setup.brokerUrl»", "«sensor.name.toUpperCase»_SUBSCRIBER", MQTTCLIENT_PERSISTENCE_NONE, NULL);
 				return client;
 			}
 			
-			void Â«sensor.nameÂ»SubscriberConnect(MQTTClient client, int cleansession) {
+			void «sensor.name»SubscriberConnect(MQTTClient client, int cleansession) {
 				MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 				conn_opts.cleansession = cleansession;
-				MQTTClient_setCallbacks(client, NULL, Â«sensor.nameÂ»ConnLost, Â«sensor.nameÂ»MessageArrived, Â«sensor.nameÂ»Delivered);
+				MQTTClient_setCallbacks(client, NULL, «sensor.name»ConnLost, «sensor.name»MessageArrived, «sensor.name»Delivered);
 				MQTTClient_connect(client, &conn_opts);
 			}
 			
-			void Â«sensor.nameÂ»SubscriberSubscribe(MQTTClient client, int qos) {
-				MQTTClient_subscribe(client, "Â«sensor.nameÂ»", qos);
+			void «sensor.name»SubscriberSubscribe(MQTTClient client, int qos) {
+				MQTTClient_subscribe(client, "«sensor.name»", qos);
 			}
 			
-			void Â«sensor.nameÂ»SubscriberUnsubscribe(MQTTClient client) {
-				MQTTClient_unsubscribe(client, "Â«sensor.nameÂ»");
+			void «sensor.name»SubscriberUnsubscribe(MQTTClient client) {
+				MQTTClient_unsubscribe(client, "«sensor.name»");
 			}
 			
-			void Â«sensor.nameÂ»SubscriberDisconnect(MQTTClient client) {
+			void «sensor.name»SubscriberDisconnect(MQTTClient client) {
 				MQTTClient_disconnect(client, 1000L);
 			}
 			
-			void Â«sensor.nameÂ»SubscriberDestroy(MQTTClient client) {
+			void «sensor.name»SubscriberDestroy(MQTTClient client) {
 				MQTTClient_destroy(&client);
 			}
 			
-			void Â«sensor.nameÂ»ConnLost(void *context, char *cause) {
+			void «sensor.name»ConnLost(void *context, char *cause) {
 				printf("\nConnection lost\n");
 				printf("     cause: %s\n", cause);
 			}
 			
-			void Â«sensor.nameÂ»Delivered(void *context, MQTTClient_deliveryToken dt) {
+			void «sensor.name»Delivered(void *context, MQTTClient_deliveryToken dt) {
 				printf("Message with token value %d delivery confirmed\n", dt);
 				deliveredtoken = dt;
 			}
 			
-			int Â«sensor.nameÂ»MessageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+			int «sensor.name»MessageArrived(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
 				printf("Message arrived\n");
 				printf("     topic: %s\n", topicName);
 				printf("   message: %s\n", message->payload);
@@ -200,24 +200,24 @@ class CGenerator {
 		val publisherFile = FileUtils.createFile(srcFolder, sensor.name.toFirstUpper + "Publisher.h")
 		val writer = new FileWriter(publisherFile)
 		val fileContent = '''
-			#ifndef Â«sensor.name.toUpperCaseÂ»PUBLISHER_H_
-			#define Â«sensor.name.toUpperCaseÂ»PUBLISHER_H_
+			#ifndef «sensor.name.toUpperCase»PUBLISHER_H_
+			#define «sensor.name.toUpperCase»PUBLISHER_H_
 			
 			#include "stdio.h"
 			#include "stdlib.h"
 			#include "string.h"
 			#include "MQTTClient.h"
-			#include "Â«sensor.nameÂ»Messages.h"
+			#include "«sensor.name»Messages.h"
 			
-			MQTTClient Â«sensor.nameÂ»PublisherInit();
-			void Â«sensor.nameÂ»PublisherConnect(MQTTClient client, int cleansession);
+			MQTTClient «sensor.name»PublisherInit();
+			void «sensor.name»PublisherConnect(MQTTClient client, int cleansession);
 
-			void Â«sensor.nameÂ»PublisherPublishÂ«sensor.lastReceivedPayload.name.toFirstUpperÂ»(MQTTClient client, Â«sensor.lastReceivedPayload.name.toFirstUpperÂ» Â«sensor.lastReceivedPayload.nameÂ», int qos);
+			void «sensor.name»PublisherPublish«sensor.lastReceivedPayload.name.toFirstUpper»(MQTTClient client, «sensor.lastReceivedPayload.name.toFirstUpper» «sensor.lastReceivedPayload.name», int qos);
 
-			void Â«sensor.nameÂ»PublisherDisconnect(MQTTClient client);
-			void Â«sensor.nameÂ»PublisherDestroy(MQTTClient client);
+			void «sensor.name»PublisherDisconnect(MQTTClient client);
+			void «sensor.name»PublisherDestroy(MQTTClient client);
 			
-			#endif /* Â«sensor.name.toUpperCaseÂ»PUBLISHER_H_ */
+			#endif /* «sensor.name.toUpperCase»PUBLISHER_H_ */
 		'''
 		writer.write(fileContent)
 		writer.close
@@ -231,27 +231,27 @@ class CGenerator {
 		publisherFile.createNewFile
 		val writer = new FileWriter(publisherFile)
 		val fileContent = '''
-			#include "Â«sensor.nameÂ»Publisher.h"
+			#include "«sensor.name»Publisher.h"
 			
-			MQTTClient Â«sensor.nameÂ»PublisherInit() {
+			MQTTClient «sensor.name»PublisherInit() {
 				MQTTClient client;
-				MQTTClient_create(&client, "Â«setup.brokerUrlÂ»", "Â«sensor.name.toUpperCaseÂ»_PUBLISHER", MQTTCLIENT_PERSISTENCE_NONE, NULL);
+				MQTTClient_create(&client, "«setup.brokerUrl»", "«sensor.name.toUpperCase»_PUBLISHER", MQTTCLIENT_PERSISTENCE_NONE, NULL);
 				return client;
 			}
 			
-			void Â«sensor.nameÂ»PublisherConnect(MQTTClient client, int cleansession) {
+			void «sensor.name»PublisherConnect(MQTTClient client, int cleansession) {
 				MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 				conn_opts.cleansession = cleansession;
 				MQTTClient_connect(client, &conn_opts);
 			}
 				
-				void Â«sensor.nameÂ»PublisherPublishÂ«sensor.lastReceivedPayload.name.toFirstUpperÂ»(MQTTClient client, Â«sensor.lastReceivedPayload.name.toFirstUpperÂ» Â«sensor.lastReceivedPayload.nameÂ», int qos) {
+				void «sensor.name»PublisherPublish«sensor.lastReceivedPayload.name.toFirstUpper»(MQTTClient client, «sensor.lastReceivedPayload.name.toFirstUpper» «sensor.lastReceivedPayload.name», int qos) {
 					MQTTClient_deliveryToken token;
 					MQTTClient_message message = MQTTClient_message_initializer;
 					
 					char payload[100] = "{";
 					
-					Â«createJsonStringFromDataParameters(sensor.lastReceivedPayload)Â»
+					«createJsonStringFromDataParameters(sensor.lastReceivedPayload)»
 					
 					strcat(payload, "}");
 					
@@ -259,15 +259,15 @@ class CGenerator {
 					message.payloadlen = strlen(payload);
 					message.qos = qos;
 					message.retained = 0;
-					MQTTClient_publishMessage(client, "Â«sensor.nameÂ»", &message, &token);
+					MQTTClient_publishMessage(client, "«sensor.name»", &message, &token);
 					MQTTClient_waitForCompletion(client, token, 10000L);
 				}
 			
-			void Â«sensor.nameÂ»PublisherDisconnect(MQTTClient client) {
+			void «sensor.name»PublisherDisconnect(MQTTClient client) {
 				MQTTClient_disconnect(client, 1000L);
 			}
 			
-			void Â«sensor.nameÂ»PublisherDestroy(MQTTClient client) {
+			void «sensor.name»PublisherDestroy(MQTTClient client) {
 				MQTTClient_destroy(&client);
 			}
 		'''
@@ -276,66 +276,66 @@ class CGenerator {
 	}
 
 	private def createJsonStringFromDataParameters(Payload message) '''
-		Â«FOR parameter : message.dataParametersÂ»
-			char Â«parameter.nameÂ»[Â«parameter.name.lengthÂ»];
-			Â«IF (parameter.type == "int" || parameter.type == "boolean")Â»
-				sprintf(Â«parameter.nameÂ», "%d", Â«message.nameÂ».Â«parameter.nameÂ»);
-			Â«ELSEIF parameter.type == "float"Â»
-				sprintf(Â«parameter.nameÂ», "%f", Â«message.nameÂ».Â«parameter.nameÂ»);
-			Â«ELSEIF parameter.type == "string"Â»
-				sprintf(Â«parameter.nameÂ», "%s", Â«message.nameÂ».Â«parameter.nameÂ»);
-			Â«ENDIFÂ»
-			strcat(payload, "\"Â«parameter.nameÂ»\":");
-			strcat(payload, Â«parameter.nameÂ»);
-			Â«IF parameter != message.dataParameters.lastÂ»
+		«FOR parameter : message.dataParameters»
+			char «parameter.name»[«parameter.name.length»];
+			«IF (parameter.type == "int" || parameter.type == "boolean")»
+				sprintf(«parameter.name», "%d", «message.name».«parameter.name»);
+			«ELSEIF parameter.type == "float"»
+				sprintf(«parameter.name», "%f", «message.name».«parameter.name»);
+			«ELSEIF parameter.type == "string"»
+				sprintf(«parameter.name», "%s", «message.name».«parameter.name»);
+			«ENDIF»
+			strcat(payload, "\"«parameter.name»\":");
+			strcat(payload, «parameter.name»);
+			«IF parameter != message.dataParameters.last»
 				strcat(payload, ",");
-			Â«ENDIFÂ»
-		Â«ENDFORÂ»
-Â«Â«Â«		Â«IF (!message.messageParameters.empty && !message.dataParameters.empty)Â» // XXX: messageParameter?
-Â«Â«Â«			strcat(payload, ",");
-Â«Â«Â«		Â«ENDIFÂ»
-Â«Â«Â«		Â«FOR parameter : message.messageParametersÂ»
-Â«Â«Â«			
-Â«Â«Â«			Â«parameter.message.name.toFirstUpperÂ» Â«parameter.message.nameÂ» = Â«message.nameÂ».Â«parameter.message.nameÂ»;
-Â«Â«Â«			strcat(payload, "\"Â«parameter.message.nameÂ»\":{");
-Â«Â«Â«			Â«createJsonStringFromDataParameters(parameter.message)Â»
-Â«Â«Â«			strcat(payload, "}");
-Â«Â«Â«			Â«IF parameter != message.messageParameters.lastÂ»
-Â«Â«Â«				strcat(payload, ",");
-Â«Â«Â«			Â«ENDIFÂ»
-Â«Â«Â«		Â«ENDFORÂ»
+			«ENDIF»
+		«ENDFOR»
+«««		«IF (!message.messageParameters.empty && !message.dataParameters.empty)» // XXX: messageParameter?
+«««			strcat(payload, ",");
+«««		«ENDIF»
+«««		«FOR parameter : message.messageParameters»
+«««			
+«««			«parameter.message.name.toFirstUpper» «parameter.message.name» = «message.name».«parameter.message.name»;
+«««			strcat(payload, "\"«parameter.message.name»\":{");
+«««			«createJsonStringFromDataParameters(parameter.message)»
+«««			strcat(payload, "}");
+«««			«IF parameter != message.messageParameters.last»
+«««				strcat(payload, ",");
+«««			«ENDIF»
+«««		«ENDFOR»
 	'''
 
 	private def createMain(Sensor sensor, File srcFolder) {
 		val mainFile = FileUtils.createFile(srcFolder, sensor.name.toFirstUpper + "Main.c")
 		val writer = new FileWriter(mainFile)
 		val fileContent = '''
-			#include "Â«sensor.nameÂ»Publisher.h"
-			#include "Â«sensor.nameÂ»Subscriber.h"
+			#include "«sensor.name»Publisher.h"
+			#include "«sensor.name»Subscriber.h"
 			
 			int main(int argc, char* argv[])
 			{
 				MQTTClient publisherClient;
 				   MQTTClient subscriberClient;
 			
-				subscriberClient = Â«sensor.nameÂ»SubscriberInit();
-				Â«sensor.nameÂ»SubscriberConnect(subscriberClient, 1);
-				Â«sensor.nameÂ»SubscriberSubscribe(subscriberClient, 1);
+				subscriberClient = «sensor.name»SubscriberInit();
+				«sensor.name»SubscriberConnect(subscriberClient, 1);
+				«sensor.name»SubscriberSubscribe(subscriberClient, 1);
 			
-				publisherClient = Â«sensor.nameÂ»PublisherInit();
-				Â«sensor.nameÂ»PublisherConnect(publisherClient, 1);
+				publisherClient = «sensor.name»PublisherInit();
+				«sensor.name»PublisherConnect(publisherClient, 1);
 				
-				Â«createMessageObjects(sensor.lastReceivedPayload)Â»
+				«createMessageObjects(sensor.lastReceivedPayload)»
 				
-				Â«sensor.nameÂ»PublisherPublishÂ«sensor.lastReceivedPayload.name.toFirstUpperÂ»(publisherClient, Â«sensor.lastReceivedPayload.nameÂ», Â«sensor.qosÂ»);
+				«sensor.name»PublisherPublish«sensor.lastReceivedPayload.name.toFirstUpper»(publisherClient, «sensor.lastReceivedPayload.name», «sensor.qos»);
 
 				
-				Â«sensor.nameÂ»PublisherDisconnect(publisherClient);
-				Â«sensor.nameÂ»PublisherDestroy(publisherClient);
+				«sensor.name»PublisherDisconnect(publisherClient);
+				«sensor.name»PublisherDestroy(publisherClient);
 			
-				Â«sensor.nameÂ»SubscriberUnsubscribe(subscriberClient);
-				Â«sensor.nameÂ»SubscriberDisconnect(subscriberClient);
-				Â«sensor.nameÂ»SubscriberDestroy(subscriberClient);
+				«sensor.name»SubscriberUnsubscribe(subscriberClient);
+				«sensor.name»SubscriberDisconnect(subscriberClient);
+				«sensor.name»SubscriberDestroy(subscriberClient);
 			
 				return 0;
 			}
@@ -345,25 +345,25 @@ class CGenerator {
 	}
 
 	private def createMessageObjects(Payload message) '''
-Â«Â«Â«		Â«FOR parameter : message.messageParametersÂ»			// XXX: messageParameter?
-Â«Â«Â«			Â«createMessageObjects(parameter.message)Â»
-Â«Â«Â«			
-Â«Â«Â«		Â«ENDFORÂ»
-		Â«message.name.toFirstUpperÂ» Â«message.nameÂ»;
-		Â«FOR parameter : message.dataParametersÂ»
-			Â«IF parameter.type == "int"Â»
-				Â«message.nameÂ».Â«parameter.nameÂ» = 10;
-			Â«ELSEIF parameter.type == "boolean"Â»
-				Â«message.nameÂ».Â«parameter.nameÂ» = 1;
-			Â«ELSEIF parameter.type == "float"Â»
-				Â«message.nameÂ».Â«parameter.nameÂ» = 10.5f;
-			Â«ELSEIF parameter.type == "string"Â»
-				Â«message.nameÂ».Â«parameter.nameÂ» = "Hello World!";
-			Â«ENDIFÂ»
-		Â«ENDFORÂ»
-Â«Â«Â«		Â«FOR parameter : message.messageParametersÂ»			// XXX: messageParameter?
-Â«Â«Â«			Â«message.nameÂ».Â«parameter.message.nameÂ» = Â«parameter.message.nameÂ»;
-Â«Â«Â«		Â«ENDFORÂ»
+«««		«FOR parameter : message.messageParameters»			// XXX: messageParameter?
+«««			«createMessageObjects(parameter.message)»
+«««			
+«««		«ENDFOR»
+		«message.name.toFirstUpper» «message.name»;
+		«FOR parameter : message.dataParameters»
+			«IF parameter.type == "int"»
+				«message.name».«parameter.name» = 10;
+			«ELSEIF parameter.type == "boolean"»
+				«message.name».«parameter.name» = 1;
+			«ELSEIF parameter.type == "float"»
+				«message.name».«parameter.name» = 10.5f;
+			«ELSEIF parameter.type == "string"»
+				«message.name».«parameter.name» = "Hello World!";
+			«ENDIF»
+		«ENDFOR»
+«««		«FOR parameter : message.messageParameters»			// XXX: messageParameter?
+«««			«message.name».«parameter.message.name» = «parameter.message.name»;
+«««		«ENDFOR»
 	'''
 
 }

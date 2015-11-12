@@ -1,11 +1,10 @@
 package org.eclipse.viatra.cep.mqtt.midl.viatra
 
 import java.io.File
-import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
 import java.io.FileWriter
 import org.eclipse.emf.common.util.EList
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
-import org.eclipse.viatra.cep.mqtt.midl.mIDL.BooleanParameter
+import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
 
 class JavaGenerator {
 
@@ -57,43 +56,43 @@ class JavaGenerator {
 					   	   	String rawData = queue.take();
 					   	   	JsonObject sensors = JsonObject.readFrom(rawData);
 					   	   	for (String sensorName : sensors.names()) {
-							Â«FOR sensor:sensorsÂ»
-								Â«FOR parameter:sensor.lastReceivedPayload.dataParametersÂ»
-									Â«IF sensors.indexOf(sensor) == 0Â»
+							«FOR sensor:sensors»
+								«FOR parameter:sensor.lastReceivedPayload.dataParameters»
+									«IF sensors.indexOf(sensor) == 0»
 									if (sensorName.equals("pb1")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("Â«parameter.nameÂ»", jsonValue.get("value").asInt());
-										JsonObject msg = new JsonObject().add("Â«sensor.lastReceivedPayload.nameÂ»", param);
-										publisher.publish("Â«sensor.nameÂ»", msg.toString());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
+										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										publisher.publish("«sensor.name»", msg.toString());
 									}
-									Â«ELSEIF sensors.indexOf(sensor) == 1Â»
+									«ELSEIF sensors.indexOf(sensor) == 1»
 									if (sensorName.equals("pb2")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("Â«parameter.nameÂ»", jsonValue.get("value").asInt());
-										JsonObject msg = new JsonObject().add("Â«sensor.lastReceivedPayload.nameÂ»", param);
-										publisher.publish("Â«sensor.nameÂ»", msg.toString());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
+										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										publisher.publish("«sensor.name»", msg.toString());
 									}
-									Â«ELSEIF sensors.indexOf(sensor) == 2Â»
+									«ELSEIF sensors.indexOf(sensor) == 2»
 									if (sensorName.equals("pb3")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("Â«parameter.nameÂ»", jsonValue.get("value").asInt());
-										JsonObject msg = new JsonObject().add("Â«sensor.lastReceivedPayload.nameÂ»", param);
-										publisher.publish("Â«sensor.nameÂ»", msg.toString());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
+										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										publisher.publish("«sensor.name»", msg.toString());
 									}
-									Â«ELSEIF sensors.indexOf(sensor) == 3Â»
+									«ELSEIF sensors.indexOf(sensor) == 3»
 									if (sensorName.equals("pot1")) {
 										JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
 										JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-										JsonObject param = new JsonObject().add("Â«parameter.nameÂ»", jsonValue.get("value").asInt());
-										JsonObject msg = new JsonObject().add("Â«sensor.lastReceivedPayload.nameÂ»", param);
-										publisher.publish("Â«sensor.nameÂ»", msg.toString());
+										JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").asInt());
+										JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										publisher.publish("«sensor.name»", msg.toString());
 									}
-									Â«ENDIFÂ»
-								Â«ENDFORÂ»
-							Â«ENDFORÂ»
+									«ENDIF»
+								«ENDFOR»
+							«ENDFOR»
 							}
 						}
 					} catch (InterruptedException e) {
