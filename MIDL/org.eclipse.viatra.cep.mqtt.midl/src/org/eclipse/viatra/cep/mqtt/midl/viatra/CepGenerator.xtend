@@ -41,7 +41,6 @@ class CepGenerator {
 		generatePdeSettingFile
 		generatePluginXmlFile
 		generateProjectFile
-		generateTestApplication
 		generateDashboardUtil(setup)
 		
 		val description = ResourcesPlugin.workspace.loadProjectDescription(
@@ -216,71 +215,49 @@ class CepGenerator {
 		writer.close
 	}
 	
-	private def generateTestApplication() {
-		val testPackage = FileUtils.createFolder(new File(cepTopPackage, "test"))
-		val testApplicationFile = FileUtils.createFile(testPackage, "TestApplication.java")
-		val writer = new FileWriter(testApplicationFile)
-		val fileContent = '''
-			package org.eclipse.viatra.cep.mqtt.cep.test;
-			
-			import org.eclipse.viatra.cep.mqtt.cep.CepApplication;
-			import org.junit.Test;
-			
-			public class TestApplication {
-			
-				@Test
-				public void test() {
-					new CepApplication().run();
-				}
-				
-			}
-		'''
-		writer.write(fileContent)
-		writer.close
-	}
-	
 	private def generateCepApplication(EList<Sensor> sensors, MqttSetup setup) {
 		val patternsFile = new File(cepTopPackage, "CepApplication.java")
 		val writer = new FileWriter(patternsFile)
 		val fileContent = '''
 			package org.eclipse.viatra.cep.mqtt.cep;
 			
-			import org.apache.log4j.Logger;
 			import org.eclipse.emf.common.util.URI;
 			import org.eclipse.emf.ecore.resource.Resource;
 			import org.eclipse.emf.mwe.utils.StandaloneSetup;
 			import org.eclipse.viatra.cep.core.api.engine.CEPEngine;
 			import org.eclipse.viatra.cep.core.metamodels.automaton.EventContext;
 			import org.eclipse.viatra.cep.core.streams.EventStream;
-			import org.eclipse.viatra.cep.mqtt.cep.mqtt.Callback;
 			import org.eclipse.viatra.cep.mqtt.cep.vepl.firstLevel.CepFactory;
 			import org.eclipse.viatra.cep.mqtt.cep.vepl.firstLevel.mapping.QueryEngine2ViatraCep;
+			import org.eclipse.viatra.cep.mqtt.commons.mqtt.Callback;
 			import org.eclipse.viatra.cep.mqtt.commons.mqtt.Subscriber;
-			import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 			import org.eclipse.viatra.cep.mqtt.midl.MIDLStandaloneSetup;
+			import org.eclipse.viatra.cep.mqtt.midl.mIDL.IoTSystem;
+			import org.eclipse.xtext.resource.XtextResource;
 			import org.eclipse.xtext.resource.XtextResourceSet;
+			import org.junit.Before;
+			import org.junit.Test;
 			
 			import com.google.inject.Injector;
 			
 			public class CepApplication {
 			
-				private static final Logger log4jLogger = Logger.getLogger(CepApplication.class);
-				private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
-			
 				private CEPEngine engine;
 				private QueryEngine2ViatraCep mapping;
 				public EventStream eventStream;
 				public CepFactory cepFactory;
-			
-				Subscriber subscriber;
-				Callback callback;
-			
+				
 				protected Resource resource;
 				protected XtextResourceSet resourceSet;
-			
+				
+				Subscriber subscriber;
+				Callback callback;
+				String brokerAddress = "«setup.brokerUrl»";
+				String uriAddress = "file:/«modelPath»";
 				boolean running = false;
 			
-				public CepApplication() {
+				@Before
+				public void setUp() {
 					engine = CEPEngine.newEngine().eventContext(EventContext.STRICT_IMMEDIATE)
 							.rules(CepFactory.getInstance().allRules()).prepare();
 					eventStream = engine.getStreamManager().newEventStream();
@@ -288,17 +265,18 @@ class CepGenerator {
 					new StandaloneSetup().setPlatformUri("../");
 					Injector injector = new MIDLStandaloneSetup().createInjectorAndDoEMFRegistration();
 					resourceSet = injector.getInstance(XtextResourceSet.class);
-					resource = resourceSet.getResource(URI.createURI("file:«modelPath»"), true);
+					resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
+					resource = resourceSet.getResource(URI.createURI(uriAddress), true);
 					mapping = QueryEngine2ViatraCep.register(resourceSet, eventStream);
 					
-					callback = new Callback(resource);
-					subscriber = new Subscriber("«setup.brokerUrl»", "CEP_SUBSCRIBER");
+					callback = new Callback((IoTSystem) resource.getContents().get(0));
+					subscriber = new Subscriber(brokerAddress, "CEP_SUBSCRIBER");
 					subscriber.setCallback(callback);
 
-			
 					running = true;
 				}
 			
+				@Test
 				public void run() {
 					subscriber.connect();
 					«FOR sensor:sensors»
