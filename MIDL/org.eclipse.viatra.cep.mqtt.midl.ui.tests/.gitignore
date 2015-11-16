@@ -1,8 +1,7 @@
 # Project files #
 #################
 .metadata
-/xtend-gen/
-/src-gen/
+/xtend-gen/*
+/src-gen/*
 /bin/
-
 /target/
