@@ -6,9 +6,9 @@ import java.util.Enumeration;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
+import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
 import com.incquerylabs.iot.javatransmitter.data.InputParameters;
-import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;

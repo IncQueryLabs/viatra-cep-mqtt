@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Javatransmitter
+Bundle-SymbolicName: com.incquerylabs.iot.javatransmitter
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: INCQUERYLABS
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ com.eclipsesource.json;bundle-version="1.0.0",
+ org.eclipse.paho.client.mqttv3;bundle-version="1.0.2",
+ org.eclipse.viatra.cep.mqtt.commons;bundle-version="1.0.0"

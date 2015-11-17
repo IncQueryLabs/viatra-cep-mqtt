@@ -3,11 +3,11 @@ package com.incquerylabs.iot.javatransmitter.runnables;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
+import org.eclipse.viatra.cep.mqtt.commons.mqtt.Publisher;
+import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
 import com.eclipsesource.json.JsonObject;
 import com.incquerylabs.iot.javatransmitter.data.InputParameters;
-import com.incquerylabs.iot.javatransmitter.mqtt.Publisher;
-import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
 
 public class MqttPublisherRunnable implements Runnable {
 
@@ -22,7 +22,7 @@ public class MqttPublisherRunnable implements Runnable {
 	public MqttPublisherRunnable(BlockingQueue<String> queue, InputParameters parameters) {
 		this.queue = queue;
 		this.parameters = parameters;
-		publisher = new Publisher(parameters.broker, parameters.sensorID);
+		publisher = new Publisher(this.parameters.broker, this.parameters.sensorID);
 		publisher.connect();
 	}
 

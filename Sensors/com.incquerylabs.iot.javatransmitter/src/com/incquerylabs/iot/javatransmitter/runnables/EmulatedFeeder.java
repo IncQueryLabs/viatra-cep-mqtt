@@ -3,9 +3,9 @@ package com.incquerylabs.iot.javatransmitter.runnables;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
+import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
 import com.incquerylabs.iot.javatransmitter.data.SensorValues;
-import com.incquerylabs.iot.javatransmitter.utils.LoggerUtil;
 
 public class EmulatedFeeder implements Runnable {
 
