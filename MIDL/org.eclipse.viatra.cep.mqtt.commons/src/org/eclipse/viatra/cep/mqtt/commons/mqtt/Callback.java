@@ -20,6 +20,7 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 public class Callback implements MqttCallback {
 
@@ -57,18 +58,17 @@ public class Callback implements MqttCallback {
 			Sensor selectedSensor = (Sensor) sensor.getEObject();
 			Collection<DataParameter> params = selectedSensor.getLastReceivedPayload().getDataParameters();
 			for (DataParameter param : params) {
-				if (param.getType().equals("int")) {
-					int newValue = object.get("payload").asObject().get(param.getName()).asInt();
-					((IntParameter) param).setValue(newValue);
-				} else if (param.getType().equals("double")) {
-					double newValue = object.get("payload").asObject().get(param.getName()).asDouble();
-					((DoubleParameter) param).setValue(newValue);
-				} else if (param.getType().equals("string")) {
-					String newValue = object.get("payload").asObject().get(param.getName()).asString();
-					((StringParameter) param).setValue(newValue);
-				} else if (param.getType().equals("boolean")) {
-					boolean newValue = object.get("payload").asObject().get(param.getName()).asBoolean();
-					((BooleanParameter) param).setValue(newValue);
+				JsonValue newValue = object.get(selectedSensor.getLastReceivedPayload().getName()).asObject().get(param.getName());
+				if (newValue != null) {
+					if (param.getType().equals("int")) {
+						((IntParameter) param).setValue(newValue.asInt());
+					} else if (param.getType().equals("double")) {
+						((DoubleParameter) param).setValue(newValue.asDouble());
+					} else if (param.getType().equals("string")) {
+						((StringParameter) param).setValue(newValue.asString());
+					} else if (param.getType().equals("boolean")) {
+						((BooleanParameter) param).setValue(newValue.asBoolean());
+					}
 				}
 			}
 		}
