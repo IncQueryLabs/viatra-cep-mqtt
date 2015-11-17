@@ -47,7 +47,7 @@ public class Publisher {
 	}
 	
 	public void publish(String topic, String payload) {
-		this.publish(topic, payload);
+		this.publish(topic, payload.getBytes());
 	}
 	
 	public void publish(String topic, byte[] payload, int qos) {
