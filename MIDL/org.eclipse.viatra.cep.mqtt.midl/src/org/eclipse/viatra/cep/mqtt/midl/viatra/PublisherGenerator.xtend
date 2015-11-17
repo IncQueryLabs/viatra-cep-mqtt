@@ -1,13 +1,14 @@
 package org.eclipse.viatra.cep.mqtt.midl.viatra
 
+import java.io.ByteArrayInputStream
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.ResourcesPlugin
-import org.eclipse.emf.common.util.URI
-import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
-import java.io.ByteArrayInputStream
 import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.common.util.URI
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
+import org.eclipse.viatra.cep.mqtt.midl.utils.FileUtils
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.MqttSetup
 
 class PublisherGenerator {
 	
@@ -20,8 +21,9 @@ class PublisherGenerator {
 		this.projectName = uri.segments.get(1) + ".publisher"
 		val workspace = ResourcesPlugin.workspace.root
 		project = workspace.getProject(projectName)
-		if (!project.exists)
-			project.create(null)
+		if (project.exists)
+			project.delete(true, true, null)
+		project.create(null)
 		if (!project.open)
 			project.open(null)
 		src = project.getFolder("src")
@@ -30,14 +32,14 @@ class PublisherGenerator {
 		topPackage = FileUtils.createPackage(src, projectName)
 	}
 	
-	public def generatePublisherProject(EList<Sensor> sensors) {
+	public def generatePublisherProject(MqttSetup setup, EList<Sensor> sensors) {
 		generateProjectFile
 		generateClasspathFile
 		generateBuildProperties
 		generateSettings
 		generateManifest
 		generateMqttPublisher(sensors)
-		generateMain
+		generateMain(setup)
 	}
 	
 	private def generateProjectFile() {
@@ -229,7 +231,7 @@ class PublisherGenerator {
 		publisherFile.create(source, true, null)
 	}
 	
-	private def generateMain() {
+	private def generateMain(MqttSetup setup) {
 		val mainFile = topPackage.getFile("Main.java")
 		val fileContent = '''
 			package «projectName»;
@@ -247,6 +249,7 @@ class PublisherGenerator {
 			
 				public static void main(String[] args) throws Exception {
 					InputParameters parsedArgs = ArgumentUtils.parseArgs(args);
+					parsedArgs.broker = "«setup.brokerUrl»";
 					if (ArgumentUtils.validateParsedArgs(parsedArgs)){
 						if (parsedArgs.help){
 							displayHelp();

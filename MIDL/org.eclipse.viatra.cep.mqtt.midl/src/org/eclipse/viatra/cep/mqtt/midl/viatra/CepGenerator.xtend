@@ -1,9 +1,9 @@
 package org.eclipse.viatra.cep.mqtt.midl.viatra
 
 import java.io.ByteArrayInputStream
+import java.util.regex.Pattern
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
-import org.eclipse.core.resources.IncrementalProjectBuilder
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
@@ -16,15 +16,20 @@ class CepGenerator {
 	IProject project
 	IFolder srcgen
 	IFolder topPackage
-	URI uri
+	String projectName
 	String modelPath
 	
 	new(String rootPath, URI uri) {
-		this.uri = uri
+		this.projectName = uri.segments.get(1)
 		val workspace = ResourcesPlugin.workspace.root
-		project = workspace.getProject(uri.segments.get(1))
+		project = workspace.getProject(projectName)
 		srcgen = project.getFolder("src-gen")
-		topPackage = FileUtils.createPackage(srcgen, uri.segments.get(1))
+		if (!srcgen.exists)
+			srcgen.create(true, true, null)
+		val srcgencontent = srcgen.getFile(projectName.split(Pattern.quote(".")).get(0))
+		if (srcgencontent.exists)
+			srcgencontent.delete(true, null)
+		topPackage = FileUtils.createPackage(srcgen, projectName)
 		this.modelPath =  workspace.location.toOSString.replace("\\", "/") + uri.toPlatformString(true);
 	}
 	
@@ -32,9 +37,7 @@ class CepGenerator {
 		generateCepApplication(sensors, setup)
 		generateManifestFile
 		val patternGenerator = new PatternGenerator
-		patternGenerator.generatePatternsAndRules(topPackage, sensors, uri)
-		
-		// project.build(IncrementalProjectBuilder.CLEAN_BUILD, null)
+		patternGenerator.generatePatternsAndRules(topPackage, sensors, projectName)
 	}
 	
 	private def generateManifestFile() {
@@ -43,17 +46,17 @@ class CepGenerator {
 		val fileContent = '''
 			Manifest-Version: 1.0
 			Bundle-ManifestVersion: 2
-			Bundle-Name: «uri.segments.get(1)»
-			Bundle-SymbolicName: «uri.segments.get(1)»;singleton:=true
+			Bundle-Name: «projectName»
+			Bundle-SymbolicName: «projectName»;singleton:=true
 			Bundle-Version: 1.0.0.qualifier
-			Export-Package: «uri.segments.get(1)».eiq,
-			 «uri.segments.get(1)».eiq.util,
-			 «uri.segments.get(1)».vepl.firstLevel,
-			 «uri.segments.get(1)».vepl.firstLevel.events.queryresult,
-			 «uri.segments.get(1)».vepl.firstLevel.jobs,
-			 «uri.segments.get(1)».vepl.firstLevel.mapping,
-			 «uri.segments.get(1)».vepl.firstLevel.patterns.atomic.queryresult,
-			 «uri.segments.get(1)».vepl.firstLevel.rules
+			Export-Package: «projectName».eiq,
+			 «projectName».eiq.util,
+			 «projectName».vepl.firstLevel,
+			 «projectName».vepl.firstLevel.events.queryresult,
+			 «projectName».vepl.firstLevel.jobs,
+			 «projectName».vepl.firstLevel.mapping,
+			 «projectName».vepl.firstLevel.patterns.atomic.queryresult,
+			 «projectName».vepl.firstLevel.rules
 			Require-Bundle: org.eclipse.emf.ecore,
 			 org.eclipse.incquery.runtime,
 			 org.eclipse.xtext.xbase.lib,
@@ -77,7 +80,7 @@ class CepGenerator {
 	private def generateCepApplication(EList<Sensor> sensors, MqttSetup setup) {
 		val cepApplicationFile = topPackage.getFile("CepApplication.java")
 		val fileContent = '''
-			package «uri.segments.get(1)»;
+			package «projectName»;
 			
 			import org.eclipse.emf.common.util.URI;
 			import org.eclipse.emf.ecore.resource.Resource;
@@ -96,8 +99,8 @@ class CepGenerator {
 			
 			import com.google.inject.Injector;
 			
-			import «uri.segments.get(1)».vepl.firstLevel.CepFactory;
-			import «uri.segments.get(1)».vepl.firstLevel.mapping.QueryEngine2ViatraCep;
+			import «projectName».vepl.firstLevel.CepFactory;
+			import «projectName».vepl.firstLevel.mapping.QueryEngine2ViatraCep;
 			
 			public class CepApplication {
 			

@@ -11,14 +11,13 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntCriterion
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringCriterion
-import org.eclipse.emf.common.util.URI
 
 class PatternGenerator {
 	
-	URI uri
+	String projectName
 
-	public  def generatePatternsAndRules(IFolder topPackage, EList<Sensor> sensors, URI uri) {
-		this.uri = uri
+	public  def generatePatternsAndRules(IFolder topPackage, EList<Sensor> sensors, String projectName) {
+		this.projectName = projectName
 		generatePatterns(topPackage, sensors)
 		generateRules(topPackage, sensors)
 	}
@@ -29,7 +28,7 @@ class PatternGenerator {
 			eiqPackage.create(true, true, null)
 		val patternsFile = eiqPackage.getFile("Patterns.eiq")
 		val fileContent = '''
-			package «uri.segments.get(1)».eiq
+			package «projectName».eiq
 			
 			import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
 			
@@ -98,7 +97,7 @@ class PatternGenerator {
 		«IF criterion.prefix.equals("eq") || criterion.prefix.equals("neq")»
 			pattern «sensorName.toFirstLower»«parameter.name.toFirstUpper»Equals(sensor: Sensor) {
 		«ELSE»
-			pattern «sensorName.toFirstLower»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»Equals(sensor: Sensor) {
+			pattern «sensorName.toFirstLower»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»(sensor: Sensor) {
 		«ENDIF»
 			Sensor.name(sensor, "«sensorName»");
 			Sensor.lastReceivedPayload.dataParameters(sensor, parameter);
@@ -120,7 +119,7 @@ class PatternGenerator {
 		«IF criterion.prefix.equals("eq") || criterion.prefix.equals("neq")»
 			pattern «sensorName.toFirstLower»«parameter.name.toFirstUpper»NotEquals(sensor: Sensor) {
 		«ELSE»
-			pattern «sensorName.toFirstLower»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEquals(sensor: Sensor) {
+			pattern «sensorName.toFirstLower»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»(sensor: Sensor) {
 		«ENDIF»
 			Sensor.name(sensor, "«sensorName»");
 			Sensor.lastReceivedPayload.dataParameters(sensor, parameter);
@@ -151,9 +150,9 @@ class PatternGenerator {
 			veplPackage.create(true, true, null)
 		val veplFile = veplPackage.getFile("Events.vepl")
 		val fileContent = '''
-			package «uri.segments.get(1)».vepl.firstLevel
+			package «projectName».vepl.firstLevel
 			
-			import-queries «uri.segments.get(1)».eiq.*
+			import-queries «projectName».eiq.*
 			
 			«FOR sensor : sensors»
 				«generatePayloadRules(sensor.name.toFirstLower, sensor.lastReceivedPayload)»
@@ -196,7 +195,7 @@ class PatternGenerator {
 		 * The rule write a simple message to console.
 		 */
 		rule «sensorName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Rule on «sensorName»«parameter.name.toFirstUpper»LessThan«criterion.prefix.toFirstUpper»Event {
-			println("«sensorName.toFirstUpper» «messageName» «parameter.name» less than rule activated!")
+			println("«sensorName.toFirstUpper» «messageName» «parameter.name» less than «criterion.prefix» rule activated!")
 		}
 	'''
 
@@ -216,7 +215,7 @@ class PatternGenerator {
 		 * The rule write a simple message to console.
 		 */
 		rule «sensorName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Rule on «sensorName»«parameter.name.toFirstUpper»GreaterThan«criterion.prefix.toFirstUpper»Event {
-			println("«sensorName.toFirstUpper» «messageName» «parameter.name» greater than rule activated!")
+			println("«sensorName.toFirstUpper» «messageName» «parameter.name» greater than «criterion.prefix» rule activated!")
 		}
 	'''
 
@@ -241,19 +240,19 @@ class PatternGenerator {
 			}
 		«ELSE»
 			/* 
-			 * This event execute, if the «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»Equals
+			 * This event execute, if the «sensorName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»
 			 * pattern has return value.
 			 */
-			queryEvent «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»EqualsEvent() as
-				«sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»Equals(_) found
+			queryEvent «sensorName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Event() as
+				«sensorName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»(_) found
 			
 			/* 
-			 * This rule activate, when the «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»EqualsEvent
+			 * This rule activate, when the «sensorName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Event
 			 * event has been executed.
 			 * The rule write a simple message to console.
 			 */
-			rule «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»EqualsRule on «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»EqualsEvent {
-				println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» equal rule activated!")
+			rule «sensorName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Rule on «sensorName»«parameter.name.toFirstUpper»Equals«criterion.prefix.toFirstUpper»Event {
+				println("«sensorName.toFirstUpper» «messageName» «parameter.name» equal «criterion.prefix» rule activated!")
 			}
 		«ENDIF»
 	'''
@@ -279,19 +278,19 @@ class PatternGenerator {
 			}
 		«ELSE»
 			/* 
-			 * This event execute, if the «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEquals
+			 * This event execute, if the «sensorName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»
 			 * pattern has return value.
 			 */
-			queryEvent «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEqualsEvent() as
-				«sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEquals(_) found
+			queryEvent «sensorName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Event() as
+				«sensorName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»(_) found
 			
 			/* 
-			 * This rule activate, when the «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEqualsEvent
+			 * This rule activate, when the «sensorName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Event
 			 * event has been executed.
 			 * The rule write a simple message to console.
 			 */
-			rule «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEqualsRule on «sensorName»«parameter.name.toFirstUpper»«criterion.prefix.toFirstUpper»NotEqualsEvent {
-				println("«sensorName.toFirstUpper» «messageName» «parameter.name» «criterion.prefix» not equal rule activated!")
+			rule «sensorName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Rule on «sensorName»«parameter.name.toFirstUpper»NotEquals«criterion.prefix.toFirstUpper»Event {
+				println("«sensorName.toFirstUpper» «messageName» «parameter.name» not equal «criterion.prefix» rule activated!")
 			}
 		«ENDIF»
 	'''
