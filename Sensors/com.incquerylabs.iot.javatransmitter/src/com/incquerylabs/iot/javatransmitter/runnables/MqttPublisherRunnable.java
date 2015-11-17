@@ -6,18 +6,17 @@ import org.apache.log4j.Logger;
 import org.eclipse.viatra.cep.mqtt.commons.mqtt.Publisher;
 import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
-import com.eclipsesource.json.JsonObject;
 import com.incquerylabs.iot.javatransmitter.data.InputParameters;
 
 public class MqttPublisherRunnable implements Runnable {
 
 	protected BlockingQueue<String> queue = null;
-	private boolean isRunning = true;
-	private final Publisher publisher;
+	protected boolean isRunning = true;
+	protected final Publisher publisher;
 	private InputParameters parameters;
 
 	private static final Logger log4jLogger = Logger.getLogger(MqttPublisherRunnable.class);
-	private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
+	protected static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
 	
 	public MqttPublisherRunnable(BlockingQueue<String> queue, InputParameters parameters) {
 		this.queue = queue;
@@ -28,44 +27,13 @@ public class MqttPublisherRunnable implements Runnable {
 
     @Override
 	public void run() {
-		try {
-		   	System.out.println("Start sending messages...");
-	   	   	while(isRunning) {
-		   	   	String rawData = queue.take();
-		   	   	JsonObject sensors = JsonObject.readFrom(rawData);
-		   	   	for (String sensorName : sensors.names()) {
-				if (sensorName.equals("pb1")) {
-					JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-					JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-					JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-					JsonObject msg = new JsonObject().add("btn1_pressed", param);
-					publisher.publish("btn1", msg.toString());
-				}
-				if (sensorName.equals("pb2")) {
-					JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-					JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-					JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-					JsonObject msg = new JsonObject().add("btn2_pressed", param);
-					publisher.publish("btn2", msg.toString());
-				}
-				if (sensorName.equals("pb3")) {
-					JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-					JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-					JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-					JsonObject msg = new JsonObject().add("btn3_pressed", param);
-					publisher.publish("btn3", msg.toString());
-				}
-				if (sensorName.equals("pot1")) {
-					JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-					JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-					JsonObject param = new JsonObject().add("value", jsonValue.get("value").asInt());
-					JsonObject msg = new JsonObject().add("pot1_value", param);
-					publisher.publish("pot1", msg.toString());
-				}
-				}
+		while (isRunning) {
+			try {
+				String rawData = queue.take();
+				System.out.println(rawData);
+			} catch (InterruptedException e) {
+				LOGGER.error("Interrupted", e);
 			}
-		} catch (InterruptedException e) {
-	   		LOGGER.error("Interrupted", e);
 		}
 	}
 	

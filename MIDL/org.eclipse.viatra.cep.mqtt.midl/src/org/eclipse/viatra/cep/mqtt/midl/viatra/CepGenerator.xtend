@@ -34,7 +34,7 @@ class CepGenerator {
 		val patternGenerator = new PatternGenerator
 		patternGenerator.generatePatternsAndRules(topPackage, sensors, uri)
 		
-		project.build(IncrementalProjectBuilder.CLEAN_BUILD, null)
+		// project.build(IncrementalProjectBuilder.CLEAN_BUILD, null)
 	}
 	
 	private def generateManifestFile() {

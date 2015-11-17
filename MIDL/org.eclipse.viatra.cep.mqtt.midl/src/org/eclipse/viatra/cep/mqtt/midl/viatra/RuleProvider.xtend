@@ -19,7 +19,7 @@ class RuleProvider {
 	String rootPath
 	CepGenerator cepGenerator
 	CGenerator cGenerator
-	JavaGenerator javaGenerator
+	PublisherGenerator publisherGenerator
 
 	boolean generateC = false
 
@@ -29,7 +29,7 @@ class RuleProvider {
 		this.rootPath = rootPath
 		cepGenerator = new CepGenerator(rootPath, uri)
 		cGenerator = new CGenerator
-		javaGenerator = new JavaGenerator(rootPath)
+		publisherGenerator = new PublisherGenerator(rootPath, uri)
 		if (generateC) {
 			cGenerator.generateProjectFile(rootPath)
 			cGenerator.generateCProjectFile(rootPath)
@@ -39,7 +39,7 @@ class RuleProvider {
 	@Accessors(PUBLIC_GETTER)
 	val modelRule = createRule.precondition(mqttSetup).action [ match |
 		cepGenerator.generateCepProject(match.mqttSetup.sensors, match.mqttSetup)
-		javaGenerator.generatePublisher(match.mqttSetup.sensors)
+		publisherGenerator.generatePublisherProject(match.mqttSetup.sensors)
 		for (sensor : match.mqttSetup.sensors) {
 			if (generateC) {
 				cGenerator.generateCFiles(match.mqttSetup, sensor, rootPath)
