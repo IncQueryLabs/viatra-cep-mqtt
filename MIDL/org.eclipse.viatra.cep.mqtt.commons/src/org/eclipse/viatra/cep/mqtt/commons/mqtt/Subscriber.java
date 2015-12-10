@@ -8,6 +8,13 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
+/**
+ * 
+ * This class implements an MQTT subscriber, with basic functions.
+ * 
+ * @author Zoltan Selmeczi
+ *
+ */
 public class Subscriber {
 
 	protected MqttClient client;
@@ -17,6 +24,12 @@ public class Subscriber {
 	private static final Logger log4jLogger = Logger.getLogger(Subscriber.class);
 	private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
 
+	/**
+	 * The constructor of the subscriber class.
+	 * It makes an MQTT client with the given parameters.
+	 * @param brokerUrl The broker url in "[protocol]://[host]:[port]" format.
+	 * @param clientId The created client id.
+	 */
 	public Subscriber(String brokerUrl, String clientId) {
 		try {
 			client = new MqttClient(brokerUrl, clientId, persistance);
@@ -27,10 +40,17 @@ public class Subscriber {
 		connOpts.setCleanSession(true);
 	}
 
+	/**
+	 * Sets the client callback parameter.
+	 * @param callback
+	 */
 	public void setCallback(MqttCallback callback) {
 		client.setCallback(callback);
 	}
 
+	/**
+	 * This method connects the client to the MQTT broker.
+	 */
 	public void connect() {
 		try {
 			client.connect(connOpts);
@@ -40,6 +60,10 @@ public class Subscriber {
 		}
 	}
 
+	/**
+	 * This method subscribes the client to the given topic.
+	 * @param topic
+	 */
 	public void subscribe(String topic) {
 		try {
 			client.subscribe(topic);
@@ -48,6 +72,10 @@ public class Subscriber {
 		}
 	}
 
+	/**
+	 * This method unsubscribe the client from the given topic.
+	 * @param topic
+	 */
 	public void unsubscribe(String topic) {
 		try {
 			client.unsubscribe(topic);

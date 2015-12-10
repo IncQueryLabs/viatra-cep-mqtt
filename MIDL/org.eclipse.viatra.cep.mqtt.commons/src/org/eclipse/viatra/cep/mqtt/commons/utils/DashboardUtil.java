@@ -9,6 +9,14 @@ import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
 import com.eclipsesource.json.JsonObject;
 
+/**
+ * 
+ * This is a utility class for sending messages to the dashboard
+ * using the MQTT publisher.
+ * 
+ * @author Zoltan Selmeczi
+ *
+ */
 public class DashboardUtil {
 
 	private final static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
@@ -19,10 +27,18 @@ public class DashboardUtil {
 	
 	private static Publisher publisher = new Publisher(brokerAddress, "IOT_CEP_DASHBOARD");;
 	
+	/**
+	 * Send a simple message to the dashboard.
+	 * @param eventMessage
+	 */
 	public static void publishSimpleEvent(String eventMessage) {
 		publish(eventMessage, "SIMPLE");
 	}
 	
+	/**
+	 * Send a highlighted message to the dashboard.
+	 * @param eventMessage
+	 */
 	public static void publishHighlightedEvent(String eventMessage) {
 		publish(eventMessage, "HIGHLIGHTED");
 	}

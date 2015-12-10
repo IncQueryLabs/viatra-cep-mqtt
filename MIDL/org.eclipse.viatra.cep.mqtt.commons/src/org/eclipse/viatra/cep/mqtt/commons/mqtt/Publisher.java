@@ -10,6 +10,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
+/**
+ * 
+ * This class implements an MQTT publisher, with basic functions.
+ * 
+ * @author Zoltán Selmeczi
+ *
+ */
 public class Publisher {
 
 	protected MqttClient client;
@@ -19,6 +26,12 @@ public class Publisher {
 	private static final Logger log4jLogger = Logger.getLogger(Publisher.class);
 	private static final LoggerUtil LOGGER = new LoggerUtil(log4jLogger);
 
+	/**
+	 * The constructor of the publisher class.
+	 * It makes an MQTT client with the given parameters.
+	 * @param brokerUrl The broker url in "[protocol]://[host]:[port]" format
+	 * @param clientId The created client id.
+	 */
 	public Publisher(String brokerUrl, String clientId) {
 		try {
 			client = new MqttClient(brokerUrl, clientId, persistance);
@@ -29,6 +42,10 @@ public class Publisher {
 		connOpts.setCleanSession(true);
 	}
 
+	/**
+	 * This method connects the client to MQTT broker with the
+	 * previously made connection options.
+	 */
 	public void connect() {
 		try {
 			client.connect(connOpts);
@@ -38,6 +55,13 @@ public class Publisher {
 		}
 	}
 
+	/**
+	 * This method publish a string message to the given topic
+	 * with the given quality of service.
+	 * @param topic
+	 * @param payload
+	 * @param qos
+	 */
 	public void publish(String topic, String payload, int qos) {
 		try {
 			publish(topic, payload.getBytes("UTF-8"), qos);
@@ -46,10 +70,23 @@ public class Publisher {
 		}
 	}
 	
+	/**
+	 * This method publish a string message to the given topic
+	 * with default (1) quality of service.
+	 * @param topic
+	 * @param payload
+	 */
 	public void publish(String topic, String payload) {
 		this.publish(topic, payload.getBytes());
 	}
 	
+	/**
+	 * This method publish a byte array to the given topic
+	 * with the given quality of service.
+	 * @param topic
+	 * @param payload
+	 * @param qos
+	 */
 	public void publish(String topic, byte[] payload, int qos) {
 		MqttMessage message = new MqttMessage(payload);
 		message.setQos(qos);
@@ -61,10 +98,19 @@ public class Publisher {
 		}
 	}
 	
+	/**
+	 * This method publish a byte array to the given topic
+	 * with default (1) quality of service.
+	 * @param topic
+	 * @param payload
+	 */
 	public void publish(String topic, byte[] payload) {
 		this.publish(topic, payload, 0);
 	}
 
+	/**
+	 * Returns true, if the client is connected.
+	 */
 	public boolean isConnected() {
 		if(client != null)
 			return client.isConnected();
@@ -72,6 +118,9 @@ public class Publisher {
 			return false;
 	}
 	
+	/**
+	 * This method disconnects the client from MQTT broker.
+	 */
 	public void disconnect() {
 		try {
 			client.disconnect();
