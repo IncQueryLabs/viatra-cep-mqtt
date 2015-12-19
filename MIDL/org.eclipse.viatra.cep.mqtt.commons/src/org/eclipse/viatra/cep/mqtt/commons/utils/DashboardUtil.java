@@ -5,9 +5,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.eclipse.viatra.cep.mqtt.commons.mqtt.Publisher;
-import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
 
-import com.eclipsesource.json.JsonObject;
+import com.google.gson.JsonObject;
 
 /**
  * 
@@ -50,9 +49,9 @@ public class DashboardUtil {
 			}
 			JsonObject eventMsg = new JsonObject();
 			JsonObject event = new JsonObject();
-			event.add("event_msg", eventMessage);
-			event.add("event_type", marker);
-			event.add("timestamp", sdf.format(new Date()));
+			event.addProperty("event_msg", eventMessage);
+			event.addProperty("event_type", marker);
+			event.addProperty("timestamp", sdf.format(new Date()));
 			eventMsg.add("CEP_EVENT_MESSAGE", event);
 			publisher.publish("dashboard/cep", eventMsg.toString().getBytes());
 			

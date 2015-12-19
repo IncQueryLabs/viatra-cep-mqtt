@@ -61,7 +61,6 @@ class CepGenerator {
 			 org.eclipse.incquery.runtime,
 			 org.eclipse.xtext.xbase.lib,
 			 org.eclipse.viatra.cep.core;bundle-version="0.8.0",
-			 com.eclipsesource.json;bundle-version="1.0.0",
 			 org.eclipse.emf.mwe.utils;bundle-version="1.3.20",
 			 org.eclipse.viatra.cep.mqtt.commons;bundle-version="1.0.0",
 			 org.eclipse.viatra.cep.mqtt.midl;bundle-version="1.0.0",

@@ -144,7 +144,7 @@ class PublisherGenerator {
 			Bundle-Version: 1.0.0.qualifier
 			Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 			Require-Bundle: com.incquerylabs.iot.javatransmitter;bundle-version="1.0.0",
-			 com.eclipsesource.json;bundle-version="1.0.0",
+			 com.google.gson;bundle-version="2.2.4",
 			 org.eclipse.viatra.cep.mqtt.commons;bundle-version="1.0.0",
 			 org.eclipse.paho.client.mqttv3;bundle-version="1.0.2"
 		'''
@@ -159,9 +159,12 @@ class PublisherGenerator {
 		val fileContent = '''
 			package «projectName»;
 			
+			import java.util.Map.Entry;
 			import java.util.concurrent.BlockingQueue;
 			
-			import com.eclipsesource.json.JsonObject;
+			import com.google.gson.JsonElement;
+			import com.google.gson.JsonObject;
+			import com.google.gson.JsonParser;
 			import com.incquerylabs.iot.javatransmitter.data.InputParameters;
 			import com.incquerylabs.iot.javatransmitter.runnables.MqttPublisherRunnable;
 			
@@ -177,40 +180,49 @@ class PublisherGenerator {
 					   	System.out.println("Start sending messages...");
 				   	   	while(isRunning) {
 					   	   	String rawData = queue.take();
-					   	   	JsonObject sensors = JsonObject.readFrom(rawData);
-					   	   	for (String sensorName : sensors.names()) {
+					   	   	JsonParser parser = new JsonParser();
+					   	   	JsonObject sensors = parser.parse(rawData).getAsJsonObject();
+					   	   	for (Entry<String, JsonElement> sensor : sensors.entrySet()) {
 								«FOR sensor:sensors»
 									«FOR parameter:sensor.lastReceivedPayload.dataParameters»
 										«IF sensors.indexOf(sensor) == 0»
-										if (sensorName.equals("pb1")) {
-											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
-											JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										if (sensor.getKey().equals("pb1")) {
+											JsonObject jsonMessage = sensor.getValue().getAsJsonArray().get(0).getAsJsonObject();
+											JsonObject jsonValue = jsonMessage.getAsJsonObject("messageName");
+											JsonObject param = new JsonObject();
+											param.addProperty("«parameter.name»", jsonValue.get("value").getAs«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject();
+											msg.add("«sensor.lastReceivedPayload.name»", param);
 											publisher.publish("«sensor.name»", msg.toString());
 										}
 										«ELSEIF sensors.indexOf(sensor) == 1»
-										if (sensorName.equals("pb2")) {
-											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
-											JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										if (sensor.getKey().equals("pb2")) {
+											JsonObject jsonMessage = sensor.getValue().getAsJsonArray().get(0).getAsJsonObject();
+											JsonObject jsonValue = jsonMessage.getAsJsonObject("messageName");
+											JsonObject param = new JsonObject();
+											param.addProperty("«parameter.name»", jsonValue.get("value").getAs«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject();
+											msg.add("«sensor.lastReceivedPayload.name»", param);
 											publisher.publish("«sensor.name»", msg.toString());
 										}
 										«ELSEIF sensors.indexOf(sensor) == 2»
-										if (sensorName.equals("pb3")) {
-											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
-											JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										if (sensor.getKey().equals("pb3")) {
+											JsonObject jsonMessage = sensor.getValue().getAsJsonArray().get(0).getAsJsonObject();
+											JsonObject jsonValue = jsonMessage.getAsJsonObject("messageName");
+											JsonObject param = new JsonObject();
+											param.addProperty("«parameter.name»", jsonValue.get("value").getAs«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject();
+											msg.add("«sensor.lastReceivedPayload.name»", param);
 											publisher.publish("«sensor.name»", msg.toString());
 										}
 										«ELSEIF sensors.indexOf(sensor) == 3»
-										if (sensorName.equals("pot1")) {
-											JsonObject jsonMessage = sensors.get(sensorName).asArray().get(0).asObject();
-											JsonObject jsonValue = jsonMessage.get("messageName").asObject();
-											JsonObject param = new JsonObject().add("«parameter.name»", jsonValue.get("value").as«parameter.type.toFirstUpper»());
-											JsonObject msg = new JsonObject().add("«sensor.lastReceivedPayload.name»", param);
+										if (sensor.getKey().equals("pot1")) {
+											JsonObject jsonMessage = sensor.getValue().getAsJsonArray().get(0).getAsJsonObject();
+											JsonObject jsonValue = jsonMessage.getAsJsonObject("messageName");
+											JsonObject param = new JsonObject();
+											param.addProperty("«parameter.name»", jsonValue.get("value").getAs«parameter.type.toFirstUpper»());
+											JsonObject msg = new JsonObject();
+											msg.add("«sensor.lastReceivedPayload.name»", param);
 											publisher.publish("«sensor.name»", msg.toString());
 										}
 										«ENDIF»

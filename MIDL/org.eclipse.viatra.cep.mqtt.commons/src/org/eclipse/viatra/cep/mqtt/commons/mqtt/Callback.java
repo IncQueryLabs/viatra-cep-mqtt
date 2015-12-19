@@ -1,5 +1,7 @@
 package org.eclipse.viatra.cep.mqtt.commons.mqtt;
 
+import java.util.Map.Entry;
+
 import org.apache.log4j.Logger;
 import org.eclipse.incquery.runtime.base.api.IncQueryBaseFactory;
 import org.eclipse.incquery.runtime.base.api.NavigationHelper;
@@ -17,8 +19,9 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter;
 
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * This is the callback calls of the generated MIDL project. When it got a new
@@ -65,7 +68,8 @@ public class Callback implements MqttCallback {
 	@Override
 	public void messageArrived(String topic, MqttMessage message) {
 		String msg = new String(message.getPayload());
-		JsonObject object = JsonObject.readFrom(msg);
+		JsonParser parser = new JsonParser();
+		JsonObject object = parser.parse(msg).getAsJsonObject();
 		// Use IncQuery Base Indexer to find the sensor
 		Sensor selectedSensor = (Sensor) navigationHelper.findByAttributeValue(topic).iterator().next().getEObject();
 		Payload sensorPayload = selectedSensor.getLastReceivedPayload();
@@ -73,22 +77,21 @@ public class Callback implements MqttCallback {
 			NavigationHelper paramNavHelper = IncQueryBaseFactory.getInstance()
 					.createNavigationHelper(sensorPayload, true, null);
 			// Get parameters from model using the JSON file content
-			for (String parameterName : object.get(sensorPayload.getName()).asObject().names()) {
+			for (Entry<String, JsonElement> parameter : object.getAsJsonObject(sensorPayload.getName()).entrySet()) {
 				// Use IncQuery Base Indexer to find parameter
-				DataParameter paramValue = (DataParameter) paramNavHelper.findByAttributeValue(parameterName)
+				DataParameter paramValue = (DataParameter) paramNavHelper.findByAttributeValue(parameter.getKey())
 						.iterator().next().getEObject();
 				// Get the parameter new value from the message
-				JsonValue newValue = object.get(selectedSensor.getLastReceivedPayload().getName()).asObject()
-						.get(parameterName);
+				JsonElement newValue = parameter.getValue();
 				// Find parameter type, and set the new value
 				if (paramValue.getType().equals("int")) {
-					((IntParameter) paramValue).setValue(newValue.asInt());
+					((IntParameter) paramValue).setValue(newValue.getAsInt());
 				} else if (paramValue.getType().equals("double")) {
-					((DoubleParameter) paramValue).setValue(newValue.asDouble());
+					((DoubleParameter) paramValue).setValue(newValue.getAsDouble());
 				} else if (paramValue.getType().equals("string")) {
-					((StringParameter) paramValue).setValue(newValue.asString());
+					((StringParameter) paramValue).setValue(newValue.getAsString());
 				} else if (paramValue.getType().equals("boolean")) {
-					((BooleanParameter) paramValue).setValue(newValue.asBoolean());
+					((BooleanParameter) paramValue).setValue(newValue.getAsBoolean());
 				}
 			}
 		} catch (IncQueryBaseException e) {
