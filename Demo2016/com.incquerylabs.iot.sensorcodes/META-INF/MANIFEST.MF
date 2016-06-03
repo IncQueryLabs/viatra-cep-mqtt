@@ -3,24 +3,21 @@ Bundle-ManifestVersion: 2
 Bundle-Name: com.incquerylabs.iot.sensorcodes
 Bundle-SymbolicName: com.incquerylabs.iot.sensorcodes;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: com.incquerylabs.iot.sensorcodes,
- com.incquerylabs.iot.sensorcodes.eiq,
+Export-Package: com.incquerylabs.iot.sensorcodes.eiq,
  com.incquerylabs.iot.sensorcodes.eiq.util,
- com.incquerylabs.iot.sensorcodes.events,
  com.incquerylabs.iot.sensorcodes.events.events.queryresult,
  com.incquerylabs.iot.sensorcodes.events.jobs,
  com.incquerylabs.iot.sensorcodes.events.mapping,
  com.incquerylabs.iot.sensorcodes.events.patterns.atomic.queryresult,
  com.incquerylabs.iot.sensorcodes.events.patterns.complex,
  com.incquerylabs.iot.sensorcodes.events.rules,
- com.incquerylabs.iot.sensorcodes.queries,
- com.incquerylabs.iot.sensorcodes.queries.util,
  com.incquerylabs.iot.sensorcodes.vepl.firstLevel,
  com.incquerylabs.iot.sensorcodes.vepl.firstLevel.events.queryresult,
  com.incquerylabs.iot.sensorcodes.vepl.firstLevel.jobs,
  com.incquerylabs.iot.sensorcodes.vepl.firstLevel.mapping,
  com.incquerylabs.iot.sensorcodes.vepl.firstLevel.patterns.atomic.queryresult,
- com.incquerylabs.iot.sensorcodes.vepl.firstLevel.rules
+ com.incquerylabs.iot.sensorcodes.vepl.firstLevel.rules,
+ com.incquerylabs.iot.sensorcodes
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.incquery.runtime,
  org.eclipse.xtext.xbase.lib,
