@@ -59,7 +59,8 @@ DataParameter:
 	{IntParameter} "parameter" type = "int" name = ID ("=" value = INT)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
 	{DoubleParameter} "parameter" type = "double" name = ID ("=" value = DOUBLE)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
 	{StringParameter} "parameter" type = "string" name = ID ("=" value = STRING)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
-	{BooleanParameter} "parameter" type = "boolean" name = ID ("=" value = BOOLEAN)? ("(" criteria += Criterion (criteria += Criterion)* ")")?
+	{BooleanParameter} "parameter" type = "boolean" name = ID ("=" value = BOOLEAN)? ("(" criteria += Criterion (criteria += Criterion)* ")")? |
+	{LongParameter} "parameter" type = "long" name = ID ("=" value = LONG)? ("(" criteria += Criterion (criteria += Criterion)* ")")?
 ;
 
 Criterion:

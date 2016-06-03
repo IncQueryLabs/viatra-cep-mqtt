@@ -103,8 +103,8 @@ class CepGenerator {
 			
 			public class CepApplication {
 			
-				private CEPEngine engine;
-				private QueryEngine2ViatraCep mapping;
+				protected CEPEngine engine;
+				protected QueryEngine2ViatraCep mapping;
 				public EventStream eventStream;
 				public CepFactory cepFactory;
 				
