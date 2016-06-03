@@ -1,6 +1,7 @@
 package com.incquerylabs.iot.sensorcodes.events
 
 import-queries com.incquerylabs.iot.sensorcodes.queries.*
+import com.incquerylabs.iot.sensorcodes.*
 
 // B
 //queryEvent sensor_B_state_0() as sensor_B_state_0(_) found
@@ -276,4 +277,5 @@ complexEvent initEvent() {
 
 rule demoRule on initEvent() {
 	println("Sensor tap in order: A->B->C->D")
+	VisualizerCommandSender.getInstance().sendLockingStateChangeMessgae(VisualizerCommandSender.LockingState.INIT)	
 }
