@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><plugin>
+  <extension id="com.incquerylabs.iot.sensorcodes.queries.Queries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:com.incquerylabs.iot.sensorcodes.queries.Queries" id="com.incquerylabs.iot.sensorcodes.queries.Queries"/>
+  </extension>
+  <extension id="com.incquerylabs.iot.sensorcodes.eiq.Patterns" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:com.incquerylabs.iot.sensorcodes.eiq.Patterns" id="com.incquerylabs.iot.sensorcodes.eiq.Patterns"/>
+  </extension>
+</plugin>

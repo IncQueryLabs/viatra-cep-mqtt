@@ -1,0 +1,68 @@
+mqttSetup {
+	brokerUrl "tcp://127.0.0.1:1883"
+}
+
+payload sensorHEADPayload {
+	parameter int x (min 250 max 2050)
+	parameter int y (min 250 max 2050)
+	parameter int z (min 250 max 2050)
+	parameter int tap (neq 0)
+	parameter long t
+}
+
+payload sensorLLPayload {
+	parameter int x (min 250 max 2050)
+	parameter int y (min 250 max 2050)
+	parameter int z (min 250 max 2050)
+	parameter int tap (neq 0)
+	parameter long t
+}
+
+payload sensorRLPayload {
+	parameter int x (min 250 max 2050)
+	parameter int y (min 250 max 2050)
+	parameter int z (min 250 max 2050)
+	parameter int tap (neq 0)
+	parameter long t
+}
+
+payload sensorLHPayload {
+	parameter int x (min 250 max 2050)
+	parameter int y (min 250 max 2050)
+	parameter int z (min 250 max 2050)
+	parameter int tap (neq 0)
+	parameter long t
+}
+
+payload sensorRHPayload {
+	parameter int x (min 250 max 2050)
+	parameter int y (min 250 max 2050)
+	parameter int z (min 250 max 2050)
+	parameter int tap (neq 0)
+	parameter long t
+}
+
+sensor player4HEAD {
+	qos 0
+	lastReceivedPayload sensorHEADPayload
+}
+
+sensor player4LL {
+	qos 0
+	lastReceivedPayload sensorLLPayload
+}
+
+sensor player4RL {
+	qos 0
+	lastReceivedPayload sensorRLPayload
+}
+
+sensor player4LH {
+	qos 0
+	lastReceivedPayload sensorLHPayload
+}
+
+sensor player4RH {
+	qos 0
+	lastReceivedPayload sensorRHPayload
+}

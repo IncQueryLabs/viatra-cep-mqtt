@@ -1,8 +1,10 @@
 package org.eclipse.viatra.cep.mqtt.commons.mqtt;
 
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.incquery.runtime.base.api.IncQueryBaseFactory;
 import org.eclipse.incquery.runtime.base.api.NavigationHelper;
 import org.eclipse.incquery.runtime.base.exception.IncQueryBaseException;
@@ -15,6 +17,7 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.DataParameter;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.DoubleParameter;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.IntParameter;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.IoTSystem;
+import org.eclipse.viatra.cep.mqtt.midl.mIDL.LongParameter;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter;
@@ -67,20 +70,33 @@ public class Callback implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) {
-		String msg = new String(message.getPayload());
-		JsonParser parser = new JsonParser();
-		JsonObject object = parser.parse(msg).getAsJsonObject();
-		// Use IncQuery Base Indexer to find the sensor
-		Sensor selectedSensor = (Sensor) navigationHelper.findByAttributeValue(topic).iterator().next().getEObject();
-		Payload sensorPayload = selectedSensor.getLastReceivedPayload();
 		try {
+
+			String msg = new String(message.getPayload());
+			JsonParser parser = new JsonParser();
+			JsonObject object = parser.parse(msg).getAsJsonObject();
+			
+			// XXX: workaround for demo!!!!
+			String sensorId = topic;
+			String[] segments = topic.split("/");
+			if(segments.length > 2) {
+				sensorId = segments[1]+segments[2];
+			}
+			
+			// Use IncQuery Base Indexer to find the sensor
+			Sensor selectedSensor = (Sensor) navigationHelper.findByAttributeValue(sensorId).iterator().next().getEObject();
+			
+			Payload sensorPayload = selectedSensor.getLastReceivedPayload();
+			
 			NavigationHelper paramNavHelper = IncQueryBaseFactory.getInstance()
 					.createNavigationHelper(sensorPayload, true, null);
 			// Get parameters from model using the JSON file content
-			for (Entry<String, JsonElement> parameter : object.getAsJsonObject(sensorPayload.getName()).entrySet()) {
+			for (Entry<String, JsonElement> parameter : object.entrySet()) {
 				// Use IncQuery Base Indexer to find parameter
-				DataParameter paramValue = (DataParameter) paramNavHelper.findByAttributeValue(parameter.getKey())
-						.iterator().next().getEObject();
+				Set<Setting> settings = paramNavHelper.findByAttributeValue(parameter.getKey());
+				if(settings.isEmpty()) continue;
+	
+				DataParameter paramValue = (DataParameter) settings.iterator().next().getEObject();
 				// Get the parameter new value from the message
 				JsonElement newValue = parameter.getValue();
 				// Find parameter type, and set the new value
@@ -92,9 +108,11 @@ public class Callback implements MqttCallback {
 					((StringParameter) paramValue).setValue(newValue.getAsString());
 				} else if (paramValue.getType().equals("boolean")) {
 					((BooleanParameter) paramValue).setValue(newValue.getAsBoolean());
+				} else if (paramValue.getType().equals("long")) {
+					((LongParameter) paramValue).setValue(newValue.getAsLong());
 				}
 			}
-		} catch (IncQueryBaseException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}
 	}

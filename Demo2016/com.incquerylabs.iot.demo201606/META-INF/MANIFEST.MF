@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Demo201606
+Bundle-SymbolicName: com.incquerylabs.iot.demo201606;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.incquerylabs.iot.demo201606.Activator
+Bundle-Vendor: INCQUERYLABS
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.viatra.cep.core;bundle-version="0.9.0",
+ org.junit;bundle-version="4.12.0",
+ com.incquerylabs.iot.sensorcodes;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: com.incquerylabs.iot.sensorcodes

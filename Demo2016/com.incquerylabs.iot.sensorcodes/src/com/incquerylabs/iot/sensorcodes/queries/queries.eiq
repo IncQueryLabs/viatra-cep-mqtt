@@ -1,0 +1,223 @@
+package com.incquerylabs.iot.sensorcodes.queries
+
+import "http://www.eclipse.org/viatra/cep/mqtt/midl/MIDL"
+
+// LH - B
+pattern sensor_B_state_0(sensor : Sensor) {
+	find sensor_state_0(sensor, "player4LH");
+}
+
+pattern sensor_B_state_1(sensor : Sensor) {
+	find sensor_state_1(sensor, "player4LH");
+}
+
+pattern sensor_B_state_2(sensor : Sensor) {
+	find sensor_state_2(sensor, "player4LH");
+}
+
+pattern sensor_B_state_3(sensor : Sensor) {
+	find sensor_state_3(sensor, "player4LH");
+}
+
+pattern sensor_B_state_4(sensor : Sensor) {
+	find sensor_state_4(sensor, "player4LH");
+}
+
+pattern sensor_B_state_5(sensor : Sensor) {
+	find sensor_state_5(sensor, "player4LH");
+}
+
+pattern sensor_B_tap(sensor : Sensor) {
+	find sensor_tap(sensor, "player4LH");
+}
+
+// RH - C
+pattern sensor_C_state_0(sensor : Sensor) {
+	find sensor_state_0(sensor, "player4RH");
+}
+
+pattern sensor_C_state_1(sensor : Sensor) {
+	find sensor_state_1(sensor, "player4RH");
+}
+
+pattern sensor_C_state_2(sensor : Sensor) {
+	find sensor_state_2(sensor, "player4RH");
+}
+
+pattern sensor_C_state_3(sensor : Sensor) {
+	find sensor_state_3(sensor, "player4RH");
+}
+
+pattern sensor_C_state_4(sensor : Sensor) {
+	find sensor_state_4(sensor, "player4RH");
+}
+
+pattern sensor_C_state_5(sensor : Sensor) {
+	find sensor_state_5(sensor, "player4RH");
+}
+
+pattern sensor_C_tap(sensor : Sensor) {
+	find sensor_tap(sensor, "player4RH");
+}
+
+// LL - D
+pattern sensor_D_state_0(sensor : Sensor) {
+	find sensor_state_0(sensor, "player4LL");
+}
+
+pattern sensor_D_state_1(sensor : Sensor) {
+	find sensor_state_1(sensor, "player4LL");
+}
+
+pattern sensor_D_state_2(sensor : Sensor) {
+	find sensor_state_2(sensor, "player4LL");
+}
+
+pattern sensor_D_state_3(sensor : Sensor) {
+	find sensor_state_3(sensor, "player4LL");
+}
+
+pattern sensor_D_state_4(sensor : Sensor) {
+	find sensor_state_4(sensor, "player4LL");
+}
+
+pattern sensor_D_state_5(sensor : Sensor) {
+	find sensor_state_5(sensor, "player4LL");
+}
+
+pattern sensor_D_tap(sensor : Sensor) {
+	find sensor_tap(sensor, "player4LL");
+}
+
+// HEAD - A
+pattern sensor_A_state_0(sensor : Sensor) {
+	find sensor_state_0(sensor, "player4HEAD");
+}
+
+pattern sensor_A_state_1(sensor : Sensor) {
+	find sensor_state_1(sensor, "player4HEAD");
+}
+
+pattern sensor_A_state_2(sensor : Sensor) {
+	find sensor_state_2(sensor, "player4HEAD");
+}
+
+pattern sensor_A_state_3(sensor : Sensor) {
+	find sensor_state_3(sensor, "player4HEAD");
+}
+
+pattern sensor_A_state_4(sensor : Sensor) {
+	find sensor_state_4(sensor, "player4HEAD");
+}
+
+pattern sensor_A_state_5(sensor : Sensor) {
+	find sensor_state_5(sensor, "player4HEAD");
+}
+
+pattern sensor_A_tap(sensor : Sensor) {
+	find sensor_tap(sensor, "player4HEAD");
+}
+
+// Sensor states
+pattern sensor_state_0(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find accZParam(param);
+	find lowValue(param);
+}
+
+pattern sensor_state_1(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find accXParam(param);
+	find highValue(param);
+}
+
+pattern sensor_state_2(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find accYParam(param);
+	find lowValue(param);
+}
+
+pattern sensor_state_3(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find accYParam(param);
+	find highValue(param);
+}
+
+pattern sensor_state_4(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find accZParam(param);
+	find highValue(param);
+}
+
+pattern sensor_state_5(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find accXParam(param);
+	find lowValue(param);
+}
+
+pattern sensor_tap(sensor : Sensor, name) {
+	Sensor.name(sensor, name);
+	Sensor.lastReceivedPayload.dataParameters(sensor, param);
+	find tapParam(param);
+	find tap(param);
+}
+
+pattern parameterName(param : DataParameter, name ) {
+	DataParameter.name(param, name);
+	check(name.equalsIgnoreCase(name));
+}
+
+pattern accXParam(param : DataParameter) {
+	find parameterName(param, "x");
+}
+
+pattern accYParam(param : DataParameter) {
+	find parameterName(param, "y");
+}
+
+pattern accZParam(param : DataParameter) {
+	find parameterName(param, "z");
+}
+
+pattern tapParam(param : DataParameter) {
+	find parameterName(param, "tap");
+}
+
+pattern highValue(param : DataParameter) {
+	IntParameter.value(param, value);
+	check(value > 200);
+} or {
+	LongParameter.value(param, value);
+	check(value > 200);
+} or {
+	DoubleParameter.value(param, value);
+	check(value > 200);
+}
+
+pattern lowValue(param : DataParameter) {
+	IntParameter.value(param, value);
+	check(value < -200);
+} or {
+	LongParameter.value(param, value);
+	check(value < -200);
+} or {
+	DoubleParameter.value(param, value);
+	check(value < -200);
+}
+
+pattern tap(param : DataParameter) {
+	IntParameter.value(param, value);
+	check(value > 0);
+} or {
+	LongParameter.value(param, value);
+	check(value > 0);
+} or {
+	DoubleParameter.value(param, value);
+	check(value > 0);
+}
