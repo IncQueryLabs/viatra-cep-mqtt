@@ -14,7 +14,7 @@ import org.eclipse.viatra.cep.mqtt.commons.utils.LoggerUtil;
  * 
  * This class implements an MQTT publisher, with basic functions.
  * 
- * @author Zoltán Selmeczi
+ * @author Zoltï¿½n Selmeczi
  *
  */
 public class Publisher {
@@ -51,7 +51,6 @@ public class Publisher {
 			client.connect(connOpts);
 		} catch (MqttException e) {
 			LOGGER.error("Could not connect to MQTT broker.", e);
-			System.exit(0);
 		}
 	}
 

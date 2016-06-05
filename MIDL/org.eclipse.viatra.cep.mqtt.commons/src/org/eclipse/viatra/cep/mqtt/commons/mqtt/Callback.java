@@ -2,6 +2,7 @@ package org.eclipse.viatra.cep.mqtt.commons.mqtt;
 
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
@@ -22,6 +23,7 @@ import org.eclipse.viatra.cep.mqtt.midl.mIDL.Payload;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.Sensor;
 import org.eclipse.viatra.cep.mqtt.midl.mIDL.StringParameter;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -71,10 +73,14 @@ public class Callback implements MqttCallback {
 	@Override
 	public void messageArrived(String topic, MqttMessage message) {
 		try {
-
+			
+			Stopwatch sw = Stopwatch.createStarted();
+			
 			String msg = new String(message.getPayload());
 			JsonParser parser = new JsonParser();
 			JsonObject object = parser.parse(msg).getAsJsonObject();
+			
+			
 			
 			// XXX: workaround for demo!!!!
 			String sensorId = topic;
@@ -83,8 +89,19 @@ public class Callback implements MqttCallback {
 				sensorId = segments[1]+segments[2];
 			}
 			
+			long elapsed = sw.elapsed(TimeUnit.MILLISECONDS);
+			if(elapsed > 5) {
+				System.out.println("Phase parse: " + elapsed);
+			}
+			sw.reset();
+			
 			// Use IncQuery Base Indexer to find the sensor
 			Sensor selectedSensor = (Sensor) navigationHelper.findByAttributeValue(sensorId).iterator().next().getEObject();
+			
+			elapsed = sw.elapsed(TimeUnit.MILLISECONDS);
+			if(elapsed > 10) {
+				System.out.println("Phase indexer: " + elapsed);
+			}
 			
 			Payload sensorPayload = selectedSensor.getLastReceivedPayload();
 			
@@ -112,6 +129,12 @@ public class Callback implements MqttCallback {
 					((LongParameter) paramValue).setValue(newValue.getAsLong());
 				}
 			}
+			
+			elapsed = sw.elapsed(TimeUnit.MILLISECONDS);
+			if(elapsed > 10) {
+				System.out.println("Phase update: " + elapsed);
+			}
+			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}

@@ -56,7 +56,6 @@ public class Subscriber {
 			client.connect(connOpts);
 		} catch (MqttException e) {
 			LOGGER.error("Could not connect to MQTT broker.", e);
-			System.exit(0);
 		}
 	}
 
@@ -83,7 +82,17 @@ public class Subscriber {
 			LOGGER.error("Could not unsubscribe from the topic. [" + topic + "]", e);
 		}
 	}
-
+	
+	/**
+	 * Returns true, if the client is connected.
+	 */
+	public boolean isConnected() {
+		if(client != null)
+			return client.isConnected();
+		else
+			return false;
+	}
+	
 	public void disconnect() {
 		try {
 			client.disconnect();

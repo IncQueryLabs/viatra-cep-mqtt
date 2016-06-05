@@ -52,9 +52,10 @@ public class DemoApplication {
 		@Override
 		public void run() {
 			sensorTriggerRunning = true;
-			triggerPublisher.connect();
+
 			while(sensorTriggerRunning) {
-				triggerPublisher.publish("sensor/trigger", new Long(System.currentTimeMillis()).toString());
+				if(triggerPublisher.isConnected())
+					triggerPublisher.publish("sensor/trigger", new Long(System.currentTimeMillis()).toString());
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
@@ -83,6 +84,7 @@ public class DemoApplication {
 		}
 		
 		triggerPublisher = new Publisher(brokerAddress, "sensor_trigger_" + System.currentTimeMillis());
+		triggerPublisher.connect();
 		
 		String midlUri = System.getProperty("midlUri");
 		
@@ -115,6 +117,21 @@ public class DemoApplication {
 		pool.execute(triggerThread);
 		
 		running = true;
+		
+		while(running) {
+			
+			if(!triggerPublisher.isConnected()) {
+				System.out.println("Trigger connection lost. Reconnecting ...");
+				triggerPublisher.connect();
+			}
+			
+			if(!subscriber.isConnected()) {
+				System.out.println("Subscriber connection lost. Reconnecting ...");
+				subscriber.connect();
+			}
+			
+			Thread.sleep(3000);
+		}
 
 	}
 	
