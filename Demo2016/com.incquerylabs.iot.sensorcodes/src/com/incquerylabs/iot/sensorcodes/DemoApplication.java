@@ -180,6 +180,9 @@ public class DemoApplication implements IEventStreamProvider {
 
 	public void pushINIT_ATOM() throws InterruptedException {
 		pushEvent(CepFactory.getInstance().createINIT_ATOM_Event());
+		pushEvent(CepFactory.getInstance().createINIT_ATOM_Event());
+		pushEvent(CepFactory.getInstance().createINIT_ATOM_Event());
+		pushEvent(CepFactory.getInstance().createINIT_ATOM_Event());
 	}
 	
 }

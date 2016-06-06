@@ -223,7 +223,6 @@ complexEvent init() {
 rule initRule on init() {
 	DemoApplication.instance.pushINIT_ATOM
 	println("INITIALIZE")
-	DemoApplication.instance.pushINIT_ATOM
 }
 
 rule unlockRule on correctPASS() {
