@@ -46,30 +46,29 @@ public class DirectPushCallback implements MqttCallback {
 			
 			String sensorId = topic.split("/")[2];
 			
-			Event tapEvent = createTAPEvent(sensorId);
-			
-			if(tapEvent != null)
-				stream.pushEvent(tapEvent);
-			
 			Event stateEvent = null;
 			
 			if(sensorData.getZ() < -stateTreshold) {			// Z LOW
-				stateEvent = createState_0_Event(sensorId); 
+				stateEvent = createState_4_Event(sensorId); 
 			} else if(sensorData.getX() > stateTreshold) {		// X HIGH
-				stateEvent = createState_1_Event(sensorId);
-			} else if (sensorData.getY() < -stateTreshold) {	// Y LOW
-				stateEvent = createState_2_Event(sensorId);
-			} else if (sensorData.getY() > stateTreshold) {		// Y HIGH
-				stateEvent = createState_3_Event(sensorId);
-			} else if (sensorData.getZ() > stateTreshold) {		// Z HIGH
-				stateEvent = createState_4_Event(sensorId);
-			} else if (sensorData.getX() < -stateTreshold) {	// X LOW
 				stateEvent = createState_5_Event(sensorId);
+			} else if (sensorData.getY() < -stateTreshold) {	// Y LOW
+				stateEvent = createState_3_Event(sensorId);
+			} else if (sensorData.getY() > stateTreshold) {		// Y HIGH
+				stateEvent = createState_2_Event(sensorId);
+			} else if (sensorData.getZ() > stateTreshold) {		// Z HIGH
+				stateEvent = createState_0_Event(sensorId);
+			} else if (sensorData.getX() < -stateTreshold) {	// X LOW
+				stateEvent = createState_1_Event(sensorId);
 			}
 			
 			if(stateEvent != null)
 				stream.pushEvent(stateEvent);
 			
+			Event tapEvent = createTAPEvent(sensorId);
+			
+			if(tapEvent != null)
+				stream.pushEvent(tapEvent);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
