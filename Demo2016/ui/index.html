@@ -39,7 +39,6 @@
 
 			th {
 				font-size: 26px;
-				font-weight: normal;
 			}
 
 			/* PAGE CENTERING */
@@ -125,9 +124,16 @@
 				animation-iteration-count: 3;
 			}
 
-			.marked-header {
-				font-weight: bold;
-				font-size: 30px !important;
+			.arrow-row td {
+				background: white !important;
+				border: white !important;
+			}
+
+			.arrow-active {
+				background-image: url(arrow.png);
+				background-repeat: no-repeat;
+				height: 98px;
+				background-position: center;
 			}
 
 		</style>
@@ -161,6 +167,20 @@
 					</td>
 					<td class="cell lock-cell">
 						<div id="lock-4" class="lock-base-style lock-normal"><div class="led"></div><span>0</span></div>
+					</td>
+				</tr>
+				<tr class="arrow-row">
+					<td>
+						<div id="lock-arrow-1"></div>
+					</td>
+					<td>
+						<div id="lock-arrow-2"></div>
+					</td>
+					<td>
+						<div id="lock-arrow-3"></div>
+					</td>
+					<td>
+						<div id="lock-arrow-4"></div>
 					</td>
 				</tr>
 			</table>
