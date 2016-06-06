@@ -26,6 +26,13 @@ import com.incquerylabs.iot.sensorcodes.events.mapping.QueryEngine2ViatraCep;
 
 public class DemoApplication implements IEventStreamProvider {
 	
+	public static enum APP_MODE {
+		DIRECT_PUSH,
+		RUNTIME_UPDATE
+	}
+	
+	APP_MODE appMode;
+	
 	String brokerAddress = "tcp://127.0.0.1:1883";
 	
 	protected CEPEngine engine;
@@ -69,12 +76,25 @@ public class DemoApplication implements IEventStreamProvider {
 		}
 	});
 	
-	public DemoApplication() throws InterruptedException {
+	private static DemoApplication instance = null;
+	
+	public static DemoApplication getInstance() throws InterruptedException {
+		if(instance == null) {
+			instance = new DemoApplication(APP_MODE.DIRECT_PUSH);
+		}
+		return instance;
+	}
+	
+	private DemoApplication() {}
+	
+	private DemoApplication(APP_MODE mode) throws InterruptedException {
 		
 		engine = CEPEngine.newEngine().eventContext(EventContext.STRICT_IMMEDIATE)
 				.rules(CepFactory.getInstance().allRules()).prepare();
 		eventStream = engine.getStreamManager().newEventStream();
-
+		
+		this.appMode = mode;
+		
 	}
 
 	public void start() throws InterruptedException {
@@ -98,11 +118,16 @@ public class DemoApplication implements IEventStreamProvider {
 		Injector injector = new MIDLStandaloneSetup().createInjectorAndDoEMFRegistration();
 		resourceSet = injector.getInstance(XtextResourceSet.class);
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
+		
 		resource = resourceSet.getResource(URI.createURI(uriAddress), true);
+		
 		QueryEngine2ViatraCep.register(resourceSet, eventStream);
 		
-		//callback = new Callback((IoTSystem) resource.getContents().get(0)); // callback to update runtime model
-		callback = new DirectPushCallback(this);							  // callback to push events directly to stream
+		if(appMode == APP_MODE.DIRECT_PUSH) {
+			callback = new DirectPushCallback(this);							  // callback to push events directly to stream			
+		} else {
+			callback = new Callback((IoTSystem) resource.getContents().get(0));   // callback to update runtime model
+		}
 		
 		subscriber = new Subscriber(brokerAddress, "CEP_SUBSCRIBER");
 		subscriber.setCallback(callback);
@@ -149,6 +174,10 @@ public class DemoApplication implements IEventStreamProvider {
 	@Override
 	synchronized public void pushEvent(Event event) {
 		eventStream.push(event);
+	}
+	
+	public void pushCORRECT_PIN_ATOM() {
+		pushEvent(CepFactory.getInstance().createCorrectPASS_Atom_Event());
 	}
 	
 }
