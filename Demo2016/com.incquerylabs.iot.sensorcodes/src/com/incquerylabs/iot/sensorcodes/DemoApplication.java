@@ -147,6 +147,8 @@ public class DemoApplication implements IEventStreamProvider {
 		
 		running = true;
 		
+//		pushINIT_ATOM();
+		
 		while(running) {
 			
 			if(!triggerPublisher.isConnected()) {
@@ -175,9 +177,9 @@ public class DemoApplication implements IEventStreamProvider {
 	synchronized public void pushEvent(Event event) {
 		eventStream.push(event);
 	}
-	
-	public void pushCORRECT_PIN_ATOM() {
-		pushEvent(CepFactory.getInstance().createCorrectPASS_Atom_Event());
+
+	public void pushINIT_ATOM() throws InterruptedException {
+		pushEvent(CepFactory.getInstance().createINIT_ATOM_Event());
 	}
 	
 }

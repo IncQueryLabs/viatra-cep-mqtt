@@ -65,25 +65,20 @@ public class DirectPushCallback implements MqttCallback {
 			if(stateEvent != null)
 				stream.pushEvent(stateEvent);
 			
-			Event tapEvent = createTAPEvent(sensorId);
-			
-			if(tapEvent != null)
-				stream.pushEvent(tapEvent);
-			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}
 	}
 	
-	private Event createTAPEvent(String sensorId) {
-		switch (sensorId) {
-		case "HEAD": return CepFactory.getInstance().createSensor_A_tap_Event();
-		case "LH"  : return CepFactory.getInstance().createSensor_B_tap_Event();
-		case "RH"  : return CepFactory.getInstance().createSensor_C_tap_Event();
-		case "LL"  : return CepFactory.getInstance().createSensor_D_tap_Event();
-		default    : return null;
-		}
-	}
+//	private Event createTAPEvent(String sensorId) {
+//		switch (sensorId) {
+//		case "HEAD": return CepFactory.getInstance().createSensor_A_tap_Event();
+//		case "LH"  : return CepFactory.getInstance().createSensor_B_tap_Event();
+//		case "RH"  : return CepFactory.getInstance().createSensor_C_tap_Event();
+//		case "LL"  : return CepFactory.getInstance().createSensor_D_tap_Event();
+//		default    : return null;
+//		}
+//	}
 	
 	private Event createState_0_Event(String sensorId) {
 		switch (sensorId) {
