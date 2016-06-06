@@ -18,6 +18,7 @@ CepLock.prototype.init = function () {
     this.initMqtt();
 };
 
+CepLock.prototype.lastHighlightedHeader = undefined;
 
 ////////
 // MQTT
@@ -111,11 +112,19 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
         }
     }
 
+    function highlightLastSetHeader(position) {
+        // Remove all highlight
+        $(".marked-header").removeClass("marked-header");
+        // Add highlight class to last marked header
+        $("#lock-header-" + position).addClass("marked-header");
+    }
+
     var jsonMsg = parseJSONMessages(topic, message);
     switch (topic) {
         case mqttTopicPosChange1:
             if(jsonMsg.hasOwnProperty("position")){
                 changeSensorPosition("lock-1", jsonMsg.position);
+                highlightLastSetHeader(1);
             }else{
                 console.error("Invalid PositionChange message format")
             }
@@ -123,6 +132,7 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
         case mqttTopicPosChange2:
             if(jsonMsg.hasOwnProperty("position")){
                 changeSensorPosition("lock-2", jsonMsg.position);
+                highlightLastSetHeader(2);
             }else{
                 console.error("Invalid PositionChange message format")
             }
@@ -130,6 +140,7 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
         case mqttTopicPosChange3:
             if(jsonMsg.hasOwnProperty("position")){
                 changeSensorPosition("lock-3", jsonMsg.position);
+                highlightLastSetHeader(3);
             }else{
                 console.error("Invalid PositionChange message format")
             }
@@ -137,6 +148,7 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
         case mqttTopicPosChange4:
             if(jsonMsg.hasOwnProperty("position")){
                 changeSensorPosition("lock-4", jsonMsg.position);
+                highlightLastSetHeader(4);
             }else{
                 console.error("Invalid PositionChange message format")
             }

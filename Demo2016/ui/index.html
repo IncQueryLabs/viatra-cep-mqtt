@@ -39,6 +39,7 @@
 
 			th {
 				font-size: 26px;
+				font-weight: normal;
 			}
 
 			/* PAGE CENTERING */
@@ -124,6 +125,11 @@
 				animation-iteration-count: 3;
 			}
 
+			.marked-header {
+				font-weight: bold;
+				font-size: 30px !important;
+			}
+
 		</style>
 
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
@@ -138,10 +144,10 @@
 			</p>
 			<table id="lock-table" class="center main-table locked">
 				<tr>
-					<th class="cell">1.</th>
-					<th class="cell">2.</th>
-					<th class="cell">3.</th>
-					<th class="cell">4.</th>
+					<th class="cell" id="lock-header-1">1.</th>
+					<th class="cell" id="lock-header-2">2.</th>
+					<th class="cell" id="lock-header-3">3.</th>
+					<th class="cell" id="lock-header-4">4.</th>
 				</tr>
 				<tr>
 					<td class="cell lock-cell">
