@@ -114,9 +114,13 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
 
     function highlightLastSetHeader(position) {
         // Remove all highlight
-        $(".marked-header").removeClass("marked-header");
+        removeArrows();
         // Add highlight class to last marked header
-        $("#lock-header-" + position).addClass("marked-header");
+        $("#lock-arrow-" + position).addClass("arrow-active");
+    }
+
+    function removeArrows(){
+        $(".arrow-active").removeClass("arrow-active");
     }
 
     var jsonMsg = parseJSONMessages(topic, message);
@@ -170,8 +174,11 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
                         $("#lock-state-p").addClass("flashing"); // have to wait 100ms for animation...
                     }, 100);
                 }else if(jsonMsg.state == "init"){
-                    // init
-                    $("#lock-state").text("Locked");
+                    // Remove arrows
+                    removeArrows()
+
+                    // Change state message and style
+                    $("#lock-state").text("LOCKED");
                     $("#lock-table").removeClass("unlocked").addClass("locked");
 
                     // Reset positions
