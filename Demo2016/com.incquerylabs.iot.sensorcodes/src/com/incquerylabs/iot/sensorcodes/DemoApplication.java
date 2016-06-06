@@ -6,8 +6,10 @@ import java.util.concurrent.Executors;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.mwe.utils.StandaloneSetup;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.viatra.cep.core.api.engine.CEPEngine;
 import org.eclipse.viatra.cep.core.metamodels.automaton.EventContext;
+import org.eclipse.viatra.cep.core.metamodels.events.Event;
 import org.eclipse.viatra.cep.core.streams.EventStream;
 import org.eclipse.viatra.cep.mqtt.commons.mqtt.Callback;
 import org.eclipse.viatra.cep.mqtt.commons.mqtt.Publisher;
@@ -22,7 +24,7 @@ import com.google.inject.Injector;
 import com.incquerylabs.iot.sensorcodes.events.CepFactory;
 import com.incquerylabs.iot.sensorcodes.events.mapping.QueryEngine2ViatraCep;
 
-public class DemoApplication {
+public class DemoApplication implements IEventStreamProvider {
 	
 	String brokerAddress = "tcp://127.0.0.1:1883";
 	
@@ -45,7 +47,7 @@ public class DemoApplication {
 	boolean running = false;
 	
 	Subscriber subscriber;
-	Callback callback;
+	MqttCallback callback;
 	
 	private Thread triggerThread = new Thread(new Runnable() {
 		
@@ -99,7 +101,9 @@ public class DemoApplication {
 		resource = resourceSet.getResource(URI.createURI(uriAddress), true);
 		QueryEngine2ViatraCep.register(resourceSet, eventStream);
 		
-		callback = new Callback((IoTSystem) resource.getContents().get(0));
+		//callback = new Callback((IoTSystem) resource.getContents().get(0)); // callback to update runtime model
+		callback = new DirectPushCallback(this);							  // callback to push events directly to stream
+		
 		subscriber = new Subscriber(brokerAddress, "CEP_SUBSCRIBER");
 		subscriber.setCallback(callback);
 		
@@ -138,7 +142,13 @@ public class DemoApplication {
 	@After
 	public void stop() {
 		sensorTriggerRunning = false;
+		running = false;
 		pool.shutdownNow();
+	}
+
+	@Override
+	synchronized public void pushEvent(Event event) {
+		eventStream.push(event);
 	}
 	
 }

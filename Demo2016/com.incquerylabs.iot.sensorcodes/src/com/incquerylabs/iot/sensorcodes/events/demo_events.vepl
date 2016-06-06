@@ -3,219 +3,18 @@ package com.incquerylabs.iot.sensorcodes.events
 import-queries com.incquerylabs.iot.sensorcodes.queries.*
 import com.incquerylabs.iot.sensorcodes.*
 
-// B
-//queryEvent sensor_B_state_0() as sensor_B_state_0(_) found
-//
-//queryEvent sensor_B_state_1() as sensor_B_state_1(_) found
-//
-//queryEvent sensor_B_state_2() as sensor_B_state_2(_) found
-//
-//queryEvent sensor_B_state_3() as sensor_B_state_3(_) found
-//
-//queryEvent sensor_B_state_4() as sensor_B_state_4(_) found
-//
-//queryEvent sensor_B_state_5() as sensor_B_state_5(_) found
-
-queryEvent sensor_B_tap() as sensor_B_tap(_) found
-
-rule tap_B on sensor_B_tap {
-	println("Sensor B tap!")
-}
-
-//complexEvent setSensorB_0() {
-//	as (sensor_B_state_0 -> sensor_B_tap)[3000]
-//}
-//
-//rule rule_B_0 on setSensorB_0 {
-//	println("Sensor B set to 0")
-//}
-//
-//complexEvent setSensorB_1() {
-//	as (sensor_B_state_1 -> sensor_B_tap)[3000]
-//}
-//
-//rule rule_B_1 on setSensorB_1 {
-//	println("Sensor B set to 1")
-//}
-//
-//complexEvent setSensorB_2() {
-//	as (sensor_B_state_2 -> sensor_B_tap)[3000]
-//}
-//
-//rule rule_B_2 on setSensorB_2 {
-//	println("Sensor B set to 2")
-//}
-//
-//complexEvent setSensorB_3() {
-//	as (sensor_B_state_3 -> sensor_B_tap)[3000]
-//}
-//
-//rule rule_B_3 on setSensorB_3 {
-//	println("Sensor B set to 3")
-//}
-//
-//complexEvent setSensorB_4() {
-//	as (sensor_B_state_4 -> sensor_B_tap)[3000]
-//}
-//
-//rule rule_B_4 on setSensorB_4 {
-//	println("Sensor B set to 4")
-//}
-//
-//complexEvent setSensorB_5() {
-//	as (sensor_B_state_5 -> sensor_B_tap)[3000]
-//}
-//
-//rule rule_B_5 on setSensorB_5 {
-//	println("Sensor B set to 5")
-//}
-
-// C
-//queryEvent sensor_C_state_0() as sensor_C_state_0(_) found
-//
-//queryEvent sensor_C_state_1() as sensor_C_state_1(_) found
-//
-//queryEvent sensor_C_state_2() as sensor_C_state_2(_) found
-//
-//queryEvent sensor_C_state_3() as sensor_C_state_3(_) found
-//
-//queryEvent sensor_C_state_4() as sensor_C_state_4(_) found
-//
-//queryEvent sensor_C_state_5() as sensor_C_state_5(_) found
-
-queryEvent sensor_C_tap() as sensor_C_tap(_) found
-
-rule tap_C on sensor_C_tap {
-	println("Sensor C tap!")
-}
-
-//complexEvent setSensorC_0() {
-//	as (sensor_C_state_0 -> sensor_C_tap)
-//}
-//
-//rule rule_C_0 on setSensorC_0 {
-//	println("Sensor C set to 0")
-//}
-//
-//complexEvent setSensorC_1() {
-//	as (sensor_C_state_1 -> sensor_C_tap)
-//}
-//
-//rule rule_C_1 on setSensorC_1 {
-//	println("Sensor C set to 1")
-//}
-//
-//complexEvent setSensorC_2() {
-//	as (sensor_C_state_2 -> sensor_C_tap)
-//}
-//
-//rule rule_C_2 on setSensorC_2 {
-//	println("Sensor C set to 2")
-//}
-//
-//complexEvent setSensorC_3() {
-//	as (sensor_C_state_3 -> sensor_C_tap)
-//}
-//
-//rule rule_C_3 on setSensorC_3 {
-//	println("Sensor C set to 3")
-//}
-//
-//complexEvent setSensorC_4() {
-//	as (sensor_C_state_4 -> sensor_C_tap)
-//}
-//
-//rule rule_C_4 on setSensorC_4 {
-//	println("Sensor C set to 4")
-//}
-//
-//complexEvent setSensorC_5() {
-//	as (sensor_C_state_5 -> sensor_C_tap)
-//}
-//
-//rule rule_C_5 on setSensorC_5 {
-//	println("Sensor C set to 5")
-//}
-
-// D
-//queryEvent sensor_D_state_0() as sensor_D_state_0(_) found
-//
-//queryEvent sensor_D_state_1() as sensor_D_state_1(_) found
-//
-//queryEvent sensor_D_state_2() as sensor_D_state_2(_) found
-//
-//queryEvent sensor_D_state_3() as sensor_D_state_3(_) found
-//
-//queryEvent sensor_D_state_4() as sensor_D_state_4(_) found
-//
-//queryEvent sensor_D_state_5() as sensor_D_state_5(_) found
-
-queryEvent sensor_D_tap() as sensor_D_tap(_) found
-
-rule tap_D on sensor_D_tap {
-	println("Sensor D tap!")
-}
-
-//complexEvent setSensorD_0() {
-//	as (sensor_D_state_0 -> sensor_D_tap)[3000]
-//}
-//
-//rule rule_D_0 on setSensorD_0 {
-//	println("Sensor D set to 0")
-//}
-//
-//complexEvent setSensorD_1() {
-//	as (sensor_D_state_1 -> sensor_D_tap)[3000]
-//}
-//
-//rule rule_D_1 on setSensorD_1 {
-//	println("Sensor D set to 1")
-//}
-//
-//complexEvent setSensorD_2() {
-//	as (sensor_D_state_2 -> sensor_D_tap)[3000]
-//}
-//
-//rule rule_D_2 on setSensorD_2 {
-//	println("Sensor D set to 2")
-//}
-//
-//complexEvent setSensorD_3() {
-//	as (sensor_D_state_3 -> sensor_D_tap)[3000]
-//}
-//
-//rule rule_D_3 on setSensorD_3 {
-//	println("Sensor D set to 3")
-//}
-//
-//complexEvent setSensorD_4() {
-//	as (sensor_D_state_4 -> sensor_D_tap)[3000]
-//}
-//
-//rule rule_D_4 on setSensorD_4 {
-//	println("Sensor D set to 4")
-//}
-//
-//complexEvent setSensorD_5() {
-//	as (sensor_D_state_5 -> sensor_D_tap)[3000]
-//}
-//
-//rule rule_D_5 on setSensorD_5 {
-//	println("Sensor D set to 5")
-//}
-
 // A
-//queryEvent sensor_A_state_0() as sensor_A_state_0(_) found
-//
-//queryEvent sensor_A_state_1() as sensor_A_state_1(_) found
-//
-//queryEvent sensor_A_state_2() as sensor_A_state_2(_) found
-//
-//queryEvent sensor_A_state_3() as sensor_A_state_3(_) found
-//
-//queryEvent sensor_A_state_4() as sensor_A_state_4(_) found
-//
-//queryEvent sensor_A_state_5() as sensor_A_state_5(_) found
+queryEvent sensor_A_state_0() as sensor_A_state_0(_) found
+
+queryEvent sensor_A_state_1() as sensor_A_state_1(_) found
+
+queryEvent sensor_A_state_2() as sensor_A_state_2(_) found
+
+queryEvent sensor_A_state_3() as sensor_A_state_3(_) found
+
+queryEvent sensor_A_state_4() as sensor_A_state_4(_) found
+
+queryEvent sensor_A_state_5() as sensor_A_state_5(_) found
 
 queryEvent sensor_A_tap() as sensor_A_tap(_) found
 
@@ -223,59 +22,275 @@ rule tap_A on sensor_A_tap {
 	println("Sensor A tap!")
 }
 
-//complexEvent setSensorA_0() {
-//	as (sensor_A_state_0 -> sensor_A_tap)[3000]
-//}
-//
-//rule rule_A_0 on setSensorA_0 {
-//	println("Sensor A set to 0")
-//}
-//
-//complexEvent setSensorA_1() {
-//	as (sensor_A_state_1 -> sensor_A_tap)[3000]
-//}
-//
-//rule rule_A_1 on setSensorA_1 {
-//	println("Sensor A set to 1")
-//}
-//
-//complexEvent setSensorA_2() {
-//	as (sensor_A_state_2 -> sensor_A_tap)[3000]
-//}
-//
-//rule rule_A_2 on setSensorA_2 {
-//	println("Sensor A set to 2")
-//}
-//
-//complexEvent setSensorA_3() {
-//	as (sensor_A_state_3 -> sensor_A_tap)[3000]
-//}
-//
-//rule rule_A_3 on setSensorA_3 {
-//	println("Sensor A set to 3")
-//}
-//
-//complexEvent setSensorA_4() {
-//	as (sensor_A_state_4 -> sensor_A_tap)[3000]
-//}
-//
-//rule rule_A_4 on setSensorA_4 {
-//	println("Sensor A set to 4")
-//}
-//
-//complexEvent setSensorA_5() {
-//	as (sensor_A_state_5 -> sensor_A_tap)[3000]
-//}
-//
-//rule rule_A_5 on setSensorA_5 {
-//	println("Sensor A set to 5")
-//}
-
-complexEvent initEvent() {
-	as sensor_A_tap -> sensor_B_tap -> sensor_C_tap -> sensor_D_tap
+complexEvent setSensorA_0() {
+	as (sensor_A_state_0 AND sensor_A_tap)[3000]
 }
 
-rule demoRule on initEvent() {
-	println("Sensor tap in order: A->B->C->D")
-	VisualizerCommandSender.getInstance().sendLockingStateChangeMessgae(VisualizerCommandSender.LockingState.INIT)	
+rule rule_A_0 on setSensorA_0 {
+	println("Sensor A set to 0")
 }
+
+complexEvent setSensorA_1() {
+	as (sensor_A_state_1 AND sensor_A_tap)[3000]
+}
+
+rule rule_A_1 on setSensorA_1 {
+	println("Sensor A set to 1")
+}
+
+complexEvent setSensorA_2() {
+	as (sensor_A_state_2 AND sensor_A_tap)[3000]
+}
+
+rule rule_A_2 on setSensorA_2 {
+	println("Sensor A set to 2")
+}
+
+complexEvent setSensorA_3() {
+	as (sensor_A_state_3 AND sensor_A_tap)[3000]
+}
+
+rule rule_A_3 on setSensorA_3 {
+	println("Sensor A set to 3")
+}
+
+complexEvent setSensorA_4() {
+	as (sensor_A_state_4 AND sensor_A_tap)[3000]
+}
+
+rule rule_A_4 on setSensorA_4 {
+	println("Sensor A set to 4")
+}
+
+complexEvent setSensorA_5() {
+	as (sensor_A_state_5 AND sensor_A_tap)[3000]
+}
+
+rule rule_A_5 on setSensorA_5 {
+	println("Sensor A set to 5")
+}
+
+// B
+queryEvent sensor_B_state_0() as sensor_B_state_0(_) found
+
+queryEvent sensor_B_state_1() as sensor_B_state_1(_) found
+
+queryEvent sensor_B_state_2() as sensor_B_state_2(_) found
+
+queryEvent sensor_B_state_3() as sensor_B_state_3(_) found
+
+queryEvent sensor_B_state_4() as sensor_B_state_4(_) found
+
+queryEvent sensor_B_state_5() as sensor_B_state_5(_) found
+
+queryEvent sensor_B_tap() as sensor_B_tap(_) found
+
+rule tap_B on sensor_B_tap {
+	println("Sensor B tap!")
+}
+
+complexEvent setSensorB_0() {
+	as (sensor_B_state_0 AND sensor_B_tap)[3000]
+}
+
+rule rule_B_0 on setSensorB_0 {
+	println("Sensor B set to 0")
+}
+
+complexEvent setSensorB_1() {
+	as (sensor_B_state_1 AND sensor_B_tap)[3000]
+}
+
+rule rule_B_1 on setSensorB_1 {
+	println("Sensor B set to 1")
+}
+
+complexEvent setSensorB_2() {
+	as (sensor_B_state_2 AND sensor_B_tap)[3000]
+}
+
+rule rule_B_2 on setSensorB_2 {
+	println("Sensor B set to 2")
+}
+
+complexEvent setSensorB_3() {
+	as (sensor_B_state_3 AND sensor_B_tap)[3000]
+}
+
+rule rule_B_3 on setSensorB_3 {
+	println("Sensor B set to 3")
+}
+
+complexEvent setSensorB_4() {
+	as (sensor_B_state_4 AND sensor_B_tap)[3000]
+}
+
+rule rule_B_4 on setSensorB_4 {
+	println("Sensor B set to 4")
+}
+
+complexEvent setSensorB_5() {
+	as (sensor_B_state_5 AND sensor_B_tap)[3000]
+}
+
+rule rule_B_5 on setSensorB_5 {
+	println("Sensor B set to 5")
+}
+
+// C
+queryEvent sensor_C_state_0() as sensor_C_state_0(_) found
+
+queryEvent sensor_C_state_1() as sensor_C_state_1(_) found
+
+queryEvent sensor_C_state_2() as sensor_C_state_2(_) found
+
+queryEvent sensor_C_state_3() as sensor_C_state_3(_) found
+
+queryEvent sensor_C_state_4() as sensor_C_state_4(_) found
+
+queryEvent sensor_C_state_5() as sensor_C_state_5(_) found
+
+queryEvent sensor_C_tap() as sensor_C_tap(_) found
+
+rule tap_C on sensor_C_tap {
+	println("Sensor C tap!")
+}
+
+complexEvent setSensorC_0() {
+	as (sensor_C_state_0 AND sensor_C_tap)
+}
+
+rule rule_C_0 on setSensorC_0 {
+	println("Sensor C set to 0")
+}
+
+complexEvent setSensorC_1() {
+	as (sensor_C_state_1 AND sensor_C_tap)
+}
+
+rule rule_C_1 on setSensorC_1 {
+	println("Sensor C set to 1")
+}
+
+complexEvent setSensorC_2() {
+	as (sensor_C_state_2 AND sensor_C_tap)
+}
+
+rule rule_C_2 on setSensorC_2 {
+	println("Sensor C set to 2")
+}
+
+complexEvent setSensorC_3() {
+	as (sensor_C_state_3 AND sensor_C_tap)
+}
+
+rule rule_C_3 on setSensorC_3 {
+	println("Sensor C set to 3")
+}
+
+complexEvent setSensorC_4() {
+	as (sensor_C_state_4 AND sensor_C_tap)
+}
+
+rule rule_C_4 on setSensorC_4 {
+	println("Sensor C set to 4")
+}
+
+complexEvent setSensorC_5() {
+	as (sensor_C_state_5 AND sensor_C_tap)
+}
+
+rule rule_C_5 on setSensorC_5 {
+	println("Sensor C set to 5")
+}
+
+// D
+queryEvent sensor_D_state_0() as sensor_D_state_0(_) found
+
+queryEvent sensor_D_state_1() as sensor_D_state_1(_) found
+
+queryEvent sensor_D_state_2() as sensor_D_state_2(_) found
+
+queryEvent sensor_D_state_3() as sensor_D_state_3(_) found
+
+queryEvent sensor_D_state_4() as sensor_D_state_4(_) found
+
+queryEvent sensor_D_state_5() as sensor_D_state_5(_) found
+
+queryEvent sensor_D_tap() as sensor_D_tap(_) found
+
+rule tap_D on sensor_D_tap {
+	println("Sensor D tap!")
+}
+
+complexEvent setSensorD_0() {
+	as (sensor_D_state_0 AND sensor_D_tap)[3000]
+}
+
+rule rule_D_0 on setSensorD_0 {
+	println("Sensor D set to 0")
+}
+
+complexEvent setSensorD_1() {
+	as (sensor_D_state_1 AND sensor_D_tap)[3000]
+}
+
+rule rule_D_1 on setSensorD_1 {
+	println("Sensor D set to 1")
+}
+
+complexEvent setSensorD_2() {
+	as (sensor_D_state_2 AND sensor_D_tap)[3000]
+}
+
+rule rule_D_2 on setSensorD_2 {
+	println("Sensor D set to 2")
+}
+
+complexEvent setSensorD_3() {
+	as (sensor_D_state_3 AND sensor_D_tap)[3000]
+}
+
+rule rule_D_3 on setSensorD_3 {
+	println("Sensor D set to 3")
+}
+
+complexEvent setSensorD_4() {
+	as (sensor_D_state_4 AND sensor_D_tap)[3000]
+}
+
+rule rule_D_4 on setSensorD_4 {
+	println("Sensor D set to 4")
+}
+
+complexEvent setSensorD_5() {
+	as (sensor_D_state_5 AND sensor_D_tap)[3000]
+}
+
+rule rule_D_5 on setSensorD_5 {
+	println("Sensor D set to 5")
+}
+
+complexEvent correctPIN() {
+	as setSensorA_1 -> setSensorB_2 -> setSensorC_3 -> setSensorD_4 // XXX: modify if needed
+}
+
+//complexEvent incorrectPIN() {
+//	as NOT correctPIN
+//}
+
+complexEvent init() {
+	as setSensorA_0 -> setSensorB_0 -> setSensorC_0 -> setSensorD_0
+}
+
+rule initRule on init() {
+	VisualizerCommandSender.getInstance().sendLockingStateChangeMessgae(VisualizerCommandSender.LockingState.INIT)
+}
+
+rule unlockRule on correctPIN() {
+	VisualizerCommandSender.getInstance().sendLockingStateChangeMessgae(VisualizerCommandSender.LockingState.CORRECT_PASS)	
+}
+
+//rule lockRule on incorrectPIN {
+//	VisualizerCommandSender.getInstance().sendLockingStateChangeMessgae(VisualizerCommandSender.LockingState.INCORRECT_PASS)
+//}
