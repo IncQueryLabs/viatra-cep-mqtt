@@ -19,7 +19,7 @@ CepLock.prototype.init = function () {
 };
 
 
- ////////
+////////
 // MQTT
 CepLock.prototype.initMqtt = function () {
     mqttClient = new Paho.MQTT.Client(mqttBrokerLocation.hostname, Number(mqttBrokerLocation.port), "cepLockClient");
@@ -144,12 +144,19 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
         case mqttTopicLockingState:
             if(jsonMsg.hasOwnProperty("state")){
                 if(jsonMsg.state == "correct_pass"){
-                    $("#lock-state").text("Unlocked");
+                    $("#lock-state").text("UNLOCKED");
                     $("#lock-table").removeClass("locked").addClass("unlocked");
                 }else if(jsonMsg.state == "incorrect_pass"){
                     // incorrect_pass
-                    $("#lock-state").text("Locked");
+                    $("#lock-state").text("LOCKED");
                     $("#lock-table").removeClass("unlocked").addClass("locked");
+
+                    // Flashing
+                    $("#lock-state-p").removeClass("flashing");
+
+                    setTimeout(function() {
+                        $("#lock-state-p").addClass("flashing"); // have to wait 100ms for animation...
+                    }, 100);
                 }else if(jsonMsg.state == "init"){
                     // init
                     $("#lock-state").text("Locked");
