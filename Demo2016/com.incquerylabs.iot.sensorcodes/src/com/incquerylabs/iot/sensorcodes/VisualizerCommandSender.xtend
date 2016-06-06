@@ -4,7 +4,8 @@ import org.eclipse.viatra.cep.mqtt.commons.mqtt.Publisher
 
 class VisualizerCommandSender {
 
-	public static VisualizerCommandSender instance = null
+	private static VisualizerCommandSender instance = null
+
 	public static String brokerUrl = "tcp://127.0.0.1:1883"
 	
 	enum LockingState {
@@ -12,8 +13,8 @@ class VisualizerCommandSender {
 		INCORRECT_PASS,
 		CORRECT_PASS
 	}
+
 	private val String LOCKING_STATE_TOPIC = "lock/all/state"
-	
 	
 	static def VisualizerCommandSender getInstance(){
 		if(instance == null){
