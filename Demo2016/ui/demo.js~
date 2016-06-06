@@ -182,7 +182,7 @@ CepLock.prototype.mqttOnMessageArrived = function(message) {
                     $("#lock-table").removeClass("unlocked").addClass("locked");
 
                     // Reset positions
-                    for(lockID in [1,2,3,4,5]){
+                    for(lockID in [1,2,3,4]){
                         changeSensorPosition("lock-" + lockID, 0);
                     }
                 }
