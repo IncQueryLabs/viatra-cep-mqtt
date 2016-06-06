@@ -50,7 +50,7 @@ class VisualizerCommandSender {
 		}
 	}
 	
-	def String createLockingStateMsg(LockingState newState)'''{ "state" : «newState.name.toLowerCase» }'''
+	def String createLockingStateMsg(LockingState newState)'''{ "state" : "«newState.name.toLowerCase»" }'''
 	
 	def String createPosChangeMsg(int newPosition)'''{ "position" : «newPosition» }'''
 	
